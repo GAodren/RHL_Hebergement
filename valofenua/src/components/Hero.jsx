@@ -13,10 +13,10 @@ export default function Hero() {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-800 mb-6 leading-tight tracking-tight">
           Estimez la valeur de votre bien
           <br />
-          <span className="text-[#0077B6]">immobilier a Tahiti</span>
+          <span className="text-[#0077B6]">immobilier à Tahiti</span>
         </h1>
         <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Obtenez une estimation gratuite en 2 minutes, basee sur les annonces du marche polynesien.
+          Obtenez une estimation gratuite en 2 minutes, basée sur les annonces du marché polynésien.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
@@ -32,7 +32,7 @@ export default function Hero() {
             className="inline-flex items-center justify-center gap-2 bg-white text-[#0077B6] px-8 py-4 rounded-xl font-semibold text-lg border-2 border-[#0077B6] hover:bg-[#E0F4FF] transition-all duration-200"
           >
             <HelpCircle className="w-5 h-5" />
-            Comment ca marche ?
+            Comment ça marche ?
           </button>
         </div>
 
@@ -47,7 +47,7 @@ export default function Hero() {
           </div>
           <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
             <Check className="w-5 h-5 text-green-500" />
-            <span className="font-medium">Resultat immediat</span>
+            <span className="font-medium">Résultat immédiat</span>
           </div>
         </div>
       </div>

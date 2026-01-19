@@ -26,11 +26,11 @@ export default function EstimationForm() {
 
     // Validation
     if (!formData.commune) {
-      setError('Veuillez selectionner une commune');
+      setError('Veuillez sélectionner une commune');
       return;
     }
     if (!formData.categorie) {
-      setError('Veuillez selectionner une categorie');
+      setError('Veuillez sélectionner une catégorie');
       return;
     }
     if (!formData.surface || Number(formData.surface) < 10) {
@@ -44,7 +44,7 @@ export default function EstimationForm() {
       const data = await getEstimation(formData);
       setResult(data);
     } catch (err) {
-      setError('Une erreur est survenue lors de l\'estimation. Veuillez reessayer.');
+      setError('Une erreur est survenue lors de l\'estimation. Veuillez réessayer.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -80,7 +80,7 @@ export default function EstimationForm() {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
           >
-            <option value="">Selectionnez une commune</option>
+            <option value="">Sélectionnez une commune</option>
             {COMMUNES.map((commune) => (
               <option key={commune} value={commune}>
                 {commune}
@@ -92,7 +92,7 @@ export default function EstimationForm() {
         {/* Catégorie */}
         <div>
           <label htmlFor="categorie" className="block text-sm font-medium text-slate-700 mb-2">
-            Categorie <span className="text-red-500">*</span>
+            Catégorie <span className="text-red-500">*</span>
           </label>
           <select
             id="categorie"
@@ -101,7 +101,7 @@ export default function EstimationForm() {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
           >
-            <option value="">Selectionnez une categorie</option>
+            <option value="">Sélectionnez une catégorie</option>
             {CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
@@ -122,7 +122,7 @@ export default function EstimationForm() {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
           >
-            <option value="">Selectionnez un type (optionnel)</option>
+            <option value="">Sélectionnez un type (optionnel)</option>
             {TYPES_BIEN.map((type) => (
               <option key={type} value={type}>
                 {type}

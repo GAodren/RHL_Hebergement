@@ -10,7 +10,8 @@ export default function Header() {
   const navLinks = [
     { to: '/', label: 'Accueil' },
     { to: '/estimation', label: 'Estimation' },
-    { to: '/about', label: 'A propos' },
+    { to: '/about', label: 'À propos' },
+    { to: '/contact', label: 'Contact' },
   ];
 
   const isActive = (path) => location.pathname === path;

@@ -10,7 +10,7 @@ export default function EstimationResult({ result, formData, onReset }) {
     if (formData.categorie) parts.push(formData.categorie);
     if (formData.type_bien) parts.push(formData.type_bien);
     parts.push(`de ${formData.surface} m²`);
-    parts.push(`a ${formData.commune}`);
+    parts.push(`à ${formData.commune}`);
     return parts.join(' ');
   };
 

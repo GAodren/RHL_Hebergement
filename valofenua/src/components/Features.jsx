@@ -4,23 +4,23 @@ export default function Features() {
   const features = [
     {
       icon: BarChart3,
-      title: 'Donnees du marche local',
-      description: 'Base sur les annonces actives a Tahiti et ses communes.',
+      title: 'Données du marché local',
+      description: 'Basé sur les annonces actives à Tahiti et ses communes.',
     },
     {
       icon: Lock,
       title: '100% confidentiel',
-      description: 'Aucune inscription requise, aucune donnee personnelle collectee.',
+      description: 'Aucune inscription requise, aucune donnée personnelle collectée.',
     },
     {
       icon: Zap,
-      title: 'Resultat instantane',
+      title: 'Résultat instantané',
       description: 'Obtenez votre estimation en moins de 2 minutes.',
     },
     {
       icon: Gift,
       title: 'Totalement gratuit',
-      description: 'Sans inscription, sans frais caches, sans engagement.',
+      description: 'Sans inscription, sans frais cachés, sans engagement.',
     },
   ];
 

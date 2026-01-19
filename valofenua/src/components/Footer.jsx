@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Logo className="w-12 h-12" textClassName="text-white" />
             <p className="mt-4 text-slate-400 text-sm leading-relaxed">
-              Estimation immobiliere en Polynesie francaise. Obtenez une estimation gratuite de votre bien en quelques clics.
+              Estimation immobilière en Polynésie française. Obtenez une estimation gratuite de votre bien en quelques clics.
             </p>
           </div>
 
@@ -32,7 +32,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/about" className="text-slate-400 hover:text-white transition-colors">
-                  A propos
+                  À propos
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-slate-400 hover:text-white transition-colors">
+                  Contact
                 </Link>
               </li>
             </ul>
@@ -42,9 +47,9 @@ export default function Footer() {
           <div className="md:col-span-1">
             <h3 className="font-semibold text-lg mb-4">Informations</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li>Donnees basees sur immobilier.pf</li>
+              <li>Données basées sur le marché local</li>
               <li>12 communes de Tahiti couvertes</li>
-              <li>Mise a jour reguliere des donnees</li>
+              <li>Mise à jour régulière des données</li>
             </ul>
           </div>
         </div>
@@ -52,10 +57,10 @@ export default function Footer() {
         {/* Barre du bas */}
         <div className="mt-10 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-500">
-            &copy; {currentYear} ValoFenua. Tous droits reserves.
+            &copy; {currentYear} ValoFenua. Tous droits réservés.
           </p>
           <p className="text-xs text-slate-600 text-center sm:text-right max-w-md">
-            Estimation indicative ne constituant pas une evaluation officielle. Les prix affiches sont bases sur les annonces du marche local.
+            Estimation indicative ne constituant pas une évaluation officielle. Les prix affichés sont basés sur les annonces du marché local.
           </p>
         </div>
       </div>

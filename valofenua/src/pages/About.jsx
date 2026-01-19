@@ -22,10 +22,10 @@ export default function About() {
             <Logo className="w-16 h-16" showText={false} />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-800 mb-4">
-            A propos de ValoFenua
+            À propos de ValoFenua
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
-            L'outil d'estimation immobiliere dedie au marche polynesien. Gratuit, rapide et transparent.
+            L'outil d'estimation immobilière dédié au marché polynésien. Gratuit, rapide et transparent.
           </p>
         </div>
       </section>
@@ -43,16 +43,16 @@ export default function About() {
           </div>
           <div className="prose prose-slate max-w-none">
             <p className="text-lg text-slate-600 leading-relaxed">
-              ValoFenua est ne d'un constat simple : le marche immobilier polynesien manque d'outils accessibles pour les particuliers et les professionnels souhaitant estimer rapidement la valeur d'un bien.
+              ValoFenua est né d'un constat simple : le marché immobilier polynésien manque d'outils accessibles pour les particuliers et les professionnels souhaitant estimer rapidement la valeur d'un bien.
             </p>
             <p className="text-lg text-slate-600 leading-relaxed mt-4">
-              Notre objectif est de <strong className="text-slate-800">democratiser l'acces a l'information immobiliere</strong> en Polynesie francaise. Que vous soyez proprietaire souhaitant vendre, acheteur potentiel ou agent immobilier, ValoFenua vous offre une estimation claire et rapide basee sur les donnees reelles du marche local.
+              Notre objectif est de <strong className="text-slate-800">démocratiser l'accès à l'information immobilière</strong> en Polynésie française. Que vous soyez propriétaire souhaitant vendre, acheteur potentiel ou agent immobilier, ValoFenua vous offre une estimation claire et rapide basée sur les données réelles du marché local.
             </p>
           </div>
         </div>
       </section>
 
-      {/* D'ou viennent nos donnees */}
+      {/* D'où viennent nos données */}
       <section className="py-16 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-6">
@@ -60,12 +60,12 @@ export default function About() {
               <Database className="w-6 h-6 text-[#0077B6]" />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
-              D'ou viennent nos donnees ?
+              D'où viennent nos données ?
             </h2>
           </div>
           <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-              Nos estimations sont basees sur l'analyse de <strong className="text-slate-800">plus de 1 300 annonces immobilieres</strong> actives et passees sur le marche polynesien, principalement issues de la plateforme <strong className="text-slate-800">immobilier.pf</strong>, la reference locale.
+              Nos estimations sont basées sur l'analyse de <strong className="text-slate-800">plus de 1 300 annonces immobilières</strong> actives et passées sur le marché polynésien.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
@@ -73,16 +73,16 @@ export default function About() {
                 <div>
                   <h4 className="font-semibold text-slate-800">12 communes couvertes</h4>
                   <p className="text-sm text-slate-600 mt-1">
-                    De Papeete a Taiarapu, nous couvrons les principales communes de Tahiti et ses environs.
+                    De Papeete à Taiarapu, nous couvrons les principales communes de Tahiti et ses environs.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
                 <TrendingUp className="w-5 h-5 text-[#0077B6] mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-slate-800">Donnees actualisees</h4>
+                  <h4 className="font-semibold text-slate-800">Données actualisées</h4>
                   <p className="text-sm text-slate-600 mt-1">
-                    Notre base de donnees est regulierement mise a jour pour refleter l'evolution du marche.
+                    Notre base de données est régulièrement mise à jour pour refléter l'évolution du marché.
                   </p>
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Notre methodologie */}
+      {/* Notre méthodologie */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-6">
@@ -99,7 +99,7 @@ export default function About() {
               <CheckCircle className="w-6 h-6 text-[#0077B6]" />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
-              Notre methodologie
+              Notre méthodologie
             </h2>
           </div>
           <div className="space-y-4">
@@ -110,7 +110,7 @@ export default function About() {
               <div>
                 <h4 className="font-semibold text-slate-800">Collecte des annonces</h4>
                 <p className="text-slate-600 mt-1">
-                  Nous analysons les annonces de vente sur les principales plateformes immobilieres polynesiennes.
+                  Nous analysons les annonces de vente sur les principales plateformes immobilières polynésiennes.
                 </p>
               </div>
             </div>
@@ -119,9 +119,9 @@ export default function About() {
                 2
               </div>
               <div>
-                <h4 className="font-semibold text-slate-800">Segmentation par criteres</h4>
+                <h4 className="font-semibold text-slate-800">Segmentation par critères</h4>
                 <p className="text-slate-600 mt-1">
-                  Les biens sont classes par commune, categorie (maison, appartement, terrain), type et surface.
+                  Les biens sont classés par commune, catégorie (maison, appartement, terrain), type et surface.
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function About() {
               <div>
                 <h4 className="font-semibold text-slate-800">Calcul de la fourchette</h4>
                 <p className="text-slate-600 mt-1">
-                  Nous calculons une fourchette de prix (bas, moyen, haut) basee sur les biens similaires vendus ou en vente dans le meme secteur.
+                  Nous calculons une fourchette de prix (bas, moyen, haut) basée sur les biens similaires vendus ou en vente dans le même secteur.
                 </p>
               </div>
             </div>
@@ -155,25 +155,25 @@ export default function About() {
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
               <h4 className="font-semibold text-lg text-slate-800 mb-3">100% gratuit</h4>
               <p className="text-slate-600">
-                ValoFenua est et restera entierement gratuit. Pas de frais caches, pas d'abonnement, pas de surprise.
+                ValoFenua est et restera entièrement gratuit. Pas de frais cachés, pas d'abonnement, pas de surprise.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
               <h4 className="font-semibold text-lg text-slate-800 mb-3">Sans inscription</h4>
               <p className="text-slate-600">
-                Obtenez votre estimation immediatement, sans creer de compte ni fournir vos informations personnelles.
+                Obtenez votre estimation immédiatement, sans créer de compte ni fournir vos informations personnelles.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-              <h4 className="font-semibold text-lg text-slate-800 mb-3">Donnees confidentielles</h4>
+              <h4 className="font-semibold text-lg text-slate-800 mb-3">Données confidentielles</h4>
               <p className="text-slate-600">
-                Nous ne collectons ni ne stockons aucune donnee personnelle. Votre recherche reste privee.
+                Nous ne collectons ni ne stockons aucune donnée personnelle. Votre recherche reste privée.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
               <h4 className="font-semibold text-lg text-slate-800 mb-3">Transparence</h4>
               <p className="text-slate-600">
-                Nos sources de donnees sont clairement identifiees et notre methodologie est expliquee en detail.
+                Nos sources de données sont clairement identifiées et notre méthodologie est expliquée en détail.
               </p>
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function About() {
               <div>
                 <h4 className="font-semibold text-amber-800 mb-2">Avertissement important</h4>
                 <p className="text-amber-700 text-sm leading-relaxed">
-                  ValoFenua fournit une <strong>estimation indicative</strong> basee sur les prix du marche. Cette estimation ne constitue en aucun cas une evaluation officielle, une expertise immobiliere certifiee ou un avis de valeur engage. Pour une evaluation precise de votre bien, nous vous recommandons de faire appel a un professionnel de l'immobilier ou a un expert agree.
+                  ValoFenua fournit une <strong>estimation indicative</strong> basée sur les prix du marché. Cette estimation ne constitue en aucun cas une évaluation officielle, une expertise immobilière certifiée ou un avis de valeur engagé. Pour une évaluation précise de votre bien, nous vous recommandons de faire appel à un professionnel de l'immobilier ou à un expert agréé.
                 </p>
               </div>
             </div>
@@ -211,23 +211,23 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center p-6">
               <div className="text-4xl mb-4">🏠</div>
-              <h4 className="font-semibold text-lg text-slate-800 mb-2">Proprietaires</h4>
+              <h4 className="font-semibold text-lg text-slate-800 mb-2">Propriétaires</h4>
               <p className="text-slate-600 text-sm">
-                Vous souhaitez vendre ? Obtenez une premiere idee du prix de votre bien avant de contacter un agent.
+                Vous souhaitez vendre ? Obtenez une première idée du prix de votre bien avant de contacter un agent.
               </p>
             </div>
             <div className="text-center p-6">
               <div className="text-4xl mb-4">🔍</div>
               <h4 className="font-semibold text-lg text-slate-800 mb-2">Acheteurs</h4>
               <p className="text-slate-600 text-sm">
-                Verifiez si le prix demande pour un bien correspond au marche local avant de faire une offre.
+                Vérifiez si le prix demandé pour un bien correspond au marché local avant de faire une offre.
               </p>
             </div>
             <div className="text-center p-6">
               <div className="text-4xl mb-4">💼</div>
               <h4 className="font-semibold text-lg text-slate-800 mb-2">Professionnels</h4>
               <p className="text-slate-600 text-sm">
-                Agents immobiliers, utilisez ValoFenua comme outil complementaire pour vos estimations rapides.
+                Agents immobiliers, utilisez ValoFenua comme outil complémentaire pour vos estimations rapides.
               </p>
             </div>
           </div>
@@ -238,10 +238,10 @@ export default function About() {
       <section className="py-16 bg-[#0077B6]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            Pret a estimer votre bien ?
+            Prêt à estimer votre bien ?
           </h2>
           <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-            Obtenez une estimation gratuite en moins de 2 minutes, basee sur les donnees du marche polynesien.
+            Obtenez une estimation gratuite en moins de 2 minutes, basée sur les données du marché polynésien.
           </p>
           <Link
             to="/estimation"

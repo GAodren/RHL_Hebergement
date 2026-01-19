@@ -6,8 +6,8 @@ export default function Stats() {
     {
       icon: FileText,
       value: '1300+',
-      label: 'annonces analysees',
-      description: 'sur le marche polynesien',
+      label: 'annonces analysées',
+      description: 'sur le marché polynésien',
     },
     {
       icon: MapPin,
@@ -23,25 +23,25 @@ export default function Stats() {
     },
   ];
 
-  // Statistiques du marche immobilier polynesien (donnees 2025)
+  // Statistiques du marché immobilier polynésien (données 2025)
   const marketStats = [
     {
       icon: Home,
       value: '90 MF',
       label: 'Prix moyen maison',
-      description: 'a Tahiti en 2025',
+      description: 'à Tahiti en 2025',
     },
     {
       icon: Building2,
       value: '160 000',
       label: 'EUR/appartement T2',
-      description: 'prix d\'entree',
+      description: 'prix d\'entrée',
     },
     {
       icon: TrendingUp,
       value: '+25%',
-      label: 'Evolution des prix',
-      description: 'ces dernieres annees',
+      label: 'Évolution des prix',
+      description: 'ces dernières années',
     },
   ];
 
@@ -67,17 +67,17 @@ export default function Stats() {
           ))}
         </div>
 
-        {/* Titre du marche */}
+        {/* Titre du marché */}
         <div className="mt-16 mb-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
-            Le marche immobilier polynesien
+            Le marché immobilier polynésien
           </h2>
           <p className="mt-2 text-slate-600">
-            Quelques chiffres cles pour mieux comprendre le contexte local
+            Quelques chiffres clés pour mieux comprendre le contexte local
           </p>
         </div>
 
-        {/* Statistiques du marche */}
+        {/* Statistiques du marché */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {marketStats.map((stat, index) => (
             <div
@@ -96,9 +96,9 @@ export default function Stats() {
           ))}
         </div>
 
-        {/* Note sur les donnees */}
+        {/* Note sur les données */}
         <p className="mt-8 text-center text-xs text-slate-400">
-          Sources : immobilier.pf, analyses du marche local 2025. Ces chiffres sont indicatifs.
+          Sources : analyses du marché local 2025. Ces chiffres sont indicatifs.
         </p>
       </div>
     </section>
