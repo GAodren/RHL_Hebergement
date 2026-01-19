@@ -6,7 +6,7 @@ import CTA from '../components/CTA';
 
 export default function Home() {
   return (
-    <main>
+    <main className="flex-1">
       <Hero />
       <Stats />
       <HowItWorks />

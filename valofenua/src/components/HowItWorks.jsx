@@ -23,20 +23,31 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-16 bg-slate-50">
-      <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-slate-800 mb-12">
+    <section id="how-it-works" className="py-16 md:py-24 bg-slate-50">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-slate-800 mb-4">
           Comment ca marche ?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <p className="text-slate-600 text-center max-w-2xl mx-auto mb-16">
+          Obtenez une estimation fiable en trois etapes simples
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {steps.map((step, index) => (
             <div key={index} className="relative flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-[#0077B6] rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4">
-                {step.number}
+              {/* Connector line for desktop */}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-10 left-[calc(50%+40px)] w-[calc(100%-80px)] h-0.5 bg-[#0077B6]/20" />
+              )}
+              <div className="relative">
+                <div className="w-20 h-20 bg-[#0077B6] rounded-full flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-lg">
+                  {step.number}
+                </div>
               </div>
-              <step.icon className="w-8 h-8 text-[#0077B6] mb-3" />
-              <h3 className="text-xl font-semibold text-slate-800 mb-2">{step.title}</h3>
-              <p className="text-slate-600">{step.description}</p>
+              <div className="w-12 h-12 bg-[#E0F4FF] rounded-xl flex items-center justify-center mb-4">
+                <step.icon className="w-6 h-6 text-[#0077B6]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">{step.title}</h3>
+              <p className="text-slate-600 leading-relaxed max-w-xs">{step.description}</p>
             </div>
           ))}
         </div>

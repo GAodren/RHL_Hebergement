@@ -1,36 +1,29 @@
 @import "tailwindcss";
 
-:root {
-  /* Couleur principale - Bleu océan */
-  --primary: #0077B6;
-  --primary-hover: #005f8a;
-  --primary-light: #E0F4FF;
-
-  /* Neutres */
-  --background: #F8FAFC;
-  --white: #FFFFFF;
-  --text: #1E293B;
-  --text-light: #64748B;
-  --border: #E2E8F0;
+/* Custom theme colors for Tailwind v4 */
+@theme {
+  --color-primary: #0077B6;
+  --color-primary-hover: #005f8a;
+  --color-primary-light: #E0F4FF;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: var(--text);
-  background-color: var(--background);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #1E293B;
+    background-color: #F8FAFC;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 }
