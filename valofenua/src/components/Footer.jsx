@@ -1,23 +1,62 @@
-import { Home } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-slate-900 text-white mt-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#0077B6] rounded-lg flex items-center justify-center">
-              <Home className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold">ValoFenua</span>
-          </div>
-          <div className="text-center md:text-right text-slate-400">
-            <p className="font-medium text-slate-300">Estimation immobiliere en Polynesie francaise</p>
-            <p className="text-sm mt-1">Donnees basees sur les annonces de immobilier.pf</p>
-            <p className="mt-4 text-xs text-slate-500">
-              Estimation indicative ne constituant pas une evaluation officielle. &copy; 2025
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          {/* Logo et description */}
+          <div className="md:col-span-1">
+            <Logo className="w-12 h-12" textClassName="text-white" />
+            <p className="mt-4 text-slate-400 text-sm leading-relaxed">
+              Estimation immobiliere en Polynesie francaise. Obtenez une estimation gratuite de votre bien en quelques clics.
             </p>
           </div>
+
+          {/* Liens rapides */}
+          <div className="md:col-span-1">
+            <h3 className="font-semibold text-lg mb-4">Navigation</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/" className="text-slate-400 hover:text-white transition-colors">
+                  Accueil
+                </Link>
+              </li>
+              <li>
+                <Link to="/estimation" className="text-slate-400 hover:text-white transition-colors">
+                  Estimer mon bien
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-slate-400 hover:text-white transition-colors">
+                  A propos
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Informations */}
+          <div className="md:col-span-1">
+            <h3 className="font-semibold text-lg mb-4">Informations</h3>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>Donnees basees sur immobilier.pf</li>
+              <li>12 communes de Tahiti couvertes</li>
+              <li>Mise a jour reguliere des donnees</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Barre du bas */}
+        <div className="mt-10 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-slate-500">
+            &copy; {currentYear} ValoFenua. Tous droits reserves.
+          </p>
+          <p className="text-xs text-slate-600 text-center sm:text-right max-w-md">
+            Estimation indicative ne constituant pas une evaluation officielle. Les prix affiches sont bases sur les annonces du marche local.
+          </p>
         </div>
       </div>
     </footer>

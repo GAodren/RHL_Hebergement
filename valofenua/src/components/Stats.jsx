@@ -1,29 +1,56 @@
-import { FileText, MapPin, Clock } from 'lucide-react';
+import { FileText, MapPin, Clock, TrendingUp, Home, Building2 } from 'lucide-react';
 
 export default function Stats() {
-  const stats = [
+  // Statistiques principales du service
+  const mainStats = [
     {
       icon: FileText,
       value: '1300+',
       label: 'annonces analysees',
+      description: 'sur le marche polynesien',
     },
     {
       icon: MapPin,
       value: '12',
       label: 'communes couvertes',
+      description: 'de Tahiti et alentours',
     },
     {
       icon: Clock,
       value: '2 min',
       label: 'temps moyen',
+      description: 'pour obtenir une estimation',
+    },
+  ];
+
+  // Statistiques du marche immobilier polynesien (donnees 2025)
+  const marketStats = [
+    {
+      icon: Home,
+      value: '90 MF',
+      label: 'Prix moyen maison',
+      description: 'a Tahiti en 2025',
+    },
+    {
+      icon: Building2,
+      value: '160 000',
+      label: 'EUR/appartement T2',
+      description: 'prix d\'entree',
+    },
+    {
+      icon: TrendingUp,
+      value: '+25%',
+      label: 'Evolution des prix',
+      description: 'ces dernieres annees',
     },
   ];
 
   return (
     <section className="py-16 md:py-20 bg-white border-b border-slate-100">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Statistiques principales */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12">
-          {stats.map((stat, index) => (
+          {mainStats.map((stat, index) => (
             <div
               key={index}
               className="flex flex-col items-center text-center p-8 rounded-2xl bg-gradient-to-b from-slate-50 to-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
@@ -34,10 +61,45 @@ export default function Stats() {
               <div className="text-4xl md:text-5xl font-bold text-[#0077B6] mb-2">
                 {stat.value}
               </div>
-              <div className="text-slate-600 font-medium">{stat.label}</div>
+              <div className="text-slate-700 font-semibold">{stat.label}</div>
+              <div className="text-sm text-slate-500 mt-1">{stat.description}</div>
             </div>
           ))}
         </div>
+
+        {/* Titre du marche */}
+        <div className="mt-16 mb-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
+            Le marche immobilier polynesien
+          </h2>
+          <p className="mt-2 text-slate-600">
+            Quelques chiffres cles pour mieux comprendre le contexte local
+          </p>
+        </div>
+
+        {/* Statistiques du marche */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {marketStats.map((stat, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center text-center p-6 rounded-xl bg-gradient-to-br from-[#E0F4FF] to-white border border-[#0077B6]/10 hover:border-[#0077B6]/20 transition-colors"
+            >
+              <div className="w-12 h-12 bg-[#0077B6] rounded-lg flex items-center justify-center mb-3">
+                <stat.icon className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-slate-800 mb-1">
+                {stat.value}
+              </div>
+              <div className="text-slate-700 font-medium text-sm">{stat.label}</div>
+              <div className="text-xs text-slate-500 mt-1">{stat.description}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Note sur les donnees */}
+        <p className="mt-8 text-center text-xs text-slate-400">
+          Sources : immobilier.pf, analyses du marche local 2025. Ces chiffres sont indicatifs.
+        </p>
       </div>
     </section>
   );
