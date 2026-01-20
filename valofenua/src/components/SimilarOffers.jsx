@@ -9,6 +9,16 @@ export default function SimilarOffers({ comparables }) {
   // Limiter à 5 offres maximum
   const offersToShow = comparables.slice(0, 5);
 
+  // Nettoyer l'URL de la photo si elle commence par "photo_url:"
+  const cleanPhotoUrl = (photoUrl) => {
+    if (!photoUrl) return null;
+    // Si l'URL commence par "photo_url:", extraire seulement l'URL
+    if (photoUrl.startsWith('photo_url:')) {
+      return photoUrl.substring('photo_url:'.length).trim();
+    }
+    return photoUrl;
+  };
+
   // Tronquer la description à un certain nombre de caractères
   const truncateDescription = (text, maxLength = 120) => {
     if (!text) return 'Aucune description disponible';
@@ -38,9 +48,9 @@ export default function SimilarOffers({ comparables }) {
           >
             {/* Image du bien */}
             <div className="h-48 bg-slate-200 relative overflow-hidden">
-              {offer.photo_url ? (
+              {cleanPhotoUrl(offer.photo_url) ? (
                 <img
-                  src={offer.photo_url}
+                  src={cleanPhotoUrl(offer.photo_url)}
                   alt={`${offer.type_bien} à ${offer.commune}`}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
