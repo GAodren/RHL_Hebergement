@@ -35,57 +35,65 @@ export default function SimilarOffers({ comparables }) {
     return (
       <div
         key={index}
-        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 hover:border-[#0077B6]/30"
+        className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-200 hover:border-[#0077B6]/40 group"
       >
         {/* Image du bien */}
-        <div className="h-48 bg-slate-200 relative overflow-hidden">
+        <div className="h-64 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
           {cleanedPhotoUrl && !imageError ? (
             <img
               src={cleanedPhotoUrl}
               alt={`${offer.type_bien} à ${offer.commune}`}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100">
-              <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mb-2">
-                <Home className="w-8 h-8 text-slate-400" />
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mb-3 shadow-md">
+                <Home className="w-10 h-10 text-slate-300" />
               </div>
-              <p className="text-sm text-slate-400">Photo non disponible</p>
+              <p className="text-sm font-medium text-slate-400">Photo non disponible</p>
             </div>
           )}
+          {/* Badge du type de bien en overlay */}
+          <div className="absolute top-4 left-4">
+            <span className="bg-white/95 backdrop-blur-sm text-slate-700 px-3 py-1.5 rounded-lg text-sm font-semibold shadow-lg">
+              {offer.type_bien}
+            </span>
+          </div>
         </div>
 
         {/* Contenu de la carte */}
-        <div className="p-5">
-          {/* Prix */}
-          <div className="mb-3">
-            <div className="flex items-center gap-2 mb-1">
-              <Banknote className="w-4 h-4 text-[#0077B6]" />
-              <p className="text-2xl font-bold text-[#0077B6]">
+        <div className="p-6">
+          {/* Prix - Très prominent */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2">
+              <Banknote className="w-5 h-5 text-[#0077B6]" />
+              <p className="text-3xl font-bold text-[#0077B6]">
                 {offer.prix_formatte || `${(offer.prix / 1000000).toFixed(1)} MF`}
               </p>
             </div>
           </div>
 
-          {/* Type et surface */}
-          <div className="flex items-center gap-2 mb-2 text-slate-700">
-            <Ruler className="w-4 h-4 text-slate-400" />
-            <p className="font-medium">
-              {offer.type_bien} · {offer.surface} m²
-            </p>
-          </div>
-
-          {/* Commune */}
-          <div className="flex items-center gap-2 mb-3 text-slate-600">
-            <MapPin className="w-4 h-4 text-slate-400" />
-            <p className="text-sm">{offer.commune}</p>
+          {/* Surface et Commune côte à côte */}
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="flex items-center gap-2 text-slate-700 bg-slate-50 rounded-lg px-3 py-2">
+              <Ruler className="w-4 h-4 text-slate-500" />
+              <p className="font-semibold text-sm">
+                {offer.surface} m²
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-slate-700 bg-slate-50 rounded-lg px-3 py-2">
+              <MapPin className="w-4 h-4 text-slate-500" />
+              <p className="font-semibold text-sm truncate">
+                {offer.commune}
+              </p>
+            </div>
           </div>
 
           {/* Description */}
-          <div className="border-t border-slate-100 pt-3">
-            <p className="text-sm text-slate-600 leading-relaxed">
-              {truncateDescription(offer.description)}
+          <div className="border-t border-slate-100 pt-4">
+            <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
+              {truncateDescription(offer.description, 150)}
             </p>
           </div>
         </div>
@@ -94,20 +102,20 @@ export default function SimilarOffers({ comparables }) {
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-12">
       {/* Titre de la section */}
-      <div className="mb-6">
-        <h3 className="text-2xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-          <Home className="w-6 h-6 text-[#0077B6]" />
+      <div className="mb-8">
+        <h3 className="text-3xl font-bold text-slate-800 mb-3 flex items-center gap-3">
+          <Home className="w-7 h-7 text-[#0077B6]" />
           Biens similaires sur le marché
         </h3>
-        <p className="text-slate-600">
+        <p className="text-slate-600 text-lg">
           Ces offres comparables vous donnent une idée du marché actuel dans votre secteur
         </p>
       </div>
 
-      {/* Grille des offres */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      {/* Grille des offres - 2 colonnes max pour plus de largeur */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {offersToShow.map((offer, index) => (
           <OfferCard key={index} offer={offer} index={index} />
         ))}
@@ -115,10 +123,12 @@ export default function SimilarOffers({ comparables }) {
 
       {/* Note en bas */}
       {comparables.length > 5 && (
-        <p className="text-sm text-slate-500 mt-4 text-center">
-          {comparables.length - 5} autre{comparables.length - 5 > 1 ? 's' : ''} bien
-          {comparables.length - 5 > 1 ? 's' : ''} comparable{comparables.length - 5 > 1 ? 's' : ''}
-        </p>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-slate-500 bg-slate-50 inline-block px-4 py-2 rounded-full">
+            + {comparables.length - 5} autre{comparables.length - 5 > 1 ? 's' : ''} bien
+            {comparables.length - 5 > 1 ? 's' : ''} comparable{comparables.length - 5 > 1 ? 's' : ''}
+          </p>
+        </div>
       )}
     </div>
   );
