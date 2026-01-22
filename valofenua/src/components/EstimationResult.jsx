@@ -84,6 +84,17 @@ export default function EstimationResult({ result, formData, onReset }) {
             soit {formatPriceXPF(prix_moyen)}
           </p>
         </div>
+
+        {/* Bouton PDF placé juste après l'estimation */}
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => navigate('/rapport', { state: { result, formData } })}
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-3 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
+          >
+            <FileText className="w-5 h-5" />
+            Exporter en PDF
+          </button>
+        </div>
       </div>
 
       {/* Grille de statistiques colorées */}
@@ -149,18 +160,11 @@ export default function EstimationResult({ result, formData, onReset }) {
         </p>
       </div>
 
-      {/* Boutons d'action */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <button
-          onClick={() => navigate('/rapport', { state: { result, formData } })}
-          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-4 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
-        >
-          <FileText className="w-5 h-5" />
-          Exporter en PDF
-        </button>
+      {/* Bouton d'action */}
+      <div className="flex justify-center">
         <button
           onClick={onReset}
-          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
         >
           <RotateCcw className="w-5 h-5" />
           Nouvelle estimation

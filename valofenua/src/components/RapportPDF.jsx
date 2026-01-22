@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   sectionTitle: {
     fontSize: 12,
@@ -60,33 +60,33 @@ const styles = StyleSheet.create({
   },
   estimationBox: {
     backgroundColor: '#0077B6',
-    borderRadius: 8,
-    padding: 20,
-    marginBottom: 20,
+    borderRadius: 6,
+    padding: 12,
+    marginBottom: 15,
     alignItems: 'center',
   },
   estimationLabel: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#BAE6FD',
-    marginBottom: 5,
+    marginBottom: 3,
   },
   estimationValue: {
-    fontSize: 32,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
   estimationSubValue: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#BAE6FD',
-    marginTop: 5,
+    marginTop: 3,
   },
   priceRange: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
-    padding: 15,
+    marginBottom: 15,
+    padding: 10,
     backgroundColor: '#F8FAFC',
-    borderRadius: 8,
+    borderRadius: 6,
     border: '1px solid #E2E8F0',
   },
   priceColumn: {
@@ -94,23 +94,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   priceLabel: {
-    fontSize: 9,
+    fontSize: 8,
     color: '#64748B',
-    marginBottom: 3,
+    marginBottom: 2,
     textTransform: 'uppercase',
   },
   priceLow: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#10B981',
   },
   priceMid: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#0077B6',
   },
   priceHigh: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#F59E0B',
   },
@@ -136,32 +136,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     color: '#1E293B',
-  },
-  comparablesSection: {
-    marginTop: 10,
-  },
-  comparableItem: {
-    padding: 10,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 6,
-    marginBottom: 8,
-    border: '1px solid #E2E8F0',
-  },
-  comparableTitle: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: '#1E293B',
-    marginBottom: 3,
-  },
-  comparableDetails: {
-    fontSize: 9,
-    color: '#64748B',
-  },
-  comparablePrice: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: '#0077B6',
-    marginTop: 3,
   },
   footer: {
     position: 'absolute',
@@ -197,7 +171,7 @@ const styles = StyleSheet.create({
 });
 
 export default function RapportPDF({ result, formData }) {
-  const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen, comparables } = result;
+  const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const prixM2Bas = Math.round(prix_bas / formData.surface);
   const prixM2Haut = Math.round(prix_haut / formData.surface);
@@ -308,22 +282,6 @@ export default function RapportPDF({ result, formData }) {
             <Text style={styles.statValue}>{formatPriceMF(ecartPrix)} (±{pourcentageEcart}% autour de l'estimation)</Text>
           </View>
         </View>
-
-        {/* Offres similaires */}
-        {comparables && comparables.length > 0 && (
-          <View style={styles.comparablesSection}>
-            <Text style={styles.sectionTitle}>Offres similaires sur le marché</Text>
-            {comparables.slice(0, 3).map((offre, index) => (
-              <View key={index} style={styles.comparableItem}>
-                <Text style={styles.comparableTitle}>{offre.titre || `${offre.categorie} ${offre.type_bien || ''}`}</Text>
-                <Text style={styles.comparableDetails}>
-                  {offre.surface} m² • {offre.commune}
-                </Text>
-                <Text style={styles.comparablePrice}>{formatPriceMF(offre.prix)}</Text>
-              </View>
-            ))}
-          </View>
-        )}
 
         {/* Avertissement */}
         <View style={styles.disclaimer}>
