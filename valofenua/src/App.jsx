@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Estimation from './pages/Estimation';
+import RapportEstimation from './pages/RapportEstimation';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import MentionsLegales from './pages/MentionsLegales';
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/estimation" element={<Estimation />} />
+        <Route path="/rapport" element={<RapportEstimation />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />

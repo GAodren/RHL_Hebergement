@@ -1,9 +1,11 @@
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Home, Calculator, BarChart3 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Home, Calculator, BarChart3, FileText } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import SimilarOffers from './SimilarOffers';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
 
 export default function EstimationResult({ result, formData, onReset }) {
+  const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Calculs additionnels pour les statistiques
@@ -147,14 +149,23 @@ export default function EstimationResult({ result, formData, onReset }) {
         </p>
       </div>
 
-      {/* Bouton nouvelle estimation */}
-      <button
-        onClick={onReset}
-        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
-      >
-        <RotateCcw className="w-5 h-5" />
-        Nouvelle estimation
-      </button>
+      {/* Boutons d'action */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <button
+          onClick={() => navigate('/rapport', { state: { result, formData } })}
+          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-4 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
+        >
+          <FileText className="w-5 h-5" />
+          Exporter en PDF
+        </button>
+        <button
+          onClick={onReset}
+          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
+        >
+          <RotateCcw className="w-5 h-5" />
+          Nouvelle estimation
+        </button>
+      </div>
     </div>
   );
 }
