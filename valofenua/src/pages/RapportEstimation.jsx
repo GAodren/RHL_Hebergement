@@ -7,7 +7,7 @@ import { formatPriceMF } from '../utils/formatPrice';
 export default function RapportEstimation() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { result, formData } = location.state || {};
+  const { result, formData, adjustedPrice } = location.state || {};
 
   // Si pas de données, rediriger vers l'estimation
   if (!result || !formData) {
@@ -34,18 +34,29 @@ export default function RapportEstimation() {
     );
   }
 
+  // Prix à afficher (ajusté ou estimé)
+  const displayPrice = adjustedPrice || result.prix_moyen;
+  const hasAdjustedPrice = adjustedPrice && adjustedPrice !== result.prix_moyen;
+
   const getBienLabel = () => {
     const parts = [];
     if (formData.categorie) parts.push(formData.categorie);
     if (formData.type_bien) parts.push(formData.type_bien);
-    parts.push(`de ${formData.surface} m²`);
+
+    if (formData.categorie === 'Terrain') {
+      parts.push(`de ${formData.surface_terrain} m²`);
+    } else {
+      parts.push(`de ${formData.surface} m²`);
+    }
+
     parts.push(`à ${formData.commune}`);
     return parts.join(' ');
   };
 
   const getFileName = () => {
     const date = new Date().toISOString().split('T')[0];
-    return `estimation-valofenua-${formData.commune.toLowerCase()}-${date}.pdf`;
+    const suffix = hasAdjustedPrice ? '-ajuste' : '';
+    return `estimation-valofenua-${formData.commune.toLowerCase()}${suffix}-${date}.pdf`;
   };
 
   return (
@@ -68,11 +79,14 @@ export default function RapportEstimation() {
                 Rapport d'estimation
               </h1>
               <p className="text-slate-600">
-                {getBienLabel()} - <span className="font-semibold text-[#0077B6]">{formatPriceMF(result.prix_moyen)}</span>
+                {getBienLabel()} - <span className="font-semibold text-[#0077B6]">{formatPriceMF(displayPrice)}</span>
+                {hasAdjustedPrice && (
+                  <span className="ml-2 text-sm text-emerald-600 font-medium">(prix ajusté)</span>
+                )}
               </p>
             </div>
             <PDFDownloadLink
-              document={<RapportPDF result={result} formData={formData} />}
+              document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} />}
               fileName={getFileName()}
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
             >
@@ -99,6 +113,11 @@ export default function RapportEstimation() {
             <div className="flex items-center gap-2">
               <FileText className="w-5 h-5 text-slate-500" />
               <span className="font-medium text-slate-700">Aperçu du document</span>
+              {hasAdjustedPrice && (
+                <span className="ml-2 px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full">
+                  Prix ajusté inclus
+                </span>
+              )}
             </div>
           </div>
 
@@ -112,7 +131,7 @@ export default function RapportEstimation() {
               }}
               showToolbar={false}
             >
-              <RapportPDF result={result} formData={formData} />
+              <RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} />
             </PDFViewer>
           </div>
 
@@ -133,10 +152,25 @@ export default function RapportEstimation() {
                   <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Bien estimé</p>
                   <p className="font-medium text-slate-800">{getBienLabel()}</p>
                 </div>
-                <div className="bg-white rounded-lg p-4 border border-slate-200">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Estimation</p>
-                  <p className="text-2xl font-bold text-[#0077B6]">{formatPriceMF(result.prix_moyen)}</p>
-                </div>
+
+                {hasAdjustedPrice ? (
+                  <>
+                    <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
+                      <p className="text-xs text-emerald-600 uppercase tracking-wide mb-1">Prix proposé</p>
+                      <p className="text-2xl font-bold text-emerald-700">{formatPriceMF(adjustedPrice)}</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-slate-200">
+                      <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Estimation algorithmique</p>
+                      <p className="font-medium text-slate-600">{formatPriceMF(result.prix_moyen)}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="bg-white rounded-lg p-4 border border-slate-200">
+                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Estimation</p>
+                    <p className="text-2xl font-bold text-[#0077B6]">{formatPriceMF(result.prix_moyen)}</p>
+                  </div>
+                )}
+
                 <div className="bg-white rounded-lg p-4 border border-slate-200">
                   <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Fourchette</p>
                   <p className="font-medium text-slate-800">
@@ -147,7 +181,7 @@ export default function RapportEstimation() {
 
               {/* Bouton télécharger mobile */}
               <PDFDownloadLink
-                document={<RapportPDF result={result} formData={formData} />}
+                document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} />}
                 fileName={getFileName()}
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg"
               >
@@ -172,8 +206,8 @@ export default function RapportEstimation() {
         {/* Note d'information */}
         <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
           <p className="text-sm text-blue-800">
-            <span className="font-semibold">Astuce :</span> Ce rapport peut être partagé avec un agent immobilier ou conservé pour vos archives.
-            Il contient toutes les informations de votre estimation.
+            <span className="font-semibold">Astuce :</span> Ce rapport peut être partagé avec un client ou conservé pour vos archives.
+            {hasAdjustedPrice && ' Le prix proposé par l\'agent est clairement identifié dans le document.'}
           </p>
         </div>
       </div>

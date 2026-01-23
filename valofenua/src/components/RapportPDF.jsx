@@ -80,6 +80,53 @@ const styles = StyleSheet.create({
     color: '#BAE6FD',
     marginTop: 2,
   },
+  // Style pour le prix ajusté (vert)
+  adjustedPriceBox: {
+    backgroundColor: '#059669',
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  adjustedPriceLabel: {
+    fontSize: 8,
+    color: '#A7F3D0',
+    marginBottom: 2,
+  },
+  adjustedPriceValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  adjustedPriceSubValue: {
+    fontSize: 8,
+    color: '#A7F3D0',
+    marginTop: 2,
+  },
+  // Style pour l'estimation algorithmique (plus discret quand il y a un prix ajusté)
+  algorithmBox: {
+    backgroundColor: '#F1F5F9',
+    borderRadius: 6,
+    padding: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+    border: '1px solid #CBD5E1',
+  },
+  algorithmLabel: {
+    fontSize: 7,
+    color: '#64748B',
+    marginBottom: 2,
+  },
+  algorithmValue: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#475569',
+  },
+  algorithmSubValue: {
+    fontSize: 7,
+    color: '#64748B',
+    marginTop: 2,
+  },
   priceRange: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -168,9 +215,21 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: '#92400E',
   },
+  // Badge pour indiquer l'écart
+  priceDiffBadge: {
+    backgroundColor: '#DBEAFE',
+    borderRadius: 4,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    marginTop: 4,
+  },
+  priceDiffText: {
+    fontSize: 7,
+    color: '#1D4ED8',
+  },
 });
 
-export default function RapportPDF({ result, formData }) {
+export default function RapportPDF({ result, formData, adjustedPrice }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Pour les terrains, on utilise surface_terrain, sinon surface habitable
@@ -180,6 +239,13 @@ export default function RapportPDF({ result, formData }) {
   const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
   const ecartPrix = prix_haut - prix_bas;
   const pourcentageEcart = ((ecartPrix / prix_moyen) * 100).toFixed(0);
+
+  // Calcul de l'écart entre prix ajusté et estimation
+  const hasAdjustedPrice = adjustedPrice && adjustedPrice !== prix_moyen;
+  const priceDiffPercent = hasAdjustedPrice
+    ? (((adjustedPrice - prix_moyen) / prix_moyen) * 100).toFixed(1)
+    : null;
+  const priceDiffSign = priceDiffPercent && Number(priceDiffPercent) >= 0 ? '+' : '';
 
   const getBienLabel = () => {
     const parts = [];
@@ -250,15 +316,39 @@ export default function RapportPDF({ result, formData }) {
           </View>
         </View>
 
-        {/* Estimation principale */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Valeur estimée</Text>
-          <View style={styles.estimationBox}>
-            <Text style={styles.estimationLabel}>ESTIMATION DU BIEN</Text>
-            <Text style={styles.estimationValue}>{formatPriceMF(prix_moyen)}</Text>
-            <Text style={styles.estimationSubValue}>soit {formatPriceXPF(prix_moyen)}</Text>
+        {/* Prix proposé par l'agent (si ajusté) */}
+        {hasAdjustedPrice ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Prix de vente proposé</Text>
+            <View style={styles.adjustedPriceBox}>
+              <Text style={styles.adjustedPriceLabel}>PRIX PROPOSÉ PAR L'AGENT</Text>
+              <Text style={styles.adjustedPriceValue}>{formatPriceMF(adjustedPrice)}</Text>
+              <Text style={styles.adjustedPriceSubValue}>soit {formatPriceXPF(adjustedPrice)}</Text>
+              <View style={styles.priceDiffBadge}>
+                <Text style={styles.priceDiffText}>
+                  {priceDiffSign}{priceDiffPercent}% par rapport à l'estimation algorithmique
+                </Text>
+              </View>
+            </View>
+
+            {/* Estimation algorithmique en plus discret */}
+            <View style={styles.algorithmBox}>
+              <Text style={styles.algorithmLabel}>ESTIMATION ALGORITHMIQUE</Text>
+              <Text style={styles.algorithmValue}>{formatPriceMF(prix_moyen)}</Text>
+              <Text style={styles.algorithmSubValue}>basée sur les données du marché</Text>
+            </View>
           </View>
-        </View>
+        ) : (
+          /* Estimation principale (sans ajustement) */
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Valeur estimée</Text>
+            <View style={styles.estimationBox}>
+              <Text style={styles.estimationLabel}>ESTIMATION DU BIEN</Text>
+              <Text style={styles.estimationValue}>{formatPriceMF(prix_moyen)}</Text>
+              <Text style={styles.estimationSubValue}>soit {formatPriceXPF(prix_moyen)}</Text>
+            </View>
+          </View>
+        )}
 
         {/* Fourchette de prix */}
         <View style={styles.section}>
@@ -311,6 +401,7 @@ export default function RapportPDF({ result, formData }) {
           <Text style={styles.disclaimerText}>
             Cette estimation est basée sur les annonces actives du marché immobilier polynésien.
             Elle est fournie à titre indicatif et ne constitue pas une évaluation officielle.
+            {hasAdjustedPrice && ' Le prix proposé a été ajusté par l\'agent immobilier.'}
           </Text>
         </View>
 

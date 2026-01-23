@@ -1,12 +1,17 @@
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Home, Calculator, BarChart3, FileText } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
+import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
 
 export default function EstimationResult({ result, formData, onReset }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
+
+  // État pour le prix ajusté par l'agent
+  const [adjustedPrice, setAdjustedPrice] = useState(prix_moyen);
 
   // Pour les terrains, on utilise surface_terrain, sinon surface habitable
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
@@ -16,6 +21,10 @@ export default function EstimationResult({ result, formData, onReset }) {
   const pourcentageEcart = ((ecartPrix / prix_moyen) * 100).toFixed(0);
   const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
   const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
+
+  const handlePriceChange = useCallback((newPrice) => {
+    setAdjustedPrice(newPrice);
+  }, []);
 
   const getBienLabel = () => {
     const parts = [];
@@ -49,6 +58,17 @@ export default function EstimationResult({ result, formData, onReset }) {
       </div>
     </div>
   );
+
+  // Naviguer vers le rapport avec le prix ajusté
+  const handleExportPDF = () => {
+    navigate('/rapport', {
+      state: {
+        result,
+        formData,
+        adjustedPrice: adjustedPrice !== prix_moyen ? adjustedPrice : null
+      }
+    });
+  };
 
   return (
     <div className="mt-8 space-y-6">
@@ -96,17 +116,25 @@ export default function EstimationResult({ result, formData, onReset }) {
             soit {formatPriceXPF(prix_moyen)}
           </p>
         </div>
+      </div>
 
-        {/* Bouton PDF placé juste après l'estimation */}
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={() => navigate('/rapport', { state: { result, formData } })}
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-3 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
-          >
-            <FileText className="w-5 h-5" />
-            Exporter en PDF
-          </button>
-        </div>
+      {/* Composant d'ajustement de prix */}
+      <PriceAdjuster
+        prixBas={prix_bas}
+        prixMoyen={prix_moyen}
+        prixHaut={prix_haut}
+        onPriceChange={handlePriceChange}
+      />
+
+      {/* Bouton PDF */}
+      <div className="flex justify-center">
+        <button
+          onClick={handleExportPDF}
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl text-lg"
+        >
+          <FileText className="w-5 h-5" />
+          Exporter en PDF {adjustedPrice !== prix_moyen && '(prix ajusté)'}
+        </button>
       </div>
 
       {/* Grille de statistiques colorées */}
