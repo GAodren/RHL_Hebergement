@@ -91,6 +91,115 @@ Content-Type : application/json
 
 ---
 
+
+## 🔐 Authentification & Base de données
+
+### Supabase Configuration
+```
+URL : https://eamccielxfkhdpmlthti.supabase.co
+Anon Key : [eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhbWNjaWVseGZraGRwbWx0aHRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNzU2OTcsImV4cCI6MjA4MTY1MTY5N30.dHvqmsPjWPD15KKOpbprvcWQoOTSalz38yRNBdU28Pk]
+```
+
+### Installation
+```bash
+npm install @supabase/supabase-js
+```
+
+### Client Supabase (src/utils/supabase.js)
+```javascript
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+```
+
+### Variables d'environnement (.env)
+```
+VITE_SUPABASE_URL=https://[TON_PROJECT_ID].supabase.co
+VITE_SUPABASE_ANON_KEY=[TA_CLE_ANON_PUBLIC]
+```
+
+### Table users_profiles
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| id | uuid | ID utilisateur (lié à auth.users) |
+| nom | text | Nom de l'agent |
+| prenom | text | Prénom |
+| email | text | Email professionnel |
+| telephone | text | Téléphone |
+| agence | text | Nom de l'agence |
+| numero_carte_pro | text | Carte professionnelle |
+| logo_url | text | Logo de l'agence |
+
+### Authentification
+
+- **Pas d'inscription publique** : les comptes sont créés manuellement par l'admin
+- **Connexion uniquement** : email + mot de passe
+- Utiliser `supabase.auth.signInWithPassword()`
+- Stocker la session avec `supabase.auth.getSession()`
+
+### Exemples d'utilisation
+
+**Connexion :**
+```javascript
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: 'agent@example.com',
+  password: 'password123'
+})
+```
+
+**Déconnexion :**
+```javascript
+await supabase.auth.signOut()
+```
+
+**Récupérer le profil :**
+```javascript
+const { data: profile } = await supabase
+  .from('users_profiles')
+  .select('*')
+  .eq('id', user.id)
+  .single()
+```
+
+**Mettre à jour le profil :**
+```javascript
+const { error } = await supabase
+  .from('users_profiles')
+  .update({ nom: 'Dupont', prenom: 'Jean' })
+  .eq('id', user.id)
+```
+
+---
+
+## 📄 Pages à ajouter
+
+### Page Connexion (/connexion)
+
+- Formulaire email + mot de passe
+- Pas de lien "Créer un compte" (comptes créés par admin)
+- Redirection vers /profil après connexion
+- Message d'erreur si identifiants incorrects
+
+### Page Mon Profil (/profil)
+
+- Accessible uniquement si connecté (sinon redirection vers /connexion)
+- Affiche et permet de modifier : nom, prénom, téléphone, agence, n° carte pro
+- Bouton "Enregistrer"
+- Bouton "Déconnexion"
+
+### Header (modification)
+
+- Si non connecté : afficher bouton "Connexion"
+- Si connecté : afficher "Mon profil" + "Déconnexion"
+
+
+
+
+
 ## 📄 Structure du site
 
 ### Page d'accueil (/)
