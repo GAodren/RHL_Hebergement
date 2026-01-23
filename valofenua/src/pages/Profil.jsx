@@ -79,9 +79,10 @@ export default function Profil() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Vérifier le type de fichier
-    if (!file.type.startsWith('image/')) {
-      setMessage({ type: 'error', text: 'Veuillez sélectionner une image' });
+    // Vérifier le type de fichier (JPG et PNG uniquement)
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      setMessage({ type: 'error', text: 'Formats acceptés : JPG ou PNG uniquement' });
       return;
     }
 
@@ -199,12 +200,12 @@ export default function Profil() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/png"
                 onChange={handleLogoChange}
                 className="hidden"
               />
               <div className="text-sm text-slate-500">
-                <p>Formats acceptés : JPG, PNG, GIF</p>
+                <p>Formats acceptés : JPG, PNG</p>
                 <p>Taille maximale : 2 Mo</p>
                 <p className="mt-2 text-[#0077B6]">
                   Ce logo apparaîtra sur vos rapports d'estimation PDF
