@@ -100,12 +100,15 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      setUser(null);
-      setProfile(null);
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
     }
-    return { error };
+    // Toujours réinitialiser l'état, même en cas d'erreur
+    setUser(null);
+    setProfile(null);
+    return { error: null };
   };
 
   const updateProfile = async (updates) => {
