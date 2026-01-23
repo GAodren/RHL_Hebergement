@@ -8,17 +8,29 @@ export default function EstimationResult({ result, formData, onReset }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
+  // Pour les terrains, on utilise surface_terrain, sinon surface habitable
+  const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
+
   // Calculs additionnels pour les statistiques
   const ecartPrix = prix_haut - prix_bas;
   const pourcentageEcart = ((ecartPrix / prix_moyen) * 100).toFixed(0);
-  const prixM2Bas = Math.round(prix_bas / formData.surface);
-  const prixM2Haut = Math.round(prix_haut / formData.surface);
+  const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
+  const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
 
   const getBienLabel = () => {
     const parts = [];
     if (formData.categorie) parts.push(formData.categorie);
     if (formData.type_bien) parts.push(formData.type_bien);
-    parts.push(`de ${formData.surface} m²`);
+
+    if (formData.categorie === 'Terrain') {
+      parts.push(`de ${formData.surface_terrain} m²`);
+    } else {
+      parts.push(`de ${formData.surface} m²`);
+      if (formData.surface_terrain) {
+        parts.push(`(terrain ${formData.surface_terrain} m²)`);
+      }
+    }
+
     parts.push(`à ${formData.commune}`);
     return parts.join(' ');
   };
@@ -109,8 +121,9 @@ export default function EstimationResult({ result, formData, onReset }) {
         />
         <StatCard
           icon={Ruler}
-          label="Surface"
-          value={`${formData.surface} m²`}
+          label={formData.categorie === 'Terrain' ? 'Surface terrain' : 'Surface habitable'}
+          value={`${surfacePrincipale} m²`}
+          subValue={formData.categorie === 'Maison' && formData.surface_terrain ? `Terrain: ${formData.surface_terrain} m²` : undefined}
           bgColor="bg-purple-50"
           iconColor="text-purple-600"
           borderColor="border-purple-200"

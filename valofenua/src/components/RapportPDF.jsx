@@ -173,8 +173,11 @@ const styles = StyleSheet.create({
 export default function RapportPDF({ result, formData }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
-  const prixM2Bas = Math.round(prix_bas / formData.surface);
-  const prixM2Haut = Math.round(prix_haut / formData.surface);
+  // Pour les terrains, on utilise surface_terrain, sinon surface habitable
+  const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
+
+  const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
+  const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
   const ecartPrix = prix_haut - prix_bas;
   const pourcentageEcart = ((ecartPrix / prix_moyen) * 100).toFixed(0);
 
@@ -182,9 +185,23 @@ export default function RapportPDF({ result, formData }) {
     const parts = [];
     if (formData.categorie) parts.push(formData.categorie);
     if (formData.type_bien) parts.push(formData.type_bien);
-    parts.push(`de ${formData.surface} m²`);
+
+    if (formData.categorie === 'Terrain') {
+      parts.push(`de ${formData.surface_terrain} m²`);
+    } else {
+      parts.push(`de ${formData.surface} m²`);
+      if (formData.surface_terrain) {
+        parts.push(`(terrain ${formData.surface_terrain} m²)`);
+      }
+    }
+
     parts.push(`à ${formData.commune}`);
     return parts.join(' ');
+  };
+
+  // Label de surface selon la catégorie
+  const getSurfaceLabel = () => {
+    return formData.categorie === 'Terrain' ? 'Surface terrain' : 'Surface habitable';
   };
 
   const formatDate = () => {
@@ -216,14 +233,20 @@ export default function RapportPDF({ result, formData }) {
                 <Text style={styles.bienValue}>{formData.categorie} {formData.type_bien || ''}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.bienLabel}>Surface</Text>
-                <Text style={styles.bienValue}>{formData.surface} m²</Text>
+                <Text style={styles.bienLabel}>{getSurfaceLabel()}</Text>
+                <Text style={styles.bienValue}>{surfacePrincipale} m²</Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.bienLabel}>Localisation</Text>
                 <Text style={styles.bienValue}>{formData.commune}</Text>
               </View>
             </View>
+            {formData.categorie === 'Maison' && formData.surface_terrain && (
+              <View style={{ marginTop: 4 }}>
+                <Text style={styles.bienLabel}>Surface terrain</Text>
+                <Text style={styles.bienValue}>{formData.surface_terrain} m²</Text>
+              </View>
+            )}
           </View>
         </View>
 
@@ -265,8 +288,8 @@ export default function RapportPDF({ result, formData }) {
               <Text style={styles.statValue}>{formatPriceXPF(prix_m2_moyen)}</Text>
             </View>
             <View style={styles.statBox}>
-              <Text style={styles.statLabel}>Surface du bien</Text>
-              <Text style={styles.statValue}>{formData.surface} m²</Text>
+              <Text style={styles.statLabel}>{getSurfaceLabel()}</Text>
+              <Text style={styles.statValue}>{surfacePrincipale} m²</Text>
             </View>
             <View style={styles.statBox}>
               <Text style={styles.statLabel}>Prix/m² (fourchette basse)</Text>

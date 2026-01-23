@@ -1,17 +1,31 @@
 const API_URL = 'https://n8n.srv1206491.hstgr.cloud/webhook/estimation';
 
-export async function getEstimation({ commune, categorie, type_bien, surface }) {
+export async function getEstimation({ commune, categorie, type_bien, surface, surface_terrain }) {
+  // Pour les terrains, on envoie surface_terrain dans le champ "surface"
+  const surfaceToSend = categorie === 'Terrain' ? Number(surface_terrain) : Number(surface);
+
+  const body = {
+    commune,
+    categorie,
+    surface: surfaceToSend,
+  };
+
+  // Ajouter type_bien seulement s'il est défini (pas pour les terrains)
+  if (type_bien) {
+    body.type_bien = type_bien;
+  }
+
+  // Ajouter surface_terrain pour les maisons si défini
+  if (categorie === 'Maison' && surface_terrain) {
+    body.surface_terrain = Number(surface_terrain);
+  }
+
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      commune,
-      categorie,
-      type_bien,
-      surface: Number(surface),
-    }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
@@ -44,5 +58,9 @@ export const COMMUNES = [
 // Catégories de biens
 export const CATEGORIES = ['Maison', 'Appartement', 'Terrain'];
 
-// Types de biens
+// Types de biens par catégorie
+export const TYPES_BIEN_MAISON = ['F2', 'F3', 'F4', 'F5', '>F5'];
+export const TYPES_BIEN_APPARTEMENT = ['Studio', 'F1', 'F2', 'F3', 'F4', 'F5'];
+
+// Types de biens (legacy, pour compatibilité)
 export const TYPES_BIEN = ['Studio', 'F1', 'F2', 'F3', 'F4', 'F5', '>F5'];
