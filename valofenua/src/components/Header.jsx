@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, LayoutDashboard, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import Logo from './Logo';
 import { useAuth } from '../context/AuthContext';
@@ -65,8 +65,8 @@ export default function Header() {
                           : 'text-slate-600 hover:text-[#0077B6]'
                       }`}
                     >
-                      <User className="w-5 h-5" />
-                      Mon profil
+                      <LayoutDashboard className="w-5 h-5" />
+                      Dashboard
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -142,8 +142,8 @@ export default function Header() {
                             : 'text-slate-600 hover:bg-slate-50'
                         }`}
                       >
-                        <User className="w-5 h-5" />
-                        Mon profil
+                        <LayoutDashboard className="w-5 h-5" />
+                        Dashboard
                       </Link>
                       <button
                         onClick={handleLogout}
