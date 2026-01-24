@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
+  // Toujours afficher le loading pendant la vérification
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -12,9 +13,11 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
+  // Si pas d'utilisateur après vérification, rediriger vers connexion
   if (!user) {
     return <Navigate to="/connexion" replace />;
   }
 
+  // Utilisateur authentifié, afficher le contenu
   return children;
 }

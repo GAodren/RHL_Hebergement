@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useRef, useCallback } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 
 const AuthContext = createContext({});
@@ -9,93 +9,65 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Refs pour éviter les race conditions
-  const initializedRef = useRef(false);
-  const isMountedRef = useRef(true);
+  const [initialized, setInitialized] = useState(false);
 
   // Fonction pour récupérer le profil (ou le créer s'il n'existe pas)
   const fetchProfile = useCallback(async (userId, userEmail) => {
-    if (!isMountedRef.current) return;
-
     try {
-      console.log('fetchProfile: Recherche du profil pour userId:', userId);
-
       const { data, error } = await supabase
         .from('users_profiles')
         .select('*')
         .eq('id', userId)
         .single();
 
-      if (!isMountedRef.current) return;
-
-      // PGRST116 = pas de ligne trouvée
+      // PGRST116 = pas de ligne trouvée, on crée le profil
       if (error && error.code === 'PGRST116') {
-        console.log('fetchProfile: Profil non trouvé, création automatique...');
-
-        // Créer le profil automatiquement
         const { data: newProfile, error: insertError } = await supabase
           .from('users_profiles')
           .insert([{ id: userId, email: userEmail }])
           .select()
           .single();
 
-        if (insertError) {
-          console.error('fetchProfile: Erreur création profil:', insertError);
-          setProfile(null);
-        } else {
-          console.log('fetchProfile: Profil créé avec succès:', newProfile);
+        if (!insertError && newProfile) {
           setProfile(newProfile);
         }
         return;
       }
 
-      if (error) {
-        console.error('fetchProfile: Erreur récupération profil:', error);
-        setProfile(null);
-        return;
+      if (!error && data) {
+        setProfile(data);
       }
-
-      console.log('fetchProfile: Profil trouvé:', data);
-      setProfile(data);
     } catch (error) {
-      console.error('fetchProfile: Erreur inattendue:', error);
-      setProfile(null);
+      console.error('Erreur fetchProfile:', error);
     }
   }, []);
 
   useEffect(() => {
-    isMountedRef.current = true;
+    let mounted = true;
 
-    // Fonction d'initialisation
-    const initializeAuth = async () => {
+    // Initialisation de l'authentification
+    const initAuth = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+        const { data: { session } } = await supabase.auth.getSession();
 
-        if (!isMountedRef.current) return;
+        if (!mounted) return;
 
-        if (error) {
-          console.error('Erreur getSession:', error);
-        }
-
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-
-        if (currentUser) {
-          await fetchProfile(currentUser.id, currentUser.email);
-        }
-
-        // Marquer comme initialisé et terminer le loading
-        initializedRef.current = true;
-        if (isMountedRef.current) {
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Erreur initialisation auth:', error);
-        initializedRef.current = true;
-        if (isMountedRef.current) {
+        if (session?.user) {
+          setUser(session.user);
+          await fetchProfile(session.user.id, session.user.email);
+        } else {
           setUser(null);
           setProfile(null);
+        }
+      } catch (error) {
+        console.error('Erreur init auth:', error);
+        if (mounted) {
+          setUser(null);
+          setProfile(null);
+        }
+      } finally {
+        if (mounted) {
+          setInitialized(true);
           setLoading(false);
         }
       }
@@ -104,40 +76,25 @@ export function AuthProvider({ children }) {
     // Écouter les changements d'authentification
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (!isMountedRef.current) return;
+        if (!mounted) return;
 
-        // Ignorer INITIAL_SESSION car on le gère avec getSession()
-        if (event === 'INITIAL_SESSION') {
-          return;
-        }
+        // Ignorer l'événement initial, on gère avec getSession
+        if (event === 'INITIAL_SESSION') return;
 
-        console.log('Auth state change:', event);
-
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-
-        if (currentUser) {
-          await fetchProfile(currentUser.id, currentUser.email);
+        if (session?.user) {
+          setUser(session.user);
+          await fetchProfile(session.user.id, session.user.email);
         } else {
+          setUser(null);
           setProfile(null);
         }
       }
     );
 
-    // Lancer l'initialisation
-    initializeAuth();
-
-    // Timeout de sécurité
-    const timeoutId = setTimeout(() => {
-      if (isMountedRef.current && !initializedRef.current) {
-        setLoading(false);
-        initializedRef.current = true;
-      }
-    }, 3000);
+    initAuth();
 
     return () => {
-      isMountedRef.current = false;
-      clearTimeout(timeoutId);
+      mounted = false;
       subscription.unsubscribe();
     };
   }, [fetchProfile]);
