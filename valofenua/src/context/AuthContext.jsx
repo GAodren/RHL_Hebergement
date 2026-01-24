@@ -44,38 +44,45 @@ export function AuthProvider({ children }) {
   // Initialisation au chargement
   useEffect(() => {
     let isMounted = true;
+    let loadingFinished = false;
+
+    const finishLoading = () => {
+      if (isMounted && !loadingFinished) {
+        loadingFinished = true;
+        setLoading(false);
+      }
+    };
 
     const initAuth = async () => {
       try {
         // Récupérer la session existante
         const { data: { session }, error } = await supabase.auth.getSession();
 
+        if (!isMounted) return;
+
         if (error) {
           console.error('Erreur getSession:', error);
-          if (isMounted) {
-            setUser(null);
-            setProfile(null);
-            setLoading(false);
-          }
+          setUser(null);
+          setProfile(null);
+          finishLoading();
           return;
         }
 
-        if (isMounted) {
-          if (session?.user) {
-            setUser(session.user);
-            await fetchProfile(session.user.id, session.user.email);
-          } else {
-            setUser(null);
-            setProfile(null);
-          }
-          setLoading(false);
+        if (session?.user) {
+          setUser(session.user);
+          // Charger le profil en arrière-plan, ne pas bloquer
+          fetchProfile(session.user.id, session.user.email).finally(finishLoading);
+        } else {
+          setUser(null);
+          setProfile(null);
+          finishLoading();
         }
       } catch (err) {
         console.error('Erreur initAuth:', err);
         if (isMounted) {
           setUser(null);
           setProfile(null);
-          setLoading(false);
+          finishLoading();
         }
       }
     };
@@ -90,7 +97,7 @@ export function AuthProvider({ children }) {
 
         if (session?.user) {
           setUser(session.user);
-          await fetchProfile(session.user.id, session.user.email);
+          fetchProfile(session.user.id, session.user.email);
         } else {
           setUser(null);
           setProfile(null);
@@ -98,13 +105,11 @@ export function AuthProvider({ children }) {
       }
     );
 
-    // Timeout de sécurité (5 secondes max)
+    // Timeout de sécurité (3 secondes max)
     const timeout = setTimeout(() => {
-      if (isMounted && loading) {
-        console.warn('Auth timeout - forçage du loading à false');
-        setLoading(false);
-      }
-    }, 5000);
+      console.warn('Auth timeout - forçage du loading à false');
+      finishLoading();
+    }, 3000);
 
     initAuth();
 
