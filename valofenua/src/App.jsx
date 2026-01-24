@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,30 +13,37 @@ import CGV from './pages/CGV';
 import Connexion from './pages/Connexion';
 import Profil from './pages/Profil';
 
+function AppContent() {
+  const location = useLocation();
+  const isConnexionPage = location.pathname === '/connexion';
+
+  return (
+    <>
+      {!isConnexionPage && <Header />}
+      <Routes>
+        {/* Page de connexion - accessible sans authentification */}
+        <Route path="/connexion" element={<Connexion />} />
+
+        {/* Toutes les autres pages nécessitent une authentification */}
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/estimation" element={<ProtectedRoute><Estimation /></ProtectedRoute>} />
+        <Route path="/rapport" element={<ProtectedRoute><RapportEstimation /></ProtectedRoute>} />
+        <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
+        <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+        <Route path="/mentions-legales" element={<ProtectedRoute><MentionsLegales /></ProtectedRoute>} />
+        <Route path="/cgv" element={<ProtectedRoute><CGV /></ProtectedRoute>} />
+        <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+      </Routes>
+      {!isConnexionPage && <Footer />}
+    </>
+  );
+}
+
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/estimation" element={<Estimation />} />
-          <Route path="/rapport" element={<RapportEstimation />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/mentions-legales" element={<MentionsLegales />} />
-          <Route path="/cgv" element={<CGV />} />
-          <Route path="/connexion" element={<Connexion />} />
-          <Route
-            path="/profil"
-            element={
-              <ProtectedRoute>
-                <Profil />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-        <Footer />
+        <AppContent />
       </AuthProvider>
     </Router>
   );

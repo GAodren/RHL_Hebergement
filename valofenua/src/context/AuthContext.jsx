@@ -14,11 +14,13 @@ export function AuthProvider({ children }) {
   const initializedRef = useRef(false);
   const isMountedRef = useRef(true);
 
-  // Fonction pour récupérer le profil - mémorisée
-  const fetchProfile = useCallback(async (userId) => {
+  // Fonction pour récupérer le profil (ou le créer s'il n'existe pas)
+  const fetchProfile = useCallback(async (userId, userEmail) => {
     if (!isMountedRef.current) return;
 
     try {
+      console.log('fetchProfile: Recherche du profil pour userId:', userId);
+
       const { data, error } = await supabase
         .from('users_profiles')
         .select('*')
@@ -27,12 +29,38 @@ export function AuthProvider({ children }) {
 
       if (!isMountedRef.current) return;
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Erreur lors de la récupération du profil:', error);
+      // PGRST116 = pas de ligne trouvée
+      if (error && error.code === 'PGRST116') {
+        console.log('fetchProfile: Profil non trouvé, création automatique...');
+
+        // Créer le profil automatiquement
+        const { data: newProfile, error: insertError } = await supabase
+          .from('users_profiles')
+          .insert([{ id: userId, email: userEmail }])
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('fetchProfile: Erreur création profil:', insertError);
+          setProfile(null);
+        } else {
+          console.log('fetchProfile: Profil créé avec succès:', newProfile);
+          setProfile(newProfile);
+        }
+        return;
       }
-      setProfile(data || null);
+
+      if (error) {
+        console.error('fetchProfile: Erreur récupération profil:', error);
+        setProfile(null);
+        return;
+      }
+
+      console.log('fetchProfile: Profil trouvé:', data);
+      setProfile(data);
     } catch (error) {
-      console.error('Erreur fetchProfile:', error);
+      console.error('fetchProfile: Erreur inattendue:', error);
+      setProfile(null);
     }
   }, []);
 
@@ -48,17 +76,13 @@ export function AuthProvider({ children }) {
 
         if (error) {
           console.error('Erreur getSession:', error);
-          setUser(null);
-          setProfile(null);
-          setLoading(false);
-          return;
         }
 
         const currentUser = session?.user ?? null;
         setUser(currentUser);
 
         if (currentUser) {
-          await fetchProfile(currentUser.id);
+          await fetchProfile(currentUser.id, currentUser.email);
         }
 
         // Marquer comme initialisé et terminer le loading
@@ -68,6 +92,7 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         console.error('Erreur initialisation auth:', error);
+        initializedRef.current = true;
         if (isMountedRef.current) {
           setUser(null);
           setProfile(null);
@@ -92,7 +117,7 @@ export function AuthProvider({ children }) {
         setUser(currentUser);
 
         if (currentUser) {
-          await fetchProfile(currentUser.id);
+          await fetchProfile(currentUser.id, currentUser.email);
         } else {
           setProfile(null);
         }
@@ -105,11 +130,10 @@ export function AuthProvider({ children }) {
     // Timeout de sécurité
     const timeoutId = setTimeout(() => {
       if (isMountedRef.current && !initializedRef.current) {
-        console.warn('Auth timeout - forçage fin du loading');
         setLoading(false);
         initializedRef.current = true;
       }
-    }, 5000);
+    }, 3000);
 
     return () => {
       isMountedRef.current = false;
@@ -127,7 +151,7 @@ export function AuthProvider({ children }) {
 
       if (!error && data.user) {
         setUser(data.user);
-        await fetchProfile(data.user.id);
+        await fetchProfile(data.user.id, data.user.email);
       }
 
       return { data, error };
@@ -210,7 +234,7 @@ export function AuthProvider({ children }) {
 
   const refreshProfile = useCallback(() => {
     if (user) {
-      return fetchProfile(user.id);
+      return fetchProfile(user.id, user.email);
     }
   }, [user, fetchProfile]);
 

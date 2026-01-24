@@ -21,7 +21,7 @@ export default function Connexion() {
   }
 
   if (user) {
-    return <Navigate to="/profil" replace />;
+    return <Navigate to="/" replace />;
   }
 
   const handleSubmit = async (e) => {
@@ -35,20 +35,23 @@ export default function Connexion() {
       setError('Email ou mot de passe incorrect');
       setLoading(false);
     } else {
-      navigate('/profil');
+      navigate('/');
     }
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 py-12 px-4">
-      <div className="max-w-md mx-auto">
-        {/* En-tête */}
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center py-12 px-4">
+      <div className="w-full max-w-md">
+        {/* Logo et en-tête */}
         <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0077B6] rounded-2xl mb-4">
+            <span className="text-white text-2xl font-bold">VF</span>
+          </div>
           <h1 className="text-3xl font-bold text-slate-800 mb-2">
-            Connexion
+            ValoFenua
           </h1>
           <p className="text-slate-600">
-            Accédez à votre espace agent immobilier
+            Espace réservé aux agents immobiliers
           </p>
         </div>
 
