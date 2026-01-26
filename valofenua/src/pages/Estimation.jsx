@@ -13,7 +13,7 @@ export default function Estimation() {
             Estimez votre bien
           </h1>
           <p className="text-lg text-slate-600">
-            Remplissez le formulaire ci-dessous pour obtenir une estimation gratuite
+            Remplissez le formulaire ci-dessous pour obtenir une estimation précise
           </p>
         </div>
         <EstimationForm initialState={initialState} />

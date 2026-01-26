@@ -1,16 +1,16 @@
-import { BarChart3, Lock, Zap, Gift } from 'lucide-react';
+import { BarChart3, FileText, Zap, MapPin } from 'lucide-react';
 
 export default function Features() {
   const features = [
     {
-      icon: BarChart3,
-      title: 'Données du marché local',
-      description: 'Basé sur les annonces actives à Tahiti et ses communes.',
+      icon: MapPin,
+      title: 'Expert du marché polynésien',
+      description: 'Données issues des annonces actives sur les 12 communes de Tahiti.',
     },
     {
-      icon: Lock,
-      title: '100% confidentiel',
-      description: 'Aucune inscription requise, aucune donnée personnelle collectée.',
+      icon: BarChart3,
+      title: 'Analyse précise',
+      description: 'Algorithme basé sur les prix réels du marché local.',
     },
     {
       icon: Zap,
@@ -18,9 +18,9 @@ export default function Features() {
       description: 'Obtenez votre estimation en moins de 2 minutes.',
     },
     {
-      icon: Gift,
-      title: 'Totalement gratuit',
-      description: 'Sans inscription, sans frais cachés, sans engagement.',
+      icon: FileText,
+      title: 'Rapports PDF professionnels',
+      description: 'Générez des rapports personnalisés avec votre logo pour vos clients.',
     },
   ];
 
@@ -31,7 +31,7 @@ export default function Features() {
           Pourquoi ValoFenua ?
         </h2>
         <p className="text-slate-600 text-center max-w-2xl mx-auto mb-16">
-          Un outil simple et fiable pour estimer votre bien immobilier
+          L'outil d'estimation conçu pour les professionnels de l'immobilier en Polynésie
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {features.map((feature, index) => (

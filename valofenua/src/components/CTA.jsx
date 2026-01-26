@@ -6,10 +6,10 @@ export default function CTA() {
     <section className="py-20 md:py-28 bg-gradient-to-br from-[#0077B6] to-[#005f8a]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          Prêt à estimer votre bien ?
+          Prêt à lancer une estimation ?
         </h2>
         <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-xl mx-auto">
-          Obtenez une estimation gratuite en moins de 2 minutes
+          Obtenez une estimation précise en moins de 2 minutes
         </p>
         <Link
           to="/estimation"

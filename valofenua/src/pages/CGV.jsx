@@ -36,7 +36,7 @@ export default function CGV() {
                   Les présentes Conditions Générales d'Utilisation (ci-après "CGU") régissent l'utilisation du site internet ValoFenua accessible à l'adresse valofenua.com (ci-après le "Site").
                 </p>
                 <p className="text-slate-600 mb-4">
-                  ValoFenua est un service gratuit d'estimation immobilière en ligne destiné aux particuliers et professionnels souhaitant obtenir une estimation indicative de la valeur d'un bien immobilier situé en Polynésie française.
+                  ValoFenua est un service professionnel d'estimation immobilière en ligne destiné aux agences et agents immobiliers souhaitant obtenir une estimation indicative de la valeur d'un bien immobilier situé en Polynésie française.
                 </p>
                 <p className="text-slate-600 mb-0">
                   L'utilisation du Site implique l'acceptation pleine et entière des présentes CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le Site.
@@ -54,7 +54,7 @@ export default function CGV() {
               </div>
               <div className="bg-slate-50 rounded-xl p-6">
                 <p className="text-slate-600 mb-4">
-                  ValoFenua propose un service d'estimation immobilière gratuit permettant aux utilisateurs d'obtenir une fourchette de prix indicative pour un bien immobilier basée sur :
+                  ValoFenua propose un service d'estimation immobilière professionnel permettant aux utilisateurs autorisés d'obtenir une fourchette de prix indicative pour un bien immobilier basée sur :
                 </p>
                 <ul className="text-slate-600 mb-4 list-disc list-inside space-y-2">
                   <li>La commune où se situe le bien</li>
@@ -78,7 +78,7 @@ export default function CGV() {
               </div>
               <div className="bg-slate-50 rounded-xl p-6">
                 <p className="text-slate-600 mb-4">
-                  Le service ValoFenua est accessible gratuitement à tout utilisateur disposant d'un accès à Internet. Aucune inscription ni création de compte n'est requise pour utiliser le service d'estimation.
+                  Le service ValoFenua est réservé aux professionnels de l'immobilier disposant d'un compte utilisateur. L'accès est soumis à un abonnement et les comptes sont créés par l'administrateur du service.
                 </p>
                 <p className="text-slate-600 mb-4">
                   ValoFenua se réserve le droit de modifier, suspendre ou interrompre tout ou partie du service à tout moment, sans préavis ni indemnité.

@@ -9,6 +9,8 @@ import {
   CheckCircle,
   AlertCircle,
   ArrowRight,
+  FileText,
+  Building2,
 } from 'lucide-react';
 import Logo from '../components/Logo';
 
@@ -25,7 +27,7 @@ export default function About() {
             À propos de ValoFenua
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
-            L'outil d'estimation immobilière dédié au marché polynésien. Gratuit, rapide et transparent.
+            L'outil d'estimation immobilière professionnel conçu pour les agences en Polynésie française.
           </p>
         </div>
       </section>
@@ -43,10 +45,10 @@ export default function About() {
           </div>
           <div className="prose prose-slate max-w-none">
             <p className="text-lg text-slate-600 leading-relaxed">
-              ValoFenua est né d'un constat simple : le marché immobilier polynésien manque d'outils accessibles pour les particuliers et les professionnels souhaitant estimer rapidement la valeur d'un bien.
+              ValoFenua est né d'un constat simple : les professionnels de l'immobilier en Polynésie ont besoin d'outils modernes et fiables pour estimer rapidement la valeur des biens.
             </p>
             <p className="text-lg text-slate-600 leading-relaxed mt-4">
-              Notre objectif est de <strong className="text-slate-800">démocratiser l'accès à l'information immobilière</strong> en Polynésie française. Que vous soyez propriétaire souhaitant vendre, acheteur potentiel ou agent immobilier, ValoFenua vous offre une estimation claire et rapide basée sur les données réelles du marché local.
+              Notre objectif est de <strong className="text-slate-800">fournir aux agences immobilières un outil d'estimation expert</strong>, basé sur les données réelles du marché polynésien. ValoFenua permet de gagner du temps tout en offrant des estimations précises à présenter à vos clients.
             </p>
           </div>
         </div>
@@ -140,7 +142,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Nos engagements */}
+      {/* Nos avantages */}
       <section className="py-16 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-8">
@@ -148,26 +150,26 @@ export default function About() {
               <Shield className="w-6 h-6 text-[#0077B6]" />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
-              Nos engagements
+              Nos avantages
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-              <h4 className="font-semibold text-lg text-slate-800 mb-3">100% gratuit</h4>
+              <h4 className="font-semibold text-lg text-slate-800 mb-3">Expertise locale</h4>
               <p className="text-slate-600">
-                ValoFenua est et restera entièrement gratuit. Pas de frais cachés, pas d'abonnement, pas de surprise.
+                Données spécifiques au marché polynésien, couvrant les 12 communes principales de Tahiti.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-              <h4 className="font-semibold text-lg text-slate-800 mb-3">Sans inscription</h4>
+              <h4 className="font-semibold text-lg text-slate-800 mb-3">Rapidité</h4>
               <p className="text-slate-600">
-                Obtenez votre estimation immédiatement, sans créer de compte ni fournir vos informations personnelles.
+                Obtenez une estimation précise en moins de 2 minutes, idéal pour vos rendez-vous clients.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-              <h4 className="font-semibold text-lg text-slate-800 mb-3">Données confidentielles</h4>
+              <h4 className="font-semibold text-lg text-slate-800 mb-3">Rapports professionnels</h4>
               <p className="text-slate-600">
-                Nous ne collectons ni ne stockons aucune donnée personnelle. Votre recherche reste privée.
+                Générez des rapports PDF personnalisés avec votre logo pour impressionner vos clients.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
@@ -209,25 +211,31 @@ export default function About() {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center p-6">
-              <div className="text-4xl mb-4">🏠</div>
-              <h4 className="font-semibold text-lg text-slate-800 mb-2">Propriétaires</h4>
+            <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+              <div className="w-14 h-14 bg-[#E0F4FF] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Building2 className="w-7 h-7 text-[#0077B6]" />
+              </div>
+              <h4 className="font-semibold text-lg text-slate-800 mb-2">Agences immobilières</h4>
               <p className="text-slate-600 text-sm">
-                Vous souhaitez vendre ? Obtenez une première idée du prix de votre bien avant de contacter un agent.
+                Gagnez du temps sur vos estimations et présentez des rapports professionnels à vos clients.
               </p>
             </div>
-            <div className="text-center p-6">
-              <div className="text-4xl mb-4">🔍</div>
-              <h4 className="font-semibold text-lg text-slate-800 mb-2">Acheteurs</h4>
+            <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+              <div className="w-14 h-14 bg-[#E0F4FF] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Users className="w-7 h-7 text-[#0077B6]" />
+              </div>
+              <h4 className="font-semibold text-lg text-slate-800 mb-2">Agents indépendants</h4>
               <p className="text-slate-600 text-sm">
-                Vérifiez si le prix demandé pour un bien correspond au marché local avant de faire une offre.
+                Un outil professionnel pour accompagner vos mandats et conseiller vos clients vendeurs.
               </p>
             </div>
-            <div className="text-center p-6">
-              <div className="text-4xl mb-4">💼</div>
-              <h4 className="font-semibold text-lg text-slate-800 mb-2">Professionnels</h4>
+            <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+              <div className="w-14 h-14 bg-[#E0F4FF] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-7 h-7 text-[#0077B6]" />
+              </div>
+              <h4 className="font-semibold text-lg text-slate-800 mb-2">Promoteurs</h4>
               <p className="text-slate-600 text-sm">
-                Agents immobiliers, utilisez ValoFenua comme outil complémentaire pour vos estimations rapides.
+                Analysez rapidement le marché local pour vos projets de développement immobilier.
               </p>
             </div>
           </div>
@@ -238,16 +246,16 @@ export default function About() {
       <section className="py-16 bg-[#0077B6]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            Prêt à estimer votre bien ?
+            Prêt à utiliser ValoFenua ?
           </h2>
           <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-            Obtenez une estimation gratuite en moins de 2 minutes, basée sur les données du marché polynésien.
+            Lancez une estimation en moins de 2 minutes et découvrez la puissance de notre outil.
           </p>
           <Link
             to="/estimation"
             className="inline-flex items-center gap-2 bg-white text-[#0077B6] px-8 py-4 rounded-xl font-semibold text-lg hover:bg-slate-100 transition-colors shadow-lg"
           >
-            Estimer maintenant
+            Lancer une estimation
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

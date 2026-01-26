@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Logo className="w-12 h-12" textClassName="text-white" />
             <p className="mt-4 text-slate-400 text-sm leading-relaxed">
-              Estimation immobilière en Polynésie française. Obtenez une estimation gratuite de votre bien en quelques clics.
+              L'outil d'estimation immobilière professionnel dédié au marché polynésien.
             </p>
           </div>
 
