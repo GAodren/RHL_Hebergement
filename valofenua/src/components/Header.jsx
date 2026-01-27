@@ -56,9 +56,9 @@ export default function Header() {
             {!loading && user && (
               <>
                 <Link
-                  to="/profil"
+                  to="/dashboard"
                   className={`p-2 rounded-lg transition-colors ${
-                    isActive('/profil')
+                    isActive('/dashboard') || isActive('/profil')
                       ? 'bg-[#E0F4FF] text-[#0077B6]'
                       : 'text-slate-500 hover:bg-slate-100 hover:text-[#0077B6]'
                   }`}
@@ -121,10 +121,10 @@ export default function Header() {
               {!loading && user && (
                 <>
                   <Link
-                    to="/profil"
+                    to="/dashboard"
                     onClick={() => setIsMenuOpen(false)}
                     className={`px-4 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-3 ${
-                      isActive('/profil')
+                      isActive('/dashboard') || isActive('/profil')
                         ? 'bg-[#E0F4FF] text-[#0077B6]'
                         : 'text-slate-600 hover:bg-slate-50'
                     }`}

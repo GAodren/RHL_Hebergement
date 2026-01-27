@@ -17,7 +17,7 @@ import {
   FileText
 } from 'lucide-react';
 
-export default function Profil() {
+export default function Profil({ embedded = false }) {
   const { user, profile, updateProfile, uploadLogo, loading: authLoading } = useAuth();
   const fileInputRef = useRef(null);
 
@@ -127,18 +127,20 @@ export default function Profil() {
     );
   }
 
-  return (
-    <main className="min-h-screen bg-slate-50 py-12 px-4">
+  const content = (
+    <div className={embedded ? "py-8 px-4" : "min-h-screen bg-slate-50 py-12 px-4"}>
       <div className="max-w-2xl mx-auto">
         {/* En-tête */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-800">
-            Mon Profil
-          </h1>
-          <p className="text-slate-600 mt-1">
-            Gérez vos informations personnelles et professionnelles
-          </p>
-        </div>
+        {!embedded && (
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-slate-800">
+              Mon Profil
+            </h1>
+            <p className="text-slate-600 mt-1">
+              Gérez vos informations personnelles et professionnelles
+            </p>
+          </div>
+        )}
 
         {/* Message de feedback */}
         {message.text && (
@@ -415,6 +417,8 @@ export default function Profil() {
           </button>
         </form>
       </div>
-    </main>
+    </div>
   );
+
+  return embedded ? content : <main>{content}</main>;
 }

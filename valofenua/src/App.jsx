@@ -12,6 +12,7 @@ import MentionsLegales from './pages/MentionsLegales';
 import CGV from './pages/CGV';
 import Connexion from './pages/Connexion';
 import Profil from './pages/Profil';
+import Dashboard from './pages/Dashboard';
 
 function AppContent() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function AppContent() {
         <Route path="/mentions-legales" element={<ProtectedRoute><MentionsLegales /></ProtectedRoute>} />
         <Route path="/cgv" element={<ProtectedRoute><CGV /></ProtectedRoute>} />
         <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       </Routes>
       {!isConnexionPage && <Footer />}
     </>

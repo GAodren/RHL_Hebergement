@@ -5,8 +5,9 @@ import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
+import { updateEstimation } from '../utils/estimations';
 
-export default function EstimationResult({ result, formData, onReset }) {
+export default function EstimationResult({ result, formData, onReset, estimationId }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
@@ -60,12 +61,19 @@ export default function EstimationResult({ result, formData, onReset }) {
   );
 
   // Naviguer vers le rapport avec le prix ajusté
-  const handleExportPDF = () => {
+  const handleExportPDF = async () => {
+    const hasAdjusted = adjustedPrice !== prix_moyen;
+
+    // Mettre à jour le prix ajusté dans la base si nécessaire
+    if (estimationId && hasAdjusted) {
+      await updateEstimation(estimationId, { prix_ajuste: adjustedPrice });
+    }
+
     navigate('/rapport', {
       state: {
         result,
         formData,
-        adjustedPrice: adjustedPrice !== prix_moyen ? adjustedPrice : null
+        adjustedPrice: hasAdjusted ? adjustedPrice : null
       }
     });
   };

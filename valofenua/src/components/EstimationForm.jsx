@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Target, Loader2, AlertCircle } from 'lucide-react';
 import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
+import { saveEstimation } from '../utils/estimations';
+import { useAuth } from '../context/AuthContext';
 import EstimationResult from './EstimationResult';
 
 export default function EstimationForm({ initialState }) {
+  const { user } = useAuth();
   const [formData, setFormData] = useState(
     initialState?.formData || {
       commune: '',
@@ -16,6 +19,7 @@ export default function EstimationForm({ initialState }) {
   const [result, setResult] = useState(initialState?.result || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const currentEstimationId = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,6 +76,21 @@ export default function EstimationForm({ initialState }) {
     try {
       const data = await getEstimation(formData);
       setResult(data);
+
+      // Sauvegarder automatiquement l'estimation
+      if (user) {
+        const { data: savedEstimation, error: saveError } = await saveEstimation(
+          user.id,
+          formData,
+          data
+        );
+        if (savedEstimation) {
+          currentEstimationId.current = savedEstimation.id;
+        }
+        if (saveError) {
+          console.error('Erreur sauvegarde estimation:', saveError);
+        }
+      }
     } catch (err) {
       setError('Une erreur est survenue lors de l\'estimation. Veuillez réessayer.');
       console.error(err);
@@ -89,6 +108,7 @@ export default function EstimationForm({ initialState }) {
       surface: '',
       surface_terrain: '',
     });
+    currentEstimationId.current = null;
   };
 
   // Obtenir les types de bien selon la catégorie
@@ -109,7 +129,12 @@ export default function EstimationForm({ initialState }) {
   if (result) {
     return (
       <div className="w-full max-w-7xl mx-auto">
-        <EstimationResult result={result} formData={formData} onReset={handleReset} />
+        <EstimationResult
+          result={result}
+          formData={formData}
+          onReset={handleReset}
+          estimationId={currentEstimationId.current}
+        />
       </div>
     );
   }
