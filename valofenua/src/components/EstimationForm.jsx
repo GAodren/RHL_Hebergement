@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Target, Loader2, AlertCircle } from 'lucide-react';
+import { Target, Loader2, AlertCircle, ImagePlus, X } from 'lucide-react';
 import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
 import { saveEstimation } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
@@ -19,7 +19,41 @@ export default function EstimationForm({ initialState }) {
   const [result, setResult] = useState(initialState?.result || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [bienPhoto, setBienPhoto] = useState(null);
   const currentEstimationId = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // Gestion de l'upload de photo
+  const handlePhotoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Vérifier le type
+    if (!file.type.startsWith('image/')) {
+      setError('Veuillez sélectionner une image');
+      return;
+    }
+
+    // Vérifier la taille (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('L\'image ne doit pas dépasser 5 Mo');
+      return;
+    }
+
+    // Convertir en base64
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setBienPhoto(e.target?.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemovePhoto = () => {
+    setBienPhoto(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -108,6 +142,10 @@ export default function EstimationForm({ initialState }) {
       surface: '',
       surface_terrain: '',
     });
+    setBienPhoto(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
     currentEstimationId.current = null;
   };
 
@@ -134,6 +172,7 @@ export default function EstimationForm({ initialState }) {
           formData={formData}
           onReset={handleReset}
           estimationId={currentEstimationId.current}
+          bienPhoto={bienPhoto}
         />
       </div>
     );
@@ -252,6 +291,51 @@ export default function EstimationForm({ initialState }) {
               />
             </div>
           )}
+
+          {/* Photo du bien (optionnel) */}
+          <div className="animate-fadeIn">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Photo du bien <span className="text-slate-400 font-normal">(optionnel)</span>
+            </label>
+            <p className="text-xs text-slate-500 mb-3">
+              Ajoutez une photo pour personnaliser votre rapport PDF
+            </p>
+
+            {bienPhoto ? (
+              <div className="relative">
+                <img
+                  src={bienPhoto}
+                  alt="Photo du bien"
+                  className="w-full h-40 object-cover rounded-xl border border-slate-200"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemovePhoto}
+                  className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                  title="Supprimer la photo"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
+              >
+                <ImagePlus className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+                <p className="text-slate-600 text-sm font-medium">Cliquez pour ajouter une photo</p>
+                <p className="text-xs text-slate-400 mt-1">JPG, PNG • Max 5 Mo</p>
+              </div>
+            )}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+          </div>
         </div>
 
         {/* Erreur */}

@@ -80,13 +80,14 @@ const styles = StyleSheet.create({
   },
   bienWithPhoto: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 15,
   },
   bienPhotoContainer: {
-    width: 120,
-    height: 90,
+    width: 100,
+    height: 100,
     borderRadius: 6,
     overflow: 'hidden',
+    border: '1px solid #E2E8F0',
   },
   bienPhoto: {
     width: '100%',
