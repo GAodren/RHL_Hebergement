@@ -412,7 +412,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
         </View>
 
         {/* Date */}
-        <Text style={styles.date}>Rapport généré le {formatDate()}</Text>
+        <Text style={styles.date}>Rapport réalisé le {formatDate()}</Text>
 
         {/* Footer avec À propos de l'agence et coordonnées */}
         <View style={styles.footer}>

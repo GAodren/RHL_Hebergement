@@ -52,19 +52,19 @@ export default function Header() {
           </nav>
 
           {/* Actions desktop */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
             {!loading && user && (
               <>
                 <Link
                   to="/dashboard"
-                  className={`p-2 rounded-lg transition-colors ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                     isActive('/dashboard') || isActive('/profil')
                       ? 'bg-[#E0F4FF] text-[#0077B6]'
-                      : 'text-slate-500 hover:bg-slate-100 hover:text-[#0077B6]'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-[#0077B6]'
                   }`}
-                  title="Dashboard"
                 >
                   <LayoutDashboard className="w-5 h-5" />
+                  Dashboard
                 </Link>
                 <button
                   type="button"
