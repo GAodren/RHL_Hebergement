@@ -20,13 +20,6 @@ export default function SimilarOffers({ comparables }) {
     return photoUrl;
   };
 
-  // Nettoyer la description (enlever les \n et espaces multiples)
-  const cleanDescription = (text) => {
-    if (!text) return 'Aucune description disponible';
-    // Remplacer les \n par des espaces pour un affichage propre
-    return text.replace(/\\n/g, ' ').replace(/\s+/g, ' ').trim();
-  };
-
   // Composant pour une seule carte d'offre avec gestion d'état pour l'image
   const OfferCard = ({ offer, index }) => {
     const [imageError, setImageError] = useState(false);
@@ -90,12 +83,6 @@ export default function SimilarOffers({ comparables }) {
             </div>
           </div>
 
-          {/* Description */}
-          <div className="border-t border-slate-100 pt-4">
-            <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
-              {cleanDescription(offer.description)}
-            </p>
-          </div>
         </div>
       </div>
     );
