@@ -68,7 +68,7 @@ export default function SimilarOffers({ comparables }) {
           </div>
 
           {/* Surface et Commune côte à côte */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-2 gap-3">
             <div className="flex items-center gap-2 text-slate-700 bg-slate-50 rounded-lg px-3 py-2">
               <Ruler className="w-4 h-4 text-slate-500" />
               <p className="font-semibold text-sm">

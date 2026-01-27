@@ -9,7 +9,7 @@ export default function RapportEstimation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { result, formData, adjustedPrice } = location.state || {};
+  const { result, formData, adjustedPrice, bienPhoto } = location.state || {};
 
   // Si pas de données, rediriger vers l'estimation
   if (!result || !formData) {
@@ -88,7 +88,7 @@ export default function RapportEstimation() {
               </p>
             </div>
             <PDFDownloadLink
-              document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} />}
+              document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} bienPhoto={bienPhoto} />}
               fileName={getFileName()}
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
             >
@@ -133,7 +133,7 @@ export default function RapportEstimation() {
               }}
               showToolbar={false}
             >
-              <RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} />
+              <RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} bienPhoto={bienPhoto} />
             </PDFViewer>
           </div>
 
@@ -183,7 +183,7 @@ export default function RapportEstimation() {
 
               {/* Bouton télécharger mobile */}
               <PDFDownloadLink
-                document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} />}
+                document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} bienPhoto={bienPhoto} />}
                 fileName={getFileName()}
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg"
               >

@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Home, Calculator, BarChart3, FileText } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Home, Calculator, BarChart3, FileText, ImagePlus, X } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
@@ -10,9 +10,13 @@ import { updateEstimation } from '../utils/estimations';
 export default function EstimationResult({ result, formData, onReset, estimationId }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
+  const fileInputRef = useRef(null);
 
   // État pour le prix ajusté par l'agent
   const [adjustedPrice, setAdjustedPrice] = useState(prix_moyen);
+
+  // État pour la photo du bien
+  const [bienPhoto, setBienPhoto] = useState(null);
 
   // Pour les terrains, on utilise surface_terrain, sinon surface habitable
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
@@ -26,6 +30,38 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const handlePriceChange = useCallback((newPrice) => {
     setAdjustedPrice(newPrice);
   }, []);
+
+  // Gestion de l'upload de photo
+  const handlePhotoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Vérifier le type
+    if (!file.type.startsWith('image/')) {
+      alert('Veuillez sélectionner une image');
+      return;
+    }
+
+    // Vérifier la taille (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('L\'image ne doit pas dépasser 5 Mo');
+      return;
+    }
+
+    // Convertir en base64
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setBienPhoto(e.target?.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemovePhoto = () => {
+    setBienPhoto(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const getBienLabel = () => {
     const parts = [];
@@ -73,7 +109,8 @@ export default function EstimationResult({ result, formData, onReset, estimation
       state: {
         result,
         formData,
-        adjustedPrice: hasAdjusted ? adjustedPrice : null
+        adjustedPrice: hasAdjusted ? adjustedPrice : null,
+        bienPhoto
       }
     });
   };
@@ -133,6 +170,51 @@ export default function EstimationResult({ result, formData, onReset, estimation
         prixHaut={prix_haut}
         onPriceChange={handlePriceChange}
       />
+
+      {/* Upload photo du bien */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
+        <div className="flex items-center gap-2 mb-4">
+          <ImagePlus className="w-5 h-5 text-[#0077B6]" />
+          <h3 className="text-lg font-semibold text-slate-800">Photo du bien (optionnel)</h3>
+        </div>
+        <p className="text-sm text-slate-500 mb-4">
+          Ajoutez une photo pour personnaliser votre rapport PDF
+        </p>
+
+        {bienPhoto ? (
+          <div className="relative">
+            <img
+              src={bienPhoto}
+              alt="Photo du bien"
+              className="w-full max-h-64 object-cover rounded-xl border border-slate-200"
+            />
+            <button
+              onClick={handleRemovePhoto}
+              className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+              title="Supprimer la photo"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
+          >
+            <ImagePlus className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+            <p className="text-slate-600 font-medium">Cliquez pour ajouter une photo</p>
+            <p className="text-sm text-slate-400 mt-1">JPG, PNG • Max 5 Mo</p>
+          </div>
+        )}
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handlePhotoChange}
+          className="hidden"
+        />
+      </div>
 
       {/* Bouton PDF */}
       <div className="flex justify-center">

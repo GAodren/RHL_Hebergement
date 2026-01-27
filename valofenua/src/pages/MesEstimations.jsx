@@ -347,6 +347,7 @@ export default function MesEstimations() {
                               formData={pdfData.formData}
                               adjustedPrice={pdfData.adjustedPrice}
                               agentProfile={profile}
+                              bienPhoto={null}
                             />
                           }
                           fileName={getFileName(estimation)}

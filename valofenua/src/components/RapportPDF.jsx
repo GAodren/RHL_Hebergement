@@ -78,6 +78,24 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     border: '1px solid #BAE6FD',
   },
+  bienWithPhoto: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  bienPhotoContainer: {
+    width: 120,
+    height: 90,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  bienPhoto: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  bienInfo: {
+    flex: 1,
+  },
   bienRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -246,7 +264,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile }) {
+export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Informations de l'agent et de l'agence
@@ -326,26 +344,35 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Bien estimé</Text>
           <View style={styles.bienBox}>
-            <View style={styles.bienRow}>
-              <View style={styles.bienColumn}>
-                <Text style={styles.bienLabel}>Type de bien</Text>
-                <Text style={styles.bienValue}>{formData.categorie} {formData.type_bien || ''}</Text>
-              </View>
-              <View style={styles.bienColumn}>
-                <Text style={styles.bienLabel}>{getSurfaceLabel()}</Text>
-                <Text style={styles.bienValue}>{surfacePrincipale} m²</Text>
-              </View>
-              <View style={styles.bienColumn}>
-                <Text style={styles.bienLabel}>Localisation</Text>
-                <Text style={styles.bienValue}>{formData.commune}</Text>
+            <View style={bienPhoto ? styles.bienWithPhoto : {}}>
+              {bienPhoto && (
+                <View style={styles.bienPhotoContainer}>
+                  <Image style={styles.bienPhoto} src={bienPhoto} />
+                </View>
+              )}
+              <View style={bienPhoto ? styles.bienInfo : {}}>
+                <View style={styles.bienRow}>
+                  <View style={styles.bienColumn}>
+                    <Text style={styles.bienLabel}>Type de bien</Text>
+                    <Text style={styles.bienValue}>{formData.categorie} {formData.type_bien || ''}</Text>
+                  </View>
+                  <View style={styles.bienColumn}>
+                    <Text style={styles.bienLabel}>{getSurfaceLabel()}</Text>
+                    <Text style={styles.bienValue}>{surfacePrincipale} m²</Text>
+                  </View>
+                  <View style={styles.bienColumn}>
+                    <Text style={styles.bienLabel}>Localisation</Text>
+                    <Text style={styles.bienValue}>{formData.commune}</Text>
+                  </View>
+                </View>
+                {formData.categorie === 'Maison' && formData.surface_terrain && (
+                  <View style={{ marginTop: 4 }}>
+                    <Text style={styles.bienLabel}>Surface terrain</Text>
+                    <Text style={styles.bienValue}>{formData.surface_terrain} m²</Text>
+                  </View>
+                )}
               </View>
             </View>
-            {formData.categorie === 'Maison' && formData.surface_terrain && (
-              <View style={{ marginTop: 4 }}>
-                <Text style={styles.bienLabel}>Surface terrain</Text>
-                <Text style={styles.bienValue}>{formData.surface_terrain} m²</Text>
-              </View>
-            )}
           </View>
         </View>
 
