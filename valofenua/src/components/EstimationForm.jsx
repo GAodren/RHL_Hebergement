@@ -320,9 +320,9 @@ export default function EstimationForm({ initialState }) {
             ) : (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
+                className="border-2 border-dashed border-slate-300 rounded-xl py-12 px-6 text-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
               >
-                <ImagePlus className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+                <ImagePlus className="w-12 h-12 text-slate-400 mx-auto mb-3" />
                 <p className="text-slate-600 text-sm font-medium">Cliquez pour ajouter une photo</p>
                 <p className="text-xs text-slate-400 mt-1">JPG, PNG • Max 5 Mo</p>
               </div>
