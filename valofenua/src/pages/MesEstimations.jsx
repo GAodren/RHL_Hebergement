@@ -283,11 +283,19 @@ export default function MesEstimations() {
                   className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 hover:shadow-md transition-shadow"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                    {/* Icône et infos principales */}
+                    {/* Photo ou icône + infos principales */}
                     <div className="flex items-start gap-4 flex-1">
-                      <div className="w-12 h-12 bg-[#E0F4FF] rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-[#0077B6]" />
-                      </div>
+                      {estimation.photo_url ? (
+                        <img
+                          src={estimation.photo_url}
+                          alt="Photo du bien"
+                          className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 bg-[#E0F4FF] rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-6 h-6 text-[#0077B6]" />
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="font-semibold text-slate-800">
