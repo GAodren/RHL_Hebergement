@@ -9,7 +9,7 @@ export default function RapportEstimation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { result, formData, adjustedPrice, bienPhoto, fromDashboard } = location.state || {};
+  const { result, formData, adjustedPrice, bienPhoto, fromDashboard, estimationId } = location.state || {};
 
   // Si pas de données, rediriger vers l'estimation
   if (!result || !formData) {
@@ -75,7 +75,7 @@ export default function RapportEstimation() {
           </button>
         ) : (
           <button
-            onClick={() => navigate('/estimation', { state: { result, formData, adjustedPrice, bienPhoto } })}
+            onClick={() => navigate('/estimation', { state: { result, formData, adjustedPrice, bienPhoto, estimationId } })}
             className="inline-flex items-center gap-2 text-slate-600 hover:text-[#0077B6] transition-colors mb-6"
           >
             <ArrowLeft className="w-5 h-5" />

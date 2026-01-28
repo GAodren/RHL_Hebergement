@@ -21,7 +21,7 @@ export default function EstimationForm({ initialState }) {
   const [error, setError] = useState(null);
   const [bienPhoto, setBienPhoto] = useState(initialState?.bienPhoto || null);
   const [initialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
-  const currentEstimationId = useRef(null);
+  const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
 
   // Gestion de l'upload de photo

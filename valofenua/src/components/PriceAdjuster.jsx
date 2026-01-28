@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Minus, Plus, RotateCcw, Sliders } from 'lucide-react';
 import { formatPriceMF, formatPriceXPF } from '../utils/formatPrice';
 
-export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceChange }) {
+export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceChange, initialValue }) {
   // Étendre la plage de ±10% au-delà des bornes
   const minPrice = Math.round(prixBas * 0.9);
   const maxPrice = Math.round(prixHaut * 1.1);
@@ -10,7 +10,8 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
   // Palier d'ajustement : 500 000 XPF (0.5 MF)
   const step = 500000;
 
-  const [adjustedPrice, setAdjustedPrice] = useState(prixMoyen);
+  // Utiliser initialValue si fourni, sinon prixMoyen
+  const [adjustedPrice, setAdjustedPrice] = useState(initialValue || prixMoyen);
 
   // Notifier le parent des changements
   useEffect(() => {
