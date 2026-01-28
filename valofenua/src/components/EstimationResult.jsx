@@ -74,7 +74,8 @@ export default function EstimationResult({ result, formData, onReset, estimation
         result,
         formData,
         adjustedPrice: hasAdjusted ? adjustedPrice : null,
-        bienPhoto
+        bienPhoto,
+        estimationId
       }
     });
   };
@@ -148,6 +149,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         prixMoyen={prix_moyen}
         prixHaut={prix_haut}
         onPriceChange={handlePriceChange}
+        initialValue={initialAdjustedPrice}
       />
 
       {/* Bouton PDF */}
