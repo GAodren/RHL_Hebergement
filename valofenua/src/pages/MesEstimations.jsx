@@ -99,6 +99,7 @@ export default function MesEstimations() {
         formData,
         adjustedPrice: estimation.prix_ajuste,
         bienPhoto: estimation.photo_url,
+        fromDashboard: true,
       }
     });
   };

@@ -9,7 +9,7 @@ export default function RapportEstimation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { result, formData, adjustedPrice, bienPhoto } = location.state || {};
+  const { result, formData, adjustedPrice, bienPhoto, fromDashboard } = location.state || {};
 
   // Si pas de données, rediriger vers l'estimation
   if (!result || !formData) {
@@ -64,14 +64,24 @@ export default function RapportEstimation() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-24 pb-12 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Bouton retour */}
-        <button
-          onClick={() => navigate('/estimation', { state: { result, formData, adjustedPrice, bienPhoto } })}
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-[#0077B6] transition-colors mb-6"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Retour à l'estimation
-        </button>
+        {/* Bouton retour - masqué si on vient du dashboard */}
+        {fromDashboard ? (
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="inline-flex items-center gap-2 text-slate-600 hover:text-[#0077B6] transition-colors mb-6"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Retour au dashboard
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate('/estimation', { state: { result, formData, adjustedPrice, bienPhoto } })}
+            className="inline-flex items-center gap-2 text-slate-600 hover:text-[#0077B6] transition-colors mb-6"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Retour à l'estimation
+          </button>
+        )}
 
         {/* En-tête */}
         <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-slate-100 mb-6">
