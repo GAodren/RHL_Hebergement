@@ -98,6 +98,7 @@ export default function MesEstimations() {
         result,
         formData,
         adjustedPrice: estimation.prix_ajuste,
+        bienPhoto: estimation.photo_url,
       }
     });
   };
@@ -347,7 +348,7 @@ export default function MesEstimations() {
                               formData={pdfData.formData}
                               adjustedPrice={pdfData.adjustedPrice}
                               agentProfile={profile}
-                              bienPhoto={null}
+                              bienPhoto={estimation.photo_url}
                             />
                           }
                           fileName={getFileName(estimation)}

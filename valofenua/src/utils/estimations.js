@@ -1,9 +1,60 @@
 import { supabase } from './supabase';
 
 /**
+ * Upload une photo de bien vers Supabase Storage
+ */
+export async function uploadBienPhoto(userId, estimationId, photoBase64) {
+  if (!photoBase64) return { url: null, error: null };
+
+  try {
+    // Extraire le type et les données du base64
+    const matches = photoBase64.match(/^data:image\/(\w+);base64,(.+)$/);
+    if (!matches) {
+      return { url: null, error: 'Format image invalide' };
+    }
+
+    const extension = matches[1];
+    const base64Data = matches[2];
+    const fileName = `${userId}/${estimationId}.${extension}`;
+
+    // Convertir base64 en Blob
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: `image/${extension}` });
+
+    // Upload vers Supabase Storage
+    const { error: uploadError } = await supabase.storage
+      .from('estimation-photos')
+      .upload(fileName, blob, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error('Erreur upload photo:', uploadError);
+      return { url: null, error: uploadError };
+    }
+
+    // Récupérer l'URL publique
+    const { data: urlData } = supabase.storage
+      .from('estimation-photos')
+      .getPublicUrl(fileName);
+
+    return { url: urlData.publicUrl, error: null };
+  } catch (err) {
+    console.error('Erreur upload photo:', err);
+    return { url: null, error: err };
+  }
+}
+
+/**
  * Sauvegarde une estimation dans la base de données
  */
-export async function saveEstimation(userId, formData, result, adjustedPrice = null) {
+export async function saveEstimation(userId, formData, result, adjustedPrice = null, photoUrl = null) {
   const { data, error } = await supabase
     .from('estimations')
     .insert({
@@ -18,6 +69,7 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
       prix_haut: result.prix_haut,
       prix_m2_moyen: result.prix_m2_moyen,
       prix_ajuste: adjustedPrice,
+      photo_url: photoUrl,
     })
     .select()
     .single();

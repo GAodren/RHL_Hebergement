@@ -83,24 +83,39 @@ export default function EstimationResult({ result, formData, onReset, estimation
     <div className="mt-8 space-y-6">
       {/* En-tête avec badge de succès */}
       <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 text-white shadow-lg">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
-            <Banknote className="w-6 h-6" />
+        <div className="flex gap-4">
+          {/* Photo du bien si disponible */}
+          {bienPhoto && (
+            <div className="flex-shrink-0">
+              <img
+                src={bienPhoto}
+                alt="Photo du bien"
+                className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-xl border-2 border-white/30 shadow-lg"
+              />
+            </div>
+          )}
+
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
+                <Banknote className="w-6 h-6" />
+              </div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-bold">
+                  Estimation terminée
+                </h2>
+                <p className="text-emerald-100 text-sm">
+                  Basée sur les données du marché polynésien
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 mt-4 p-3 bg-white/10 backdrop-blur rounded-xl">
+              <Home className="w-5 h-5 text-emerald-200" />
+              <p className="text-lg font-medium">
+                {getBienLabel()}
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold">
-              Estimation terminée
-            </h2>
-            <p className="text-emerald-100 text-sm">
-              Basée sur les données du marché polynésien
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 mt-4 p-3 bg-white/10 backdrop-blur rounded-xl">
-          <Home className="w-5 h-5 text-emerald-200" />
-          <p className="text-lg font-medium">
-            {getBienLabel()}
-          </p>
         </div>
       </div>
 

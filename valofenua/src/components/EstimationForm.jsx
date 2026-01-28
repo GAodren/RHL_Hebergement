@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Target, Loader2, AlertCircle, ImagePlus, X } from 'lucide-react';
 import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
-import { saveEstimation } from '../utils/estimations';
+import { saveEstimation, uploadBienPhoto, updateEstimation } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
 import EstimationResult from './EstimationResult';
 
@@ -120,6 +120,18 @@ export default function EstimationForm({ initialState }) {
         );
         if (savedEstimation) {
           currentEstimationId.current = savedEstimation.id;
+
+          // Upload de la photo si présente
+          if (bienPhoto) {
+            const { url: photoUrl } = await uploadBienPhoto(
+              user.id,
+              savedEstimation.id,
+              bienPhoto
+            );
+            if (photoUrl) {
+              await updateEstimation(savedEstimation.id, { photo_url: photoUrl });
+            }
+          }
         }
         if (saveError) {
           console.error('Erreur sauvegarde estimation:', saveError);
@@ -303,32 +315,37 @@ export default function EstimationForm({ initialState }) {
               Ajoutez une photo pour personnaliser votre rapport PDF
             </p>
 
-            {bienPhoto ? (
-              <div className="relative inline-block">
-                <img
-                  src={bienPhoto}
-                  alt="Photo du bien"
-                  className="max-w-full max-h-48 object-contain rounded-xl border border-slate-200"
-                />
-                <button
-                  type="button"
-                  onClick={handleRemovePhoto}
-                  className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
-                  title="Supprimer la photo"
+            <div className="flex items-start gap-4">
+              {bienPhoto ? (
+                <div className="relative w-32 h-32 flex-shrink-0">
+                  <img
+                    src={bienPhoto}
+                    alt="Photo du bien"
+                    className="w-full h-full object-cover rounded-xl border border-slate-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemovePhoto}
+                    className="absolute -top-2 -right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                    title="Supprimer la photo"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-32 h-32 flex-shrink-0 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
                 >
-                  <X className="w-4 h-4" />
-                </button>
+                  <ImagePlus className="w-8 h-8 text-slate-400 mb-1" />
+                  <p className="text-xs text-slate-500 text-center px-2">Ajouter</p>
+                </div>
+              )}
+              <div className="text-xs text-slate-400 pt-2">
+                <p>JPG, PNG</p>
+                <p>Max 5 Mo</p>
               </div>
-            ) : (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-slate-300 rounded-xl py-12 px-6 text-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
-              >
-                <ImagePlus className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-                <p className="text-slate-600 text-sm font-medium">Cliquez pour ajouter une photo</p>
-                <p className="text-xs text-slate-400 mt-1">JPG, PNG • Max 5 Mo</p>
-              </div>
-            )}
+            </div>
 
             <input
               ref={fileInputRef}
