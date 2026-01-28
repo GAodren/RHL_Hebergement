@@ -113,13 +113,17 @@ export default function EstimationResult({ result, formData, onReset, estimation
       />
 
       {/* Tendance du marché */}
-      <MarketTrends commune={formData.commune} />
+      <div className="flex justify-center">
+        <div className="w-full max-w-sm">
+          <MarketTrends commune={formData.commune} />
+        </div>
+      </div>
 
       {/* Bouton PDF */}
       <div className="flex justify-center">
         <button
           onClick={handleExportPDF}
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl text-lg"
+          className="w-full max-w-sm flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl text-lg"
         >
           <FileText className="w-5 h-5" />
           Exporter en PDF {adjustedPrice !== prix_moyen && '(prix ajusté)'}
