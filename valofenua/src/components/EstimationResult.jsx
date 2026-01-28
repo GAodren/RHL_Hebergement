@@ -62,32 +62,32 @@ export default function EstimationResult({ result, formData, onReset, estimation
   };
 
   return (
-    <div className="mt-4 space-y-3 max-w-xl mx-auto">
-      {/* En-tête compact */}
-      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg p-3 text-white shadow">
-        <div className="flex gap-3 items-center">
+    <div className="mt-6 space-y-4">
+      {/* En-tête */}
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl p-4 text-white shadow-lg">
+        <div className="flex gap-4 items-center">
           {bienPhoto && (
             <img
               src={bienPhoto}
               alt="Photo du bien"
-              className="w-14 h-14 object-cover rounded-lg border border-white/30 flex-shrink-0"
+              className="w-20 h-20 object-cover rounded-lg border-2 border-white/30 flex-shrink-0"
             />
           )}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <Banknote className="w-4 h-4 flex-shrink-0" />
-              <span className="font-semibold text-sm">Estimation terminée</span>
+            <div className="flex items-center gap-2 mb-1">
+              <Banknote className="w-5 h-5 flex-shrink-0" />
+              <span className="font-bold text-lg">Estimation terminée</span>
             </div>
-            <p className="text-xs text-emerald-100 truncate mt-0.5">{getBienLabel()}</p>
+            <p className="text-sm text-emerald-100">{getBienLabel()}</p>
           </div>
         </div>
       </div>
 
       {/* Prix principal */}
-      <div className="bg-white rounded-lg shadow-sm p-4 border border-slate-100">
-        <div className="flex items-center gap-1.5 mb-2">
-          <TrendingUp className="w-4 h-4 text-[#0077B6]" />
-          <span className="text-sm font-medium text-slate-700">Fourchette de prix</span>
+      <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
+        <div className="flex items-center gap-2 mb-4">
+          <TrendingUp className="w-5 h-5 text-[#0077B6]" />
+          <span className="text-base font-semibold text-slate-800">Fourchette de prix estimée</span>
         </div>
 
         <PriceRangeBar
@@ -96,10 +96,10 @@ export default function EstimationResult({ result, formData, onReset, estimation
           prixHaut={prix_haut}
         />
 
-        <div className="mt-3 text-center py-3 bg-blue-50 rounded-lg border border-blue-100">
-          <p className="text-[10px] text-[#0077B6] font-medium uppercase tracking-wide">Valeur estimée</p>
-          <p className="text-2xl font-bold text-[#0077B6]">{formatPriceMF(prix_moyen)}</p>
-          <p className="text-[10px] text-slate-500">{formatPriceXPF(prix_moyen)}</p>
+        <div className="mt-4 text-center py-4 bg-gradient-to-br from-[#E0F4FF] to-blue-50 rounded-xl border border-blue-200">
+          <p className="text-xs text-[#0077B6] font-medium uppercase tracking-wide">Valeur estimée de votre bien</p>
+          <p className="text-3xl font-bold text-[#0077B6] mt-1">{formatPriceMF(prix_moyen)}</p>
+          <p className="text-xs text-slate-500 mt-1">{formatPriceXPF(prix_moyen)}</p>
         </div>
       </div>
 
@@ -116,45 +116,46 @@ export default function EstimationResult({ result, formData, onReset, estimation
       <MarketTrends commune={formData.commune} />
 
       {/* Bouton PDF */}
-      <button
-        onClick={handleExportPDF}
-        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-3 rounded-lg font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow text-sm"
-      >
-        <FileText className="w-4 h-4" />
-        Exporter en PDF {adjustedPrice !== prix_moyen && '(prix ajusté)'}
-      </button>
+      <div className="flex justify-center">
+        <button
+          onClick={handleExportPDF}
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-4 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl text-lg"
+        >
+          <FileText className="w-5 h-5" />
+          Exporter en PDF {adjustedPrice !== prix_moyen && '(prix ajusté)'}
+        </button>
+      </div>
 
-      {/* Stats en grille compacte */}
-      <div className="grid grid-cols-4 gap-2">
-        <div className="bg-blue-50 rounded-lg p-2 text-center border border-blue-100">
-          <MapPin className="w-3.5 h-3.5 text-blue-600 mx-auto mb-1" />
-          <p className="text-[9px] text-slate-500 uppercase">Prix/m²</p>
-          <p className="text-xs font-bold text-blue-600">{(prix_m2_moyen / 1000).toFixed(0)}k</p>
+      {/* Stats en grille */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-blue-50 rounded-xl p-3 text-center border border-blue-200">
+          <MapPin className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+          <p className="text-xs text-slate-500 uppercase">Prix/m²</p>
+          <p className="text-sm font-bold text-blue-600">{formatPriceXPF(prix_m2_moyen)}</p>
         </div>
-        <div className="bg-purple-50 rounded-lg p-2 text-center border border-purple-100">
-          <Ruler className="w-3.5 h-3.5 text-purple-600 mx-auto mb-1" />
-          <p className="text-[9px] text-slate-500 uppercase">Surface</p>
-          <p className="text-xs font-bold text-purple-600">{surfacePrincipale} m²</p>
+        <div className="bg-purple-50 rounded-xl p-3 text-center border border-purple-200">
+          <Ruler className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+          <p className="text-xs text-slate-500 uppercase">Surface</p>
+          <p className="text-sm font-bold text-purple-600">{surfacePrincipale} m²</p>
         </div>
-        <div className="bg-emerald-50 rounded-lg p-2 text-center border border-emerald-100">
-          <Calculator className="w-3.5 h-3.5 text-emerald-600 mx-auto mb-1" />
-          <p className="text-[9px] text-slate-500 uppercase">m² bas</p>
-          <p className="text-xs font-bold text-emerald-600">{(prixM2Bas / 1000).toFixed(0)}k</p>
+        <div className="bg-emerald-50 rounded-xl p-3 text-center border border-emerald-200">
+          <Calculator className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+          <p className="text-xs text-slate-500 uppercase">Prix/m² bas</p>
+          <p className="text-sm font-bold text-emerald-600">{formatPriceXPF(prixM2Bas)}</p>
         </div>
-        <div className="bg-amber-50 rounded-lg p-2 text-center border border-amber-100">
-          <Calculator className="w-3.5 h-3.5 text-amber-600 mx-auto mb-1" />
-          <p className="text-[9px] text-slate-500 uppercase">m² haut</p>
-          <p className="text-xs font-bold text-amber-600">{(prixM2Haut / 1000).toFixed(0)}k</p>
+        <div className="bg-amber-50 rounded-xl p-3 text-center border border-amber-200">
+          <Calculator className="w-5 h-5 text-amber-600 mx-auto mb-1" />
+          <p className="text-xs text-slate-500 uppercase">Prix/m² haut</p>
+          <p className="text-sm font-bold text-amber-600">{formatPriceXPF(prixM2Haut)}</p>
         </div>
       </div>
 
       {/* Écart */}
-      <div className="flex items-center gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200">
-        <BarChart3 className="w-4 h-4 text-slate-500 flex-shrink-0" />
-        <div className="flex-1">
-          <span className="text-xs text-slate-600">Écart bas/haut : </span>
-          <span className="text-xs font-semibold text-slate-700">{formatPriceMF(ecartPrix)}</span>
-          <span className="text-[10px] text-slate-400 ml-1">(±{pourcentageEcart}%)</span>
+      <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-4 border border-slate-200">
+        <BarChart3 className="w-5 h-5 text-slate-500 flex-shrink-0" />
+        <div>
+          <p className="text-sm text-slate-600">Écart entre prix bas et haut</p>
+          <p className="text-base font-bold text-slate-700">{formatPriceMF(ecartPrix)} <span className="text-sm font-normal text-slate-500">(±{pourcentageEcart}%)</span></p>
         </div>
       </div>
 
@@ -162,18 +163,22 @@ export default function EstimationResult({ result, formData, onReset, estimation
       <SimilarOffers comparables={result.comparables} />
 
       {/* Note */}
-      <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 rounded p-2">
-        <span className="font-medium">Note :</span> Estimation indicative basée sur le marché polynésien, ne constitue pas une évaluation officielle.
-      </p>
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <p className="text-sm text-amber-800">
+          <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien et ne constitue pas une évaluation officielle.
+        </p>
+      </div>
 
       {/* Nouvelle estimation */}
-      <button
-        onClick={onReset}
-        className="w-full flex items-center justify-center gap-2 bg-[#0077B6] text-white px-4 py-3 rounded-lg font-medium hover:bg-[#005f8a] transition-colors text-sm"
-      >
-        <RotateCcw className="w-4 h-4" />
-        Nouvelle estimation
-      </button>
+      <div className="flex justify-center">
+        <button
+          onClick={onReset}
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
+        >
+          <RotateCcw className="w-5 h-5" />
+          Nouvelle estimation
+        </button>
+      </div>
     </div>
   );
 }
