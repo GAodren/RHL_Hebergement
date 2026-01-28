@@ -4,6 +4,7 @@ import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Home, Calculator, BarCh
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
+import MarketTrends from './MarketTrends';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
 import { updateEstimation } from '../utils/estimations';
 
@@ -46,15 +47,15 @@ export default function EstimationResult({ result, formData, onReset, estimation
   };
 
   const StatCard = ({ icon: Icon, label, value, subValue, bgColor, iconColor, borderColor }) => (
-    <div className={`${bgColor} ${borderColor} border rounded-xl p-4 transition-transform hover:scale-105`}>
-      <div className="flex items-center gap-3">
-        <div className={`w-10 h-10 ${iconColor} bg-white/50 rounded-lg flex items-center justify-center`}>
-          <Icon className="w-5 h-5" />
+    <div className={`${bgColor} ${borderColor} border rounded-lg p-3 transition-transform hover:scale-105`}>
+      <div className="flex items-center gap-2">
+        <div className={`w-8 h-8 ${iconColor} bg-white/50 rounded-lg flex items-center justify-center flex-shrink-0`}>
+          <Icon className="w-4 h-4" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium text-slate-600 uppercase tracking-wide">{label}</p>
-          <p className={`text-lg font-bold ${iconColor} truncate`}>{value}</p>
-          {subValue && <p className="text-xs text-slate-500">{subValue}</p>}
+          <p className="text-[10px] font-medium text-slate-600 uppercase tracking-wide">{label}</p>
+          <p className={`text-sm font-bold ${iconColor} truncate`}>{value}</p>
+          {subValue && <p className="text-[10px] text-slate-500">{subValue}</p>}
         </div>
       </div>
     </div>
@@ -81,38 +82,38 @@ export default function EstimationResult({ result, formData, onReset, estimation
   };
 
   return (
-    <div className="mt-8 space-y-6">
-      {/* En-tête avec badge de succès */}
-      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 text-white shadow-lg">
-        <div className="flex gap-4">
+    <div className="mt-6 space-y-4">
+      {/* En-tête avec badge de succès - Version compacte */}
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl p-4 text-white shadow-lg">
+        <div className="flex gap-3">
           {/* Photo du bien si disponible */}
           {bienPhoto && (
             <div className="flex-shrink-0">
               <img
                 src={bienPhoto}
                 alt="Photo du bien"
-                className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-xl border-2 border-white/30 shadow-lg"
+                className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border-2 border-white/30 shadow-lg"
               />
             </div>
           )}
 
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
-                <Banknote className="w-6 h-6" />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center flex-shrink-0">
+                <Banknote className="w-4 h-4" />
               </div>
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold">
+              <div className="min-w-0">
+                <h2 className="text-lg md:text-xl font-bold">
                   Estimation terminée
                 </h2>
-                <p className="text-emerald-100 text-sm">
-                  Basée sur les données du marché polynésien
+                <p className="text-emerald-100 text-xs">
+                  Basée sur les données du marché
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 mt-4 p-3 bg-white/10 backdrop-blur rounded-xl">
-              <Home className="w-5 h-5 text-emerald-200" />
-              <p className="text-lg font-medium">
+            <div className="flex items-center gap-2 p-2 bg-white/10 backdrop-blur rounded-lg">
+              <Home className="w-4 h-4 text-emerald-200 flex-shrink-0" />
+              <p className="text-sm font-medium truncate">
                 {getBienLabel()}
               </p>
             </div>
@@ -120,11 +121,11 @@ export default function EstimationResult({ result, formData, onReset, estimation
         </div>
       </div>
 
-      {/* Carte principale avec la fourchette de prix */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-slate-100">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-[#0077B6]" />
-          <h3 className="text-lg font-semibold text-slate-800">Fourchette de prix estimée</h3>
+      {/* Carte principale avec la fourchette de prix - Version compacte */}
+      <div className="bg-white rounded-xl shadow-lg p-4 md:p-5 border border-slate-100">
+        <div className="flex items-center gap-2 mb-3">
+          <TrendingUp className="w-4 h-4 text-[#0077B6]" />
+          <h3 className="text-base font-semibold text-slate-800">Fourchette de prix estimée</h3>
         </div>
 
         <PriceRangeBar
@@ -134,10 +135,10 @@ export default function EstimationResult({ result, formData, onReset, estimation
         />
 
         {/* Valeur centrale mise en avant */}
-        <div className="mt-6 text-center p-6 bg-gradient-to-br from-[#E0F4FF] to-blue-50 rounded-xl border border-blue-200">
-          <p className="text-sm text-[#0077B6] font-medium mb-1">Valeur estimée de votre bien</p>
-          <p className="text-4xl md:text-5xl font-bold text-[#0077B6]">{formatPriceMF(prix_moyen)}</p>
-          <p className="text-slate-500 text-sm mt-2">
+        <div className="mt-4 text-center p-4 bg-gradient-to-br from-[#E0F4FF] to-blue-50 rounded-lg border border-blue-200">
+          <p className="text-xs text-[#0077B6] font-medium mb-1">Valeur estimée de votre bien</p>
+          <p className="text-3xl md:text-4xl font-bold text-[#0077B6]">{formatPriceMF(prix_moyen)}</p>
+          <p className="text-slate-500 text-xs mt-1">
             soit {formatPriceXPF(prix_moyen)}
           </p>
         </div>
@@ -152,6 +153,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
         initialValue={initialAdjustedPrice}
       />
 
+      {/* Tendance du marché */}
+      <MarketTrends commune={formData.commune} />
+
       {/* Bouton PDF */}
       <div className="flex justify-center">
         <button
@@ -164,7 +168,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
       </div>
 
       {/* Grille de statistiques colorées */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <StatCard
           icon={MapPin}
           label="Prix/m² secteur"
@@ -203,15 +207,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
       </div>
 
       {/* Statistique sur l'écart */}
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-5 border border-slate-200">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-slate-200 rounded-xl flex items-center justify-center">
-            <BarChart3 className="w-6 h-6 text-slate-600" />
+      <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg p-3 border border-slate-200">
+        <div className="flex items-center gap-2">
+          <div className="w-9 h-9 bg-slate-200 rounded-lg flex items-center justify-center flex-shrink-0">
+            <BarChart3 className="w-4 h-4 text-slate-600" />
           </div>
           <div>
-            <p className="text-sm text-slate-500">Écart entre prix bas et haut</p>
-            <p className="text-xl font-bold text-slate-700">{formatPriceMF(ecartPrix)}</p>
-            <p className="text-xs text-slate-500">soit environ ±{pourcentageEcart}% autour de l'estimation</p>
+            <p className="text-xs text-slate-500">Écart entre prix bas et haut</p>
+            <p className="text-base font-bold text-slate-700">{formatPriceMF(ecartPrix)} <span className="text-xs font-normal text-slate-500">(±{pourcentageEcart}%)</span></p>
           </div>
         </div>
       </div>
@@ -220,10 +223,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
       <SimilarOffers comparables={result.comparables} />
 
       {/* Note informative */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-        <p className="text-sm text-amber-800">
-          <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien.
-          Elle est fournie à titre indicatif et ne constitue pas une évaluation officielle.
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+        <p className="text-xs text-amber-800">
+          <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien et ne constitue pas une évaluation officielle.
         </p>
       </div>
 
