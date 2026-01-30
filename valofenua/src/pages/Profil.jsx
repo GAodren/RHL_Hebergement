@@ -20,6 +20,7 @@ import {
 export default function Profil({ embedded = false }) {
   const { user, profile, updateProfile, uploadLogo, loading: authLoading } = useAuth();
   const fileInputRef = useRef(null);
+  const hasInitialized = useRef(false);
 
   const [formData, setFormData] = useState({
     nom: '',
@@ -36,9 +37,10 @@ export default function Profil({ embedded = false }) {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [logoPreview, setLogoPreview] = useState(null);
 
-  // Charger les données du profil
+  // Charger les données du profil uniquement au premier chargement
   useEffect(() => {
-    if (profile) {
+    if (profile && !hasInitialized.current) {
+      hasInitialized.current = true;
       setFormData({
         nom: profile.nom || '',
         prenom: profile.prenom || '',
