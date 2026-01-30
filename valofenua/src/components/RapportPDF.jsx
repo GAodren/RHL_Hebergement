@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 12,
     border: '1px solid #E2E8F0',
+    maxWidth: 250,
   },
   marketTrendsHeader: {
     flexDirection: 'row',
@@ -698,15 +699,13 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
           </View>
         )}
 
-        {/* Avertissement */}
-        {visibility.note && (
-          <View style={styles.disclaimer}>
-            <Text style={styles.disclaimerText}>
-              Cette estimation est basée sur les données du marché immobilier polynésien.
-              Elle est fournie à titre indicatif et ne constitue pas une évaluation officielle.
-            </Text>
-          </View>
-        )}
+        {/* Avertissement - toujours affiché */}
+        <View style={styles.disclaimer}>
+          <Text style={styles.disclaimerText}>
+            Cette estimation est basée sur les données du marché immobilier polynésien.
+            Elle est fournie à titre indicatif et ne constitue pas une évaluation officielle.
+          </Text>
+        </View>
 
         {/* Date */}
         <Text style={styles.date}>Rapport réalisé le {formatDate()}</Text>
