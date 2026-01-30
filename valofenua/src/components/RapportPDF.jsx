@@ -11,6 +11,25 @@ const cleanPhotoUrl = (photoUrl) => {
   return photoUrl;
 };
 
+// Labels pour l'état du bien
+const ETATS_BIEN_LABELS = {
+  neuf: 'Neuf / Récent',
+  excellent: 'Excellent état',
+  bon: 'Bon état général',
+  rafraichir: 'À rafraîchir',
+  renover: 'À rénover',
+};
+
+// Labels pour les caractéristiques
+const CARACTERISTIQUES_LABELS = {
+  villa: 'Villa',
+  vue_mer: 'Vue mer',
+  vue_montagne: 'Vue montagne',
+  bord_mer: 'Bord de mer / Accès plage',
+  piscine: 'Piscine',
+  terrasse: 'Terrasse',
+};
+
 // Styles pour le PDF - Design agence
 const styles = StyleSheet.create({
   page: {
@@ -404,6 +423,49 @@ const styles = StyleSheet.create({
     fontSize: 7,
     color: '#64748B',
   },
+  // Caractéristiques du bien
+  bienDetailsSection: {
+    marginBottom: 12,
+  },
+  bienDetailsBox: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 6,
+    padding: 10,
+    border: '1px solid #E2E8F0',
+  },
+  bienDetailsRow: {
+    flexDirection: 'row',
+    gap: 20,
+  },
+  bienDetailsColumn: {
+    flex: 1,
+  },
+  bienDetailsLabel: {
+    fontSize: 7,
+    color: '#64748B',
+    marginBottom: 3,
+    textTransform: 'uppercase',
+  },
+  bienDetailsValue: {
+    fontSize: 9,
+    color: '#1E293B',
+    fontWeight: 'bold',
+  },
+  caracteristiquesList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+  },
+  caracteristiqueBadge: {
+    backgroundColor: '#E0F4FF',
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  caracteristiqueBadgeText: {
+    fontSize: 8,
+    color: '#0077B6',
+  },
 });
 
 export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, sectionVisibility, hiddenComparables = [] }) {
@@ -415,8 +477,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
     statsGrid: true,
     priceGap: true,
     similarOffers: true,
+    bienDetails: true,
     note: true,
   };
+
+  // Vérifier si on a des détails du bien à afficher
+  const hasBienDetails = formData.etat_bien || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
   // Filtrer les biens similaires en excluant les masqués
   const visibleComparables = result.comparables
@@ -583,6 +649,41 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               <View style={styles.statBox}>
                 <Text style={styles.statLabel}>Prix/m² (fourchette haute)</Text>
                 <Text style={styles.statValue}>{formatPriceXPF(prixM2Haut)}</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* Caractéristiques du bien */}
+        {visibility.bienDetails && hasBienDetails && (
+          <View style={styles.bienDetailsSection}>
+            <Text style={styles.sectionTitle}>Caractéristiques du bien</Text>
+            <View style={styles.bienDetailsBox}>
+              <View style={styles.bienDetailsRow}>
+                {/* État du bien */}
+                {formData.etat_bien && (
+                  <View style={styles.bienDetailsColumn}>
+                    <Text style={styles.bienDetailsLabel}>État du bien</Text>
+                    <Text style={styles.bienDetailsValue}>
+                      {ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}
+                    </Text>
+                  </View>
+                )}
+                {/* Caractéristiques */}
+                {formData.caracteristiques && formData.caracteristiques.length > 0 && (
+                  <View style={styles.bienDetailsColumn}>
+                    <Text style={styles.bienDetailsLabel}>Caractéristiques</Text>
+                    <View style={styles.caracteristiquesList}>
+                      {formData.caracteristiques.map((carac, index) => (
+                        <View key={index} style={styles.caracteristiqueBadge}>
+                          <Text style={styles.caracteristiqueBadgeText}>
+                            {CARACTERISTIQUES_LABELS[carac] || carac}
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                )}
               </View>
             </View>
           </View>

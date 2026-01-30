@@ -274,7 +274,7 @@ export default function EstimationForm({ initialState }) {
         {/* Champs conditionnels avec animation */}
         <div
           className={`space-y-6 overflow-hidden transition-all duration-300 ease-in-out ${
-            formData.categorie ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+            formData.categorie ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           {/* Type de bien - Maison ou Appartement */}

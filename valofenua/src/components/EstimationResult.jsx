@@ -1,12 +1,31 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, Check } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
 import MarketTrends from './MarketTrends';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
 import { updateEstimation } from '../utils/estimations';
+
+// Labels pour l'état du bien
+const ETATS_BIEN_LABELS = {
+  neuf: 'Neuf / Récent',
+  excellent: 'Excellent état',
+  bon: 'Bon état général',
+  rafraichir: 'À rafraîchir',
+  renover: 'À rénover',
+};
+
+// Labels pour les caractéristiques
+const CARACTERISTIQUES_LABELS = {
+  villa: 'Villa',
+  vue_mer: 'Vue mer',
+  vue_montagne: 'Vue montagne',
+  bord_mer: 'Bord de mer / Accès plage',
+  piscine: 'Piscine',
+  terrasse: 'Terrasse',
+};
 
 // Composant wrapper pour les sections toggleables
 function ToggleableSection({ id, visible, onToggle, children, className = '' }) {
@@ -40,6 +59,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
     marketTrends: true,
     statsGrid: true,
     similarOffers: true,
+    bienDetails: true,
   });
 
   // État pour masquer des biens similaires individuellement (indices des biens masqués)
@@ -210,6 +230,52 @@ export default function EstimationResult({ result, formData, onReset, estimation
           </div>
         </div>
       </ToggleableSection>
+
+      {/* Caractéristiques du bien - TOGGLEABLE (seulement si des données existent) */}
+      {(formData.etat_bien || (formData.caracteristiques && formData.caracteristiques.length > 0)) && (
+        <ToggleableSection
+          id="bienDetails"
+          visible={sectionVisibility.bienDetails}
+          onToggle={toggleSection}
+        >
+          <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
+            <div className="flex items-center gap-2 mb-4">
+              <Home className="w-5 h-5 text-[#0077B6]" />
+              <span className="text-base font-semibold text-slate-800">Caractéristiques du bien</span>
+            </div>
+
+            <div className="space-y-4">
+              {/* État du bien */}
+              {formData.etat_bien && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">État du bien</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}
+                  </p>
+                </div>
+              )}
+
+              {/* Caractéristiques */}
+              {formData.caracteristiques && formData.caracteristiques.length > 0 && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Caractéristiques</p>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.caracteristiques.map((carac) => (
+                      <span
+                        key={carac}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E0F4FF] text-[#0077B6] rounded-full text-sm font-medium"
+                      >
+                        <Check className="w-3.5 h-3.5" />
+                        {CARACTERISTIQUES_LABELS[carac] || carac}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </ToggleableSection>
+      )}
 
       {/* Offres similaires - TOGGLEABLE */}
       <ToggleableSection
