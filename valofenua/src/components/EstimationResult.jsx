@@ -110,7 +110,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
   return (
     <div className="mt-6 space-y-4">
       {/* En-tête - OBLIGATOIRE */}
-      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl p-4 text-white shadow-lg">
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl p-3 text-white shadow-lg">
         <div className="flex gap-4 items-center">
           {bienPhoto && (
             <img

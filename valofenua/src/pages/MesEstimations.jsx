@@ -280,7 +280,7 @@ export default function MesEstimations() {
               return (
                 <div
                   key={estimation.id}
-                  className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 hover:shadow-md transition-shadow"
+                  className="bg-white rounded-xl shadow-sm border border-slate-200 p-3 sm:p-4 hover:shadow-md transition-shadow"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center gap-4">
                     {/* Photo ou icône + infos principales */}
