@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, BarChart3, FileText, Eye, EyeOff } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
@@ -39,7 +39,6 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const [sectionVisibility, setSectionVisibility] = useState({
     marketTrends: true,
     statsGrid: true,
-    priceGap: true,
     similarOffers: true,
   });
 
@@ -48,8 +47,6 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
 
-  const ecartPrix = prix_haut - prix_bas;
-  const pourcentageEcart = ((ecartPrix / prix_moyen) * 100).toFixed(0);
   const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
   const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
 
@@ -119,7 +116,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <img
               src={bienPhoto}
               alt="Photo du bien"
-              className="w-20 h-20 object-cover rounded-lg border-2 border-white/30 flex-shrink-0"
+              className="w-28 h-28 object-cover rounded-lg border-2 border-white/30 flex-shrink-0"
             />
           )}
           <div className="flex-1 min-w-0">
@@ -210,21 +207,6 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <Calculator className="w-5 h-5 text-amber-600 mx-auto mb-1" />
             <p className="text-xs text-slate-500 uppercase">Prix/m² haut</p>
             <p className="text-sm font-bold text-amber-600">{formatPriceXPF(prixM2Haut)}</p>
-          </div>
-        </div>
-      </ToggleableSection>
-
-      {/* Écart - TOGGLEABLE */}
-      <ToggleableSection
-        id="priceGap"
-        visible={sectionVisibility.priceGap}
-        onToggle={toggleSection}
-      >
-        <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <BarChart3 className="w-5 h-5 text-slate-500 flex-shrink-0" />
-          <div>
-            <p className="text-sm text-slate-600">Écart entre prix bas et haut</p>
-            <p className="text-base font-bold text-slate-700">{formatPriceMF(ecartPrix)} <span className="text-sm font-normal text-slate-500">(±{pourcentageEcart}%)</span></p>
           </div>
         </div>
       </ToggleableSection>
