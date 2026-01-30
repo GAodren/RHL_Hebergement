@@ -1,6 +1,6 @@
 const API_URL = 'https://n8n.srv1206491.hstgr.cloud/webhook/estimation';
 
-export async function getEstimation({ commune, categorie, type_bien, surface, surface_terrain }) {
+export async function getEstimation({ commune, categorie, type_bien, surface, surface_terrain, etat_bien, caracteristiques }) {
   // Pour les terrains, on envoie surface_terrain dans le champ "surface"
   const surfaceToSend = categorie === 'Terrain' ? Number(surface_terrain) : Number(surface);
 
@@ -18,6 +18,16 @@ export async function getEstimation({ commune, categorie, type_bien, surface, su
   // Ajouter surface_terrain pour les maisons si défini
   if (categorie === 'Maison' && surface_terrain) {
     body.surface_terrain = Number(surface_terrain);
+  }
+
+  // Ajouter état du bien si défini
+  if (etat_bien) {
+    body.etat_bien = etat_bien;
+  }
+
+  // Ajouter caractéristiques si définies
+  if (caracteristiques && caracteristiques.length > 0) {
+    body.caracteristiques = caracteristiques;
   }
 
   const response = await fetch(API_URL, {

@@ -1,9 +1,28 @@
 import { useState, useRef } from 'react';
-import { Target, Loader2, AlertCircle, ImagePlus, X } from 'lucide-react';
+import { Target, Loader2, AlertCircle, ImagePlus, X, Check } from 'lucide-react';
 import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
 import { saveEstimation, uploadBienPhoto, updateEstimation } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
 import EstimationResult from './EstimationResult';
+
+// Options pour l'état du bien
+const ETATS_BIEN = [
+  { value: 'neuf', label: 'Neuf / Récent (moins de 5 ans)' },
+  { value: 'excellent', label: 'Excellent état' },
+  { value: 'bon', label: 'Bon état général' },
+  { value: 'rafraichir', label: 'À rafraîchir' },
+  { value: 'renover', label: 'À rénover' },
+];
+
+// Caractéristiques extérieures
+const CARACTERISTIQUES = [
+  { id: 'villa', label: 'Villa' },
+  { id: 'vue_mer', label: 'Vue mer' },
+  { id: 'vue_montagne', label: 'Vue montagne' },
+  { id: 'bord_mer', label: 'Bord de mer / Accès plage' },
+  { id: 'piscine', label: 'Piscine' },
+  { id: 'terrasse', label: 'Terrasse' },
+];
 
 export default function EstimationForm({ initialState }) {
   const { user } = useAuth();
@@ -14,6 +33,8 @@ export default function EstimationForm({ initialState }) {
       type_bien: '',
       surface: '',
       surface_terrain: '',
+      etat_bien: '',
+      caracteristiques: [],
     }
   );
   const [result, setResult] = useState(initialState?.result || null);
@@ -67,11 +88,22 @@ export default function EstimationForm({ initialState }) {
         type_bien: '',
         surface: '',
         surface_terrain: '',
+        etat_bien: '',
+        caracteristiques: [],
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
     setError(null);
+  };
+
+  const handleCaracteristiqueToggle = (caracId) => {
+    setFormData((prev) => ({
+      ...prev,
+      caracteristiques: prev.caracteristiques.includes(caracId)
+        ? prev.caracteristiques.filter((id) => id !== caracId)
+        : [...prev.caracteristiques, caracId],
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -154,6 +186,8 @@ export default function EstimationForm({ initialState }) {
       type_bien: '',
       surface: '',
       surface_terrain: '',
+      etat_bien: '',
+      caracteristiques: [],
     });
     setBienPhoto(null);
     if (fileInputRef.current) {
@@ -303,6 +337,64 @@ export default function EstimationForm({ initialState }) {
                 placeholder={formData.categorie === 'Terrain' ? 'Ex: 800' : 'Ex: 500 (optionnel)'}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all"
               />
+            </div>
+          )}
+
+          {/* État du bien - Maison ou Appartement */}
+          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement') && (
+            <div className="animate-fadeIn">
+              <label htmlFor="etat_bien" className="block text-sm font-medium text-slate-700 mb-2">
+                État du bien <span className="text-slate-400 font-normal">(optionnel)</span>
+              </label>
+              <select
+                id="etat_bien"
+                name="etat_bien"
+                value={formData.etat_bien}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
+              >
+                <option value="">Sélectionnez l'état</option>
+                {ETATS_BIEN.map((etat) => (
+                  <option key={etat.value} value={etat.value}>
+                    {etat.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Caractéristiques - Maison ou Appartement */}
+          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement') && (
+            <div className="animate-fadeIn">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Caractéristiques <span className="text-slate-400 font-normal">(optionnel)</span>
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {CARACTERISTIQUES.map((carac) => {
+                  const isSelected = formData.caracteristiques.includes(carac.id);
+                  return (
+                    <button
+                      key={carac.id}
+                      type="button"
+                      onClick={() => handleCaracteristiqueToggle(carac.id)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm text-left transition-all ${
+                        isSelected
+                          ? 'border-[#0077B6] bg-[#E0F4FF] text-[#0077B6]'
+                          : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                      }`}
+                    >
+                      <div
+                        className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 ${
+                          isSelected ? 'bg-[#0077B6]' : 'border border-slate-300'
+                        }`}
+                      >
+                        {isSelected && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <span>{carac.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
