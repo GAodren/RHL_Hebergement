@@ -48,22 +48,24 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, initialAdjustedPrice }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const [adjustedPrice, setAdjustedPrice] = useState(initialAdjustedPrice || prix_moyen);
 
   // État de visibilité des sections pour le PDF
-  const [sectionVisibility, setSectionVisibility] = useState({
-    marketTrends: true,
-    statsGrid: true,
-    similarOffers: true,
-    bienDetails: true,
-  });
+  const [sectionVisibility, setSectionVisibility] = useState(
+    initialSectionVisibility || {
+      marketTrends: true,
+      statsGrid: true,
+      similarOffers: true,
+      bienDetails: true,
+    }
+  );
 
   // État pour masquer des biens similaires individuellement (indices des biens masqués)
-  const [hiddenComparables, setHiddenComparables] = useState([]);
+  const [hiddenComparables, setHiddenComparables] = useState(initialHiddenComparables || []);
 
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
 

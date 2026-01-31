@@ -76,8 +76,8 @@ export default function MesEstimations() {
     setTimeout(() => setMessage({ type: '', text: '' }), 3000);
   };
 
-  const handleViewPDF = (estimation) => {
-    // Reconstruire les données pour la page rapport
+  const handleViewEstimation = (estimation) => {
+    // Reconstruire les données pour la page estimation
     const formData = {
       commune: estimation.commune,
       categorie: estimation.categorie,
@@ -96,13 +96,14 @@ export default function MesEstimations() {
       comparables: estimation.comparables || [],
     };
 
-    navigate('/rapport', {
+    // Naviguer vers la page estimation avec les données pré-remplies
+    navigate('/estimation', {
       state: {
         result,
         formData,
         adjustedPrice: estimation.prix_ajuste,
         bienPhoto: estimation.photo_url,
-        fromDashboard: true,
+        estimationId: estimation.id,
         sectionVisibility: estimation.section_visibility,
         hiddenComparables: estimation.hidden_comparables || [],
       }
@@ -350,11 +351,11 @@ export default function MesEstimations() {
                           <StickyNote className="w-5 h-5" />
                         </button>
 
-                        {/* Bouton Voir */}
+                        {/* Bouton Voir/Modifier */}
                         <button
-                          onClick={() => handleViewPDF(estimation)}
+                          onClick={() => handleViewEstimation(estimation)}
                           className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-[#E0F4FF] rounded-lg transition-colors"
-                          title="Voir le rapport"
+                          title="Voir et modifier l'estimation"
                         >
                           <Eye className="w-5 h-5" />
                         </button>

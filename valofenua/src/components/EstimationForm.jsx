@@ -42,6 +42,8 @@ export default function EstimationForm({ initialState }) {
   const [error, setError] = useState(null);
   const [bienPhoto, setBienPhoto] = useState(initialState?.bienPhoto || null);
   const [initialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
+  const [initialSectionVisibility] = useState(initialState?.sectionVisibility || null);
+  const [initialHiddenComparables] = useState(initialState?.hiddenComparables || null);
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
 
@@ -221,6 +223,8 @@ export default function EstimationForm({ initialState }) {
           estimationId={currentEstimationId.current}
           bienPhoto={bienPhoto}
           initialAdjustedPrice={initialAdjustedPrice}
+          initialSectionVisibility={initialSectionVisibility}
+          initialHiddenComparables={initialHiddenComparables}
         />
       </div>
     );
