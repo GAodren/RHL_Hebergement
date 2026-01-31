@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Target, Loader2, AlertCircle, ImagePlus, X, Check } from 'lucide-react';
 import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
-import { saveEstimation, uploadBienPhoto, updateEstimation } from '../utils/estimations';
+import { saveEstimation, uploadBienPhoto, updateEstimation, getEstimationById } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
 import EstimationResult from './EstimationResult';
 
@@ -39,13 +39,33 @@ export default function EstimationForm({ initialState }) {
   );
   const [result, setResult] = useState(initialState?.result || null);
   const [loading, setLoading] = useState(false);
+  const [loadingFromDb, setLoadingFromDb] = useState(!!initialState?.estimationId);
   const [error, setError] = useState(null);
   const [bienPhoto, setBienPhoto] = useState(initialState?.bienPhoto || null);
-  const [initialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
-  const [initialSectionVisibility] = useState(initialState?.sectionVisibility || null);
-  const [initialHiddenComparables] = useState(initialState?.hiddenComparables || null);
+  const [initialAdjustedPrice, setInitialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
+  const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
+  const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
+
+  // Recharger les données depuis la BDD si on a un estimationId (pour récupérer les dernières modifications)
+  useEffect(() => {
+    const loadLatestData = async () => {
+      if (currentEstimationId.current && initialState?.estimationId) {
+        setLoadingFromDb(true);
+        const { data: estimation } = await getEstimationById(currentEstimationId.current);
+        if (estimation) {
+          // Mettre à jour avec les dernières valeurs sauvegardées
+          setInitialAdjustedPrice(estimation.prix_ajuste);
+          setInitialSectionVisibility(estimation.section_visibility);
+          setInitialHiddenComparables(estimation.hidden_comparables || []);
+          setBienPhoto(estimation.photo_url);
+        }
+        setLoadingFromDb(false);
+      }
+    };
+    loadLatestData();
+  }, [initialState?.estimationId]);
 
   // Gestion de l'upload de photo
   const handlePhotoChange = (e) => {
@@ -213,10 +233,20 @@ export default function EstimationForm({ initialState }) {
   // Vérifier si le type de bien est requis
   const isTypeBienRequired = formData.categorie === 'Appartement';
 
+  // Afficher un loader pendant le chargement des données depuis la BDD
+  if (loadingFromDb) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-[#0077B6]" />
+      </div>
+    );
+  }
+
   if (result) {
     return (
       <div className="w-full max-w-7xl mx-auto">
         <EstimationResult
+          key={`${currentEstimationId.current}-${JSON.stringify(initialSectionVisibility)}`}
           result={result}
           formData={formData}
           onReset={handleReset}
