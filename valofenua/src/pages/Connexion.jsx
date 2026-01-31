@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
+import Logo from '../components/Logo';
 
 export default function Connexion() {
   const [email, setEmail] = useState('');
@@ -44,11 +45,11 @@ export default function Connexion() {
       <div className="w-full max-w-md">
         {/* Logo et en-tête */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0077B6] rounded-2xl mb-4">
-            <span className="text-white text-2xl font-bold">VF</span>
+          <div className="flex justify-center mb-4">
+            <Logo className="w-16 h-16" showText={false} />
           </div>
           <h1 className="text-3xl font-bold text-slate-800 mb-2">
-            ValoFenua
+            Valo<span className="text-[#00A8E8]">Fenua</span>
           </h1>
           <p className="text-slate-600">
             Espace réservé aux agents immobiliers
