@@ -64,12 +64,15 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
       type_bien: formData.type_bien || null,
       surface: formData.surface || null,
       surface_terrain: formData.surface_terrain || null,
+      etat_bien: formData.etat_bien || null,
+      caracteristiques: formData.caracteristiques || [],
       prix_bas: result.prix_bas,
       prix_moyen: result.prix_moyen,
       prix_haut: result.prix_haut,
       prix_m2_moyen: result.prix_m2_moyen,
       prix_ajuste: adjustedPrice,
       photo_url: photoUrl,
+      comparables: result.comparables || [],
     })
     .select()
     .single();

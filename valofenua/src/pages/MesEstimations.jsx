@@ -84,6 +84,8 @@ export default function MesEstimations() {
       type_bien: estimation.type_bien,
       surface: estimation.surface,
       surface_terrain: estimation.surface_terrain,
+      etat_bien: estimation.etat_bien,
+      caracteristiques: estimation.caracteristiques || [],
     };
 
     const result = {
@@ -91,6 +93,7 @@ export default function MesEstimations() {
       prix_moyen: estimation.prix_moyen,
       prix_haut: estimation.prix_haut,
       prix_m2_moyen: estimation.prix_m2_moyen,
+      comparables: estimation.comparables || [],
     };
 
     navigate('/rapport', {
@@ -100,6 +103,8 @@ export default function MesEstimations() {
         adjustedPrice: estimation.prix_ajuste,
         bienPhoto: estimation.photo_url,
         fromDashboard: true,
+        sectionVisibility: estimation.section_visibility,
+        hiddenComparables: estimation.hidden_comparables || [],
       }
     });
   };
@@ -181,14 +186,19 @@ export default function MesEstimations() {
       type_bien: estimation.type_bien,
       surface: estimation.surface,
       surface_terrain: estimation.surface_terrain,
+      etat_bien: estimation.etat_bien,
+      caracteristiques: estimation.caracteristiques || [],
     },
     result: {
       prix_bas: estimation.prix_bas,
       prix_moyen: estimation.prix_moyen,
       prix_haut: estimation.prix_haut,
       prix_m2_moyen: estimation.prix_m2_moyen,
+      comparables: estimation.comparables || [],
     },
     adjustedPrice: estimation.prix_ajuste,
+    sectionVisibility: estimation.section_visibility,
+    hiddenComparables: estimation.hidden_comparables || [],
   });
 
   if (loading) {
@@ -358,6 +368,8 @@ export default function MesEstimations() {
                               adjustedPrice={pdfData.adjustedPrice}
                               agentProfile={profile}
                               bienPhoto={estimation.photo_url}
+                              sectionVisibility={pdfData.sectionVisibility}
+                              hiddenComparables={pdfData.hiddenComparables}
                             />
                           }
                           fileName={getFileName(estimation)}

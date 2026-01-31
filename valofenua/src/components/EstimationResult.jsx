@@ -110,8 +110,16 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const handleExportPDF = async () => {
     const hasAdjusted = adjustedPrice !== prix_moyen;
 
-    if (estimationId && hasAdjusted) {
-      await updateEstimation(estimationId, { prix_ajuste: adjustedPrice });
+    // Sauvegarder toutes les préférences d'affichage
+    if (estimationId) {
+      const updates = {
+        section_visibility: sectionVisibility,
+        hidden_comparables: hiddenComparables,
+      };
+      if (hasAdjusted) {
+        updates.prix_ajuste = adjustedPrice;
+      }
+      await updateEstimation(estimationId, updates);
     }
 
     navigate('/rapport', {
