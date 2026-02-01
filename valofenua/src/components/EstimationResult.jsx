@@ -48,7 +48,7 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
@@ -130,6 +130,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         formData,
         adjustedPrice: hasAdjusted ? adjustedPrice : null,
         bienPhoto,
+        photosSupplementaires,
         estimationId,
         sectionVisibility,
         hiddenComparables

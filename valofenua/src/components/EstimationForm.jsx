@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Target, Loader2, AlertCircle, ImagePlus, X, Check } from 'lucide-react';
 import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
-import { saveEstimation, uploadBienPhoto, updateEstimation, getEstimationById } from '../utils/estimations';
+import { saveEstimation, uploadBienPhoto, uploadPhotosSupplementaires, updateEstimation, getEstimationById } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
 import EstimationResult from './EstimationResult';
 
@@ -42,11 +42,15 @@ export default function EstimationForm({ initialState }) {
   const [loadingFromDb, setLoadingFromDb] = useState(!!initialState?.estimationId);
   const [error, setError] = useState(null);
   const [bienPhoto, setBienPhoto] = useState(initialState?.bienPhoto || null);
+  const [photosSupplementaires, setPhotosSupplementaires] = useState(initialState?.photosSupplementaires || []);
   const [initialAdjustedPrice, setInitialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
   const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
   const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
+  const extraPhotosInputRef = useRef(null);
+
+  const MAX_EXTRA_PHOTOS = 5;
 
   // Recharger les données depuis la BDD si on a un estimationId (pour récupérer les dernières modifications)
   useEffect(() => {
@@ -60,6 +64,7 @@ export default function EstimationForm({ initialState }) {
           setInitialSectionVisibility(estimation.section_visibility);
           setInitialHiddenComparables(estimation.hidden_comparables || []);
           setBienPhoto(estimation.photo_url);
+          setPhotosSupplementaires(estimation.photos_supplementaires || []);
         }
         setLoadingFromDb(false);
       }
@@ -97,6 +102,41 @@ export default function EstimationForm({ initialState }) {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  };
+
+  // Gestion des photos supplémentaires
+  const handleExtraPhotosChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    const remainingSlots = MAX_EXTRA_PHOTOS - photosSupplementaires.length;
+    const filesToProcess = files.slice(0, remainingSlots);
+
+    filesToProcess.forEach((file) => {
+      if (!file.type.startsWith('image/')) {
+        setError('Veuillez sélectionner uniquement des images');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Chaque image ne doit pas dépasser 5 Mo');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPhotosSupplementaires((prev) => [...prev, event.target?.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input
+    if (extraPhotosInputRef.current) {
+      extraPhotosInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveExtraPhoto = (index) => {
+    setPhotosSupplementaires((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleChange = (e) => {
@@ -176,7 +216,9 @@ export default function EstimationForm({ initialState }) {
         if (savedEstimation) {
           currentEstimationId.current = savedEstimation.id;
 
-          // Upload de la photo si présente
+          const updates = {};
+
+          // Upload de la photo principale si présente
           if (bienPhoto) {
             const { url: photoUrl } = await uploadBienPhoto(
               user.id,
@@ -184,8 +226,27 @@ export default function EstimationForm({ initialState }) {
               bienPhoto
             );
             if (photoUrl) {
-              await updateEstimation(savedEstimation.id, { photo_url: photoUrl });
+              updates.photo_url = photoUrl;
             }
+          }
+
+          // Upload des photos supplémentaires si présentes
+          if (photosSupplementaires.length > 0) {
+            const { urls: extraUrls } = await uploadPhotosSupplementaires(
+              user.id,
+              savedEstimation.id,
+              photosSupplementaires
+            );
+            if (extraUrls.length > 0) {
+              updates.photos_supplementaires = extraUrls;
+              // Mettre à jour l'état local avec les URLs
+              setPhotosSupplementaires(extraUrls);
+            }
+          }
+
+          // Sauvegarder toutes les URLs en une seule requête
+          if (Object.keys(updates).length > 0) {
+            await updateEstimation(savedEstimation.id, updates);
           }
         }
         if (saveError) {
@@ -212,8 +273,12 @@ export default function EstimationForm({ initialState }) {
       caracteristiques: [],
     });
     setBienPhoto(null);
+    setPhotosSupplementaires([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+    if (extraPhotosInputRef.current) {
+      extraPhotosInputRef.current.value = '';
     }
     currentEstimationId.current = null;
   };
@@ -252,6 +317,7 @@ export default function EstimationForm({ initialState }) {
           onReset={handleReset}
           estimationId={currentEstimationId.current}
           bienPhoto={bienPhoto}
+          photosSupplementaires={photosSupplementaires}
           initialAdjustedPrice={initialAdjustedPrice}
           initialSectionVisibility={initialSectionVisibility}
           initialHiddenComparables={initialHiddenComparables}
@@ -482,6 +548,57 @@ export default function EstimationForm({ initialState }) {
               onChange={handlePhotoChange}
               className="hidden"
             />
+
+            {/* Photos supplémentaires */}
+            <div className="mt-4 pt-4 border-t border-slate-100">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Photos supplémentaires <span className="text-slate-400 font-normal">(optionnel, max {MAX_EXTRA_PHOTOS})</span>
+              </label>
+              <p className="text-xs text-slate-500 mb-3">
+                Ajoutez des photos pour enrichir votre rapport PDF
+              </p>
+
+              <div className="flex flex-wrap gap-3">
+                {/* Photos existantes */}
+                {photosSupplementaires.map((photo, index) => (
+                  <div key={index} className="relative w-20 h-20 flex-shrink-0">
+                    <img
+                      src={photo}
+                      alt={`Photo ${index + 1}`}
+                      className="w-full h-full object-cover rounded-lg border border-slate-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveExtraPhoto(index)}
+                      className="absolute -top-1.5 -right-1.5 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-md"
+                      title="Supprimer"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+
+                {/* Bouton ajouter */}
+                {photosSupplementaires.length < MAX_EXTRA_PHOTOS && (
+                  <div
+                    onClick={() => extraPhotosInputRef.current?.click()}
+                    className="w-20 h-20 flex-shrink-0 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-colors"
+                  >
+                    <ImagePlus className="w-5 h-5 text-slate-400" />
+                    <p className="text-xs text-slate-500 mt-1">+</p>
+                  </div>
+                )}
+              </div>
+
+              <input
+                ref={extraPhotosInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleExtraPhotosChange}
+                className="hidden"
+              />
+            </div>
           </div>
         )}
 

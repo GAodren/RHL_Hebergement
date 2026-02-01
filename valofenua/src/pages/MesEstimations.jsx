@@ -103,6 +103,7 @@ export default function MesEstimations() {
         formData,
         adjustedPrice: estimation.prix_ajuste,
         bienPhoto: estimation.photo_url,
+        photosSupplementaires: estimation.photos_supplementaires || [],
         estimationId: estimation.id,
         sectionVisibility: estimation.section_visibility,
         hiddenComparables: estimation.hidden_comparables || [],
@@ -198,6 +199,7 @@ export default function MesEstimations() {
       comparables: estimation.comparables || [],
     },
     adjustedPrice: estimation.prix_ajuste,
+    photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
     hiddenComparables: estimation.hidden_comparables || [],
   });
@@ -369,6 +371,7 @@ export default function MesEstimations() {
                               adjustedPrice={pdfData.adjustedPrice}
                               agentProfile={profile}
                               bienPhoto={estimation.photo_url}
+                              photosSupplementaires={pdfData.photosSupplementaires}
                               sectionVisibility={pdfData.sectionVisibility}
                               hiddenComparables={pdfData.hiddenComparables}
                             />
