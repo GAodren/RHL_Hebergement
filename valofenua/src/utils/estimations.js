@@ -52,6 +52,71 @@ export async function uploadBienPhoto(userId, estimationId, photoBase64) {
 }
 
 /**
+ * Upload plusieurs photos supplémentaires vers Supabase Storage
+ */
+export async function uploadPhotosSupplementaires(userId, estimationId, photosBase64) {
+  if (!photosBase64 || photosBase64.length === 0) return { urls: [], error: null };
+
+  const uploadedUrls = [];
+
+  try {
+    for (let i = 0; i < photosBase64.length; i++) {
+      const photoBase64 = photosBase64[i];
+
+      // Si c'est déjà une URL (pas base64), on la garde telle quelle
+      if (photoBase64.startsWith('http')) {
+        uploadedUrls.push(photoBase64);
+        continue;
+      }
+
+      const matches = photoBase64.match(/^data:image\/(\w+);base64,(.+)$/);
+      if (!matches) {
+        console.error('Format image invalide pour photo supplémentaire', i);
+        continue;
+      }
+
+      const extension = matches[1];
+      const base64Data = matches[2];
+      const fileName = `${userId}/${estimationId}/extra_${i}.${extension}`;
+
+      // Convertir base64 en Blob
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let j = 0; j < byteCharacters.length; j++) {
+        byteNumbers[j] = byteCharacters.charCodeAt(j);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: `image/${extension}` });
+
+      // Upload vers Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('estimation-photos')
+        .upload(fileName, blob, {
+          cacheControl: '3600',
+          upsert: true,
+        });
+
+      if (uploadError) {
+        console.error('Erreur upload photo supplémentaire:', uploadError);
+        continue;
+      }
+
+      // Récupérer l'URL publique
+      const { data: urlData } = supabase.storage
+        .from('estimation-photos')
+        .getPublicUrl(fileName);
+
+      uploadedUrls.push(urlData.publicUrl);
+    }
+
+    return { urls: uploadedUrls, error: null };
+  } catch (err) {
+    console.error('Erreur upload photos supplémentaires:', err);
+    return { urls: uploadedUrls, error: err };
+  }
+}
+
+/**
  * Sauvegarde une estimation dans la base de données
  */
 export async function saveEstimation(userId, formData, result, adjustedPrice = null, photoUrl = null) {

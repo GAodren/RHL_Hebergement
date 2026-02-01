@@ -466,9 +466,30 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: '#0077B6',
   },
+  // Photos supplémentaires
+  photosSection: {
+    marginBottom: 12,
+  },
+  photosGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  photoContainer: {
+    width: '31%',
+    height: 80,
+    borderRadius: 6,
+    overflow: 'hidden',
+    border: '1px solid #E2E8F0',
+  },
+  photoImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Visibilité par défaut si non fournie
@@ -685,6 +706,20 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
                   </View>
                 )}
               </View>
+            </View>
+          </View>
+        )}
+
+        {/* Photos supplémentaires du bien */}
+        {photosSupplementaires && photosSupplementaires.length > 0 && (
+          <View style={styles.photosSection}>
+            <Text style={styles.sectionTitle}>Photos du bien</Text>
+            <View style={styles.photosGrid}>
+              {photosSupplementaires.map((photo, index) => (
+                <View key={index} style={styles.photoContainer}>
+                  <Image style={styles.photoImage} src={photo} />
+                </View>
+              ))}
             </View>
           </View>
         )}
