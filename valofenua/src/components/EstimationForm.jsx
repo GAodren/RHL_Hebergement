@@ -252,7 +252,10 @@ export default function EstimationForm({ initialState }) {
 
           // Sauvegarder toutes les URLs en une seule requête
           if (Object.keys(updates).length > 0) {
-            await updateEstimation(savedEstimation.id, updates);
+            const { error: updateError } = await updateEstimation(savedEstimation.id, updates);
+            if (updateError) {
+              console.error('Erreur mise à jour estimation:', updateError);
+            }
           }
         }
         if (saveError) {
