@@ -142,9 +142,14 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
       prix_ajuste: adjustedPrice,
       photo_url: photoUrl,
       comparables: result.comparables || [],
+      photos_supplementaires: [],
     })
     .select()
     .single();
+
+  if (error) {
+    console.error('Erreur saveEstimation:', error);
+  }
 
   return { data, error };
 }
