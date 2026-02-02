@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   similarOfferImageContainer: {
-    height: 70,
+    height: 90,
     backgroundColor: '#F1F5F9',
   },
   similarOfferImage: {
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     objectFit: 'cover',
   },
   similarOfferNoImage: {
-    height: 70,
+    height: 90,
     backgroundColor: '#F1F5F9',
     alignItems: 'center',
     justifyContent: 'center',
@@ -476,10 +476,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   photoItem: {
-    width: '31%',
+    width: '48%',
   },
   photoContainer: {
-    height: 80,
+    height: 100,
     borderRadius: 6,
     overflow: 'hidden',
     border: '1px solid #E2E8F0',
