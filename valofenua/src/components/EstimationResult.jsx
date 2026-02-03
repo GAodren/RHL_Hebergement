@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, Check } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, Check, User } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
@@ -53,6 +53,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const [adjustedPrice, setAdjustedPrice] = useState(initialAdjustedPrice || prix_moyen);
+  const [nomClient, setNomClient] = useState('');
 
   // État de visibilité des sections pour le PDF
   const [sectionVisibility, setSectionVisibility] = useState(
@@ -131,6 +132,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         adjustedPrice: hasAdjusted ? adjustedPrice : null,
         bienPhoto,
         photosSupplementaires,
+        nomClient,
         estimationId,
         sectionVisibility,
         hiddenComparables
@@ -295,6 +297,26 @@ export default function EstimationResult({ result, formData, onReset, estimation
         <p className="text-sm text-amber-800">
           <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien et ne constitue pas une évaluation officielle.
         </p>
+      </div>
+
+      {/* Nom du client pour le PDF */}
+      <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
+        <div className="flex items-center gap-2 mb-3">
+          <User className="w-5 h-5 text-[#0077B6]" />
+          <span className="text-base font-semibold text-slate-800">Génération du dossier PDF</span>
+        </div>
+        <div>
+          <label className="block text-sm text-slate-600 mb-2">
+            Nom du client <span className="text-slate-400">(optionnel)</span>
+          </label>
+          <input
+            type="text"
+            value={nomClient}
+            onChange={(e) => setNomClient(e.target.value)}
+            placeholder="Ex: M. et Mme Dupont"
+            className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
+          />
+        </div>
       </div>
 
       {/* Bouton PDF */}

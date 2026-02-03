@@ -372,6 +372,7 @@ export default function MesEstimations() {
                               agentProfile={profile}
                               bienPhoto={estimation.photo_url}
                               photosSupplementaires={pdfData.photosSupplementaires}
+                              nomClient=""
                               sectionVisibility={pdfData.sectionVisibility}
                               hiddenComparables={pdfData.hiddenComparables}
                             />
