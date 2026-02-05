@@ -113,11 +113,12 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const handleExportPDF = async () => {
     const hasAdjusted = adjustedPrice !== prix_moyen;
 
-    // Sauvegarder toutes les préférences d'affichage
+    // Sauvegarder toutes les préférences d'affichage + nom du client
     if (estimationId) {
       const updates = {
         section_visibility: sectionVisibility,
         hidden_comparables: hiddenComparables,
+        nom_client: nomClient || null,
       };
       if (hasAdjusted) {
         updates.prix_ajuste = adjustedPrice;

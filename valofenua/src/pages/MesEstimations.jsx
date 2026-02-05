@@ -16,8 +16,7 @@ import {
   StickyNote,
   X,
   Save,
-  CheckCircle,
-  User
+  CheckCircle
 } from 'lucide-react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useAuth } from '../context/AuthContext';
@@ -36,8 +35,6 @@ export default function MesEstimations() {
   const [noteText, setNoteText] = useState('');
   const [savingNote, setSavingNote] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const [pdfModal, setPdfModal] = useState({ open: false, estimation: null });
-  const [pdfNomClient, setPdfNomClient] = useState('');
 
   // Charger les estimations
   useEffect(() => {
@@ -144,16 +141,6 @@ export default function MesEstimations() {
 
     setSavingNote(false);
     setTimeout(() => setMessage({ type: '', text: '' }), 3000);
-  };
-
-  const openPdfModal = (estimation) => {
-    setPdfModal({ open: true, estimation });
-    setPdfNomClient('');
-  };
-
-  const closePdfModal = () => {
-    setPdfModal({ open: false, estimation: null });
-    setPdfNomClient('');
   };
 
   const getCategorieIcon = (categorie) => {
@@ -376,13 +363,32 @@ export default function MesEstimations() {
                         </button>
 
                         {/* Bouton Télécharger */}
-                        <button
-                          onClick={() => openPdfModal(estimation)}
+                        <PDFDownloadLink
+                          document={
+                            <RapportPDF
+                              result={pdfData.result}
+                              formData={pdfData.formData}
+                              adjustedPrice={pdfData.adjustedPrice}
+                              agentProfile={profile}
+                              bienPhoto={estimation.photo_url}
+                              photosSupplementaires={pdfData.photosSupplementaires}
+                              nomClient={estimation.nom_client || ''}
+                              sectionVisibility={pdfData.sectionVisibility}
+                              hiddenComparables={pdfData.hiddenComparables}
+                            />
+                          }
+                          fileName={getFileName(estimation)}
                           className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-[#E0F4FF] rounded-lg transition-colors"
                           title="Télécharger le PDF"
                         >
-                          <Download className="w-5 h-5" />
-                        </button>
+                          {({ loading: pdfLoading }) =>
+                            pdfLoading ? (
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                              <Download className="w-5 h-5" />
+                            )
+                          }
+                        </PDFDownloadLink>
 
                         {/* Bouton Supprimer */}
                         <button
@@ -466,84 +472,6 @@ export default function MesEstimations() {
                     </>
                   )}
                 </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Modal PDF - Nom du client */}
-        {pdfModal.open && pdfModal.estimation && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-slate-800">
-                  Exporter le dossier PDF
-                </h3>
-                <button
-                  onClick={closePdfModal}
-                  className="p-2 text-slate-400 hover:text-slate-600 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <p className="text-sm text-slate-500 mb-4">
-                {getBienLabel(pdfModal.estimation)} à {pdfModal.estimation.commune}
-              </p>
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  <User className="w-4 h-4 inline mr-2" />
-                  Nom du client (optionnel)
-                </label>
-                <input
-                  type="text"
-                  value={pdfNomClient}
-                  onChange={(e) => setPdfNomClient(e.target.value)}
-                  placeholder="Ex: M. et Mme Dupont"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
-                />
-                <p className="text-xs text-slate-400 mt-1">
-                  Ce nom apparaîtra sur la page de couverture du dossier
-                </p>
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={closePdfModal}
-                  className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
-                >
-                  Annuler
-                </button>
-                <PDFDownloadLink
-                  document={
-                    <RapportPDF
-                      result={getPDFData(pdfModal.estimation).result}
-                      formData={getPDFData(pdfModal.estimation).formData}
-                      adjustedPrice={getPDFData(pdfModal.estimation).adjustedPrice}
-                      agentProfile={profile}
-                      bienPhoto={pdfModal.estimation.photo_url}
-                      photosSupplementaires={getPDFData(pdfModal.estimation).photosSupplementaires}
-                      nomClient={pdfNomClient}
-                      sectionVisibility={getPDFData(pdfModal.estimation).sectionVisibility}
-                      hiddenComparables={getPDFData(pdfModal.estimation).hiddenComparables}
-                    />
-                  }
-                  fileName={getFileName(pdfModal.estimation)}
-                  className="flex-1 px-4 py-2 bg-[#0077B6] text-white rounded-lg font-medium hover:bg-[#005f8a] transition-colors flex items-center justify-center gap-2"
-                  onClick={() => setTimeout(closePdfModal, 500)}
-                >
-                  {({ loading: pdfLoading }) =>
-                    pdfLoading ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <>
-                        <Download className="w-5 h-5" />
-                        Télécharger
-                      </>
-                    )
-                  }
-                </PDFDownloadLink>
               </div>
             </div>
           </div>
