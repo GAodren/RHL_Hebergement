@@ -198,6 +198,11 @@ export default function EstimationResult({ result, formData, onReset, estimation
         initialValue={initialAdjustedPrice}
       />
 
+      {/* Section Analyse du Marché Local */}
+      <div className="border-t-2 border-[#0077B6] pt-6 mt-8">
+        <h2 className="text-xl font-bold text-[#0077B6] mb-4">Analyse du Marché Local</h2>
+      </div>
+
       {/* Tendance du marché - TOGGLEABLE */}
       <ToggleableSection
         id="marketTrends"
@@ -311,6 +316,11 @@ export default function EstimationResult({ result, formData, onReset, estimation
         </ToggleableSection>
       )}
 
+      {/* Section Étude Comparative */}
+      <div className="border-t-2 border-[#0077B6] pt-6 mt-8">
+        <h2 className="text-xl font-bold text-[#0077B6] mb-4">Étude Comparative</h2>
+      </div>
+
       {/* Offres similaires - TOGGLEABLE */}
       <ToggleableSection
         id="similarOffers"
@@ -349,13 +359,6 @@ export default function EstimationResult({ result, formData, onReset, estimation
         />
       </div>
 
-      {/* Note - toujours affichée (non toggleable) */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-        <p className="text-sm text-amber-800">
-          <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien et ne constitue pas une évaluation officielle.
-        </p>
-      </div>
-
       {/* Nom du client pour le PDF */}
       <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
         <div className="flex items-center gap-2 mb-3">
@@ -392,6 +395,13 @@ export default function EstimationResult({ result, formData, onReset, estimation
           <RotateCcw className="w-5 h-5" />
           Nouvelle estimation
         </button>
+      </div>
+
+      {/* Note - toujours affichée (non toggleable) */}
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <p className="text-sm text-amber-800">
+          <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien et ne constitue pas une évaluation officielle.
+        </p>
       </div>
     </div>
   );

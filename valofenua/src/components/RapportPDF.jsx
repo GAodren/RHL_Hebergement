@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF3C7',
     borderRadius: 8,
     padding: 20,
-    marginBottom: 30,
+    marginTop: 30,
     border: '1px solid #FCD34D',
   },
   disclaimerTitle: {
@@ -535,8 +535,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
   },
   contactSection: {
-    flex: 1,
-    justifyContent: 'center',
+    marginBottom: 'auto',
   },
   contactCard: {
     backgroundColor: '#F8FAFC',
@@ -979,16 +978,6 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
       <Page size="A4" style={styles.contactPage}>
         <Text style={styles.pageTitle}>Conclusion</Text>
 
-        {/* Disclaimer */}
-        <View style={styles.disclaimerBox}>
-          <Text style={styles.disclaimerTitle}>Information importante</Text>
-          <Text style={styles.disclaimerText}>
-            Ce document constitue un avis de valeur établi sur la base des données du marché immobilier polynésien.
-            Il est fourni à titre indicatif et ne constitue pas une expertise immobilière au sens juridique du terme.
-            Seule une expertise réalisée par un expert agréé peut faire foi en cas de litige.
-          </Text>
-        </View>
-
         {/* Contact */}
         <View style={styles.contactSection}>
           <View style={styles.contactCard}>
@@ -1038,6 +1027,16 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               </Text>
             </View>
           </View>
+        </View>
+
+        {/* Disclaimer */}
+        <View style={styles.disclaimerBox}>
+          <Text style={styles.disclaimerTitle}>Information importante</Text>
+          <Text style={styles.disclaimerText}>
+            Ce document constitue un avis de valeur établi sur la base des données du marché immobilier polynésien.
+            Il est fourni à titre indicatif et ne constitue pas une expertise immobilière au sens juridique du terme.
+            Seule une expertise réalisée par un expert agréé peut faire foi en cas de litige.
+          </Text>
         </View>
 
         <Text style={styles.pageNumber}>6 / 6</Text>
