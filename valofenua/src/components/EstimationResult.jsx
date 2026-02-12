@@ -242,15 +242,25 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
       {/* Texte personnalisé après Analyse du marché */}
       <div className="bg-white rounded-xl shadow-sm p-4 border border-dashed border-slate-300">
-        <label className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-          <MessageSquare className="w-4 h-4" />
-          Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="flex items-center gap-2 text-sm text-slate-500">
+            <MessageSquare className="w-4 h-4" />
+            Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
+          </label>
+          <span className={`text-xs ${texteAnalyseMarche.split('\n').length > 13 ? 'text-red-500' : 'text-slate-400'}`}>
+            {texteAnalyseMarche.split('\n').length}/13 lignes
+          </span>
+        </div>
         <textarea
           value={texteAnalyseMarche}
-          onChange={(e) => setTexteAnalyseMarche(e.target.value)}
+          onChange={(e) => {
+            const lines = e.target.value.split('\n');
+            if (lines.length <= 13) {
+              setTexteAnalyseMarche(e.target.value);
+            }
+          }}
           placeholder="Commentaire sur le marché local, tendances observées, positionnement du bien..."
-          rows={2}
+          rows={6}
           className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none text-sm"
         />
       </div>
@@ -316,15 +326,25 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
       {/* Texte personnalisé après Étude comparative */}
       <div className="bg-white rounded-xl shadow-sm p-4 border border-dashed border-slate-300">
-        <label className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-          <MessageSquare className="w-4 h-4" />
-          Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="flex items-center gap-2 text-sm text-slate-500">
+            <MessageSquare className="w-4 h-4" />
+            Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
+          </label>
+          <span className={`text-xs ${texteEtudeComparative.split('\n').length > 13 ? 'text-red-500' : 'text-slate-400'}`}>
+            {texteEtudeComparative.split('\n').length}/13 lignes
+          </span>
+        </div>
         <textarea
           value={texteEtudeComparative}
-          onChange={(e) => setTexteEtudeComparative(e.target.value)}
+          onChange={(e) => {
+            const lines = e.target.value.split('\n');
+            if (lines.length <= 13) {
+              setTexteEtudeComparative(e.target.value);
+            }
+          }}
           placeholder="Analyse des biens comparables, différences notables, justification du positionnement prix..."
-          rows={2}
+          rows={6}
           className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none text-sm"
         />
       </div>
