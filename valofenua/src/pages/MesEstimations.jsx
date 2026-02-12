@@ -107,6 +107,8 @@ export default function MesEstimations() {
         estimationId: estimation.id,
         sectionVisibility: estimation.section_visibility,
         hiddenComparables: estimation.hidden_comparables || [],
+        nomClient: estimation.nom_client || '',
+        commentaireAgent: estimation.commentaire_agent || '',
       }
     });
   };
@@ -202,6 +204,7 @@ export default function MesEstimations() {
     photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
     hiddenComparables: estimation.hidden_comparables || [],
+    commentaireAgent: estimation.commentaire_agent || '',
   });
 
   if (loading) {
@@ -373,6 +376,7 @@ export default function MesEstimations() {
                               bienPhoto={estimation.photo_url}
                               photosSupplementaires={pdfData.photosSupplementaires}
                               nomClient={estimation.nom_client || ''}
+                              commentaireAgent={pdfData.commentaireAgent}
                               sectionVisibility={pdfData.sectionVisibility}
                               hiddenComparables={pdfData.hiddenComparables}
                             />
