@@ -343,6 +343,26 @@ const styles = StyleSheet.create({
     color: '#1E293B',
   },
 
+  // === COMMENTAIRE AGENT ===
+  agentCommentBox: {
+    marginTop: 25,
+    backgroundColor: '#F0F9FF',
+    borderRadius: 8,
+    padding: 20,
+    borderLeft: '4px solid #0077B6',
+  },
+  agentCommentTitle: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: '#0077B6',
+    marginBottom: 10,
+  },
+  agentCommentText: {
+    fontSize: 10,
+    color: '#334155',
+    lineHeight: 1.6,
+  },
+
   // === PAGE 4: BIENS SIMILAIRES ===
   comparablesGrid: {
     flexDirection: 'row',
@@ -584,7 +604,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', commentaireAgent = '', sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Visibilité par défaut si non fournie
@@ -847,6 +867,14 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
                 <Text style={styles.statValue}>{formatPriceXPF(prixM2Haut)}</Text>
               </View>
             </View>
+          </View>
+        )}
+
+        {/* Commentaire de l'agent */}
+        {commentaireAgent && (
+          <View style={styles.agentCommentBox}>
+            <Text style={styles.agentCommentTitle}>Analyse de l'agent</Text>
+            <Text style={styles.agentCommentText}>{commentaireAgent}</Text>
           </View>
         )}
 

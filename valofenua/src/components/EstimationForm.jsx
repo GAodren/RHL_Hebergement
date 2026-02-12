@@ -46,6 +46,8 @@ export default function EstimationForm({ initialState }) {
   const [initialAdjustedPrice, setInitialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
   const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
   const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
+  const [initialNomClient, setInitialNomClient] = useState(initialState?.nomClient || '');
+  const [initialCommentaireAgent, setInitialCommentaireAgent] = useState(initialState?.commentaireAgent || '');
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
   const extraPhotosInputRef = useRef(null);
@@ -65,6 +67,8 @@ export default function EstimationForm({ initialState }) {
           setInitialHiddenComparables(estimation.hidden_comparables || []);
           setBienPhoto(estimation.photo_url);
           setPhotosSupplementaires(estimation.photos_supplementaires || []);
+          setInitialNomClient(estimation.nom_client || '');
+          setInitialCommentaireAgent(estimation.commentaire_agent || '');
         }
         setLoadingFromDb(false);
       }
@@ -330,6 +334,8 @@ export default function EstimationForm({ initialState }) {
           initialAdjustedPrice={initialAdjustedPrice}
           initialSectionVisibility={initialSectionVisibility}
           initialHiddenComparables={initialHiddenComparables}
+          initialNomClient={initialNomClient}
+          initialCommentaireAgent={initialCommentaireAgent}
         />
       </div>
     );

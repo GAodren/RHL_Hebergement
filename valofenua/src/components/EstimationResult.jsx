@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, Check, User } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, Check, User, MessageSquare } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
@@ -48,12 +48,13 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialCommentaireAgent }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const [adjustedPrice, setAdjustedPrice] = useState(initialAdjustedPrice || prix_moyen);
-  const [nomClient, setNomClient] = useState('');
+  const [nomClient, setNomClient] = useState(initialNomClient || '');
+  const [commentaireAgent, setCommentaireAgent] = useState(initialCommentaireAgent || '');
 
   // État de visibilité des sections pour le PDF
   const [sectionVisibility, setSectionVisibility] = useState(
@@ -113,12 +114,13 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const handleExportPDF = async () => {
     const hasAdjusted = adjustedPrice !== prix_moyen;
 
-    // Sauvegarder toutes les préférences d'affichage + nom du client
+    // Sauvegarder toutes les préférences d'affichage + nom du client + commentaire
     if (estimationId) {
       const updates = {
         section_visibility: sectionVisibility,
         hidden_comparables: hiddenComparables,
         nom_client: nomClient || null,
+        commentaire_agent: commentaireAgent || null,
       };
       if (hasAdjusted) {
         updates.prix_ajuste = adjustedPrice;
@@ -134,6 +136,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         bienPhoto,
         photosSupplementaires,
         nomClient,
+        commentaireAgent,
         estimationId,
         sectionVisibility,
         hiddenComparables
@@ -300,23 +303,46 @@ export default function EstimationResult({ result, formData, onReset, estimation
         </p>
       </div>
 
-      {/* Nom du client pour le PDF */}
+      {/* Personnalisation du dossier PDF */}
       <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
-        <div className="flex items-center gap-2 mb-3">
-          <User className="w-5 h-5 text-[#0077B6]" />
-          <span className="text-base font-semibold text-slate-800">Génération du dossier PDF</span>
+        <div className="flex items-center gap-2 mb-4">
+          <FileText className="w-5 h-5 text-[#0077B6]" />
+          <span className="text-base font-semibold text-slate-800">Personnalisation du dossier PDF</span>
         </div>
-        <div>
-          <label className="block text-sm text-slate-600 mb-2">
-            Nom du client <span className="text-slate-400">(optionnel)</span>
-          </label>
-          <input
-            type="text"
-            value={nomClient}
-            onChange={(e) => setNomClient(e.target.value)}
-            placeholder="Ex: M. et Mme Dupont"
-            className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
-          />
+
+        <div className="space-y-4">
+          {/* Nom du client */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-slate-600 mb-2">
+              <User className="w-4 h-4" />
+              Nom du client <span className="text-slate-400">(optionnel)</span>
+            </label>
+            <input
+              type="text"
+              value={nomClient}
+              onChange={(e) => setNomClient(e.target.value)}
+              placeholder="Ex: M. et Mme Dupont"
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
+            />
+          </div>
+
+          {/* Commentaire personnalisé */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-slate-600 mb-2">
+              <MessageSquare className="w-4 h-4" />
+              Commentaire de l'agent <span className="text-slate-400">(optionnel)</span>
+            </label>
+            <textarea
+              value={commentaireAgent}
+              onChange={(e) => setCommentaireAgent(e.target.value)}
+              placeholder="Ajoutez votre analyse personnelle, vos recommandations ou toute information complémentaire pour le client..."
+              rows={4}
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none"
+            />
+            <p className="text-xs text-slate-400 mt-1">
+              Ce texte apparaîtra dans le PDF après l'analyse du marché
+            </p>
+          </div>
         </div>
       </div>
 
