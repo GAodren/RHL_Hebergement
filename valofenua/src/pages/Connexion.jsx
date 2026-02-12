@@ -46,10 +46,10 @@ export default function Connexion() {
         {/* Logo et en-tête */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <Logo className="w-16 h-16" showText={false} />
+            <Logo className="h-16" showText={false} />
           </div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">
-            Valo<span className="text-[#00A8E8]">Fenua</span>
+          <h1 className="text-3xl font-bold text-[#023E8A] mb-2 tracking-wide">
+            VALOFENUA
           </h1>
           <p className="text-slate-600">
             Espace réservé aux agents immobiliers

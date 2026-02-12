@@ -224,13 +224,6 @@ export default function RapportEstimation() {
           </div>
         </div>
 
-        {/* Note d'information */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <p className="text-sm text-blue-800">
-            <span className="font-semibold">Astuce :</span> Ce rapport peut être partagé avec un client ou conservé pour vos archives.
-            {hasAdjustedPrice && ' Le prix proposé par l\'agent est clairement identifié dans le document.'}
-          </p>
-        </div>
       </div>
     </main>
   );

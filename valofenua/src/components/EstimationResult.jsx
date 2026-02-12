@@ -198,6 +198,52 @@ export default function EstimationResult({ result, formData, onReset, estimation
         initialValue={initialAdjustedPrice}
       />
 
+      {/* Caractéristiques du bien - TOGGLEABLE (seulement si des données existent) */}
+      {(formData.etat_bien || (formData.caracteristiques && formData.caracteristiques.length > 0)) && (
+        <ToggleableSection
+          id="bienDetails"
+          visible={sectionVisibility.bienDetails}
+          onToggle={toggleSection}
+        >
+          <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
+            <div className="flex items-center gap-2 mb-4">
+              <Home className="w-5 h-5 text-[#0077B6]" />
+              <span className="text-base font-semibold text-slate-800">Caractéristiques du bien</span>
+            </div>
+
+            <div className="space-y-4">
+              {/* État du bien */}
+              {formData.etat_bien && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">État du bien</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}
+                  </p>
+                </div>
+              )}
+
+              {/* Caractéristiques */}
+              {formData.caracteristiques && formData.caracteristiques.length > 0 && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Caractéristiques</p>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.caracteristiques.map((carac) => (
+                      <span
+                        key={carac}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E0F4FF] text-[#0077B6] rounded-full text-sm font-medium"
+                      >
+                        <Check className="w-3.5 h-3.5" />
+                        {CARACTERISTIQUES_LABELS[carac] || carac}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </ToggleableSection>
+      )}
+
       {/* Section Analyse du Marché Local */}
       <div className="border-t-2 border-[#0077B6] pt-6 mt-8">
         <h2 className="text-xl font-bold text-[#0077B6] mb-4">Analyse du Marché Local</h2>
@@ -269,52 +315,6 @@ export default function EstimationResult({ result, formData, onReset, estimation
           className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none text-sm"
         />
       </div>
-
-      {/* Caractéristiques du bien - TOGGLEABLE (seulement si des données existent) */}
-      {(formData.etat_bien || (formData.caracteristiques && formData.caracteristiques.length > 0)) && (
-        <ToggleableSection
-          id="bienDetails"
-          visible={sectionVisibility.bienDetails}
-          onToggle={toggleSection}
-        >
-          <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
-            <div className="flex items-center gap-2 mb-4">
-              <Home className="w-5 h-5 text-[#0077B6]" />
-              <span className="text-base font-semibold text-slate-800">Caractéristiques du bien</span>
-            </div>
-
-            <div className="space-y-4">
-              {/* État du bien */}
-              {formData.etat_bien && (
-                <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">État du bien</p>
-                  <p className="text-sm font-semibold text-slate-700">
-                    {ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}
-                  </p>
-                </div>
-              )}
-
-              {/* Caractéristiques */}
-              {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-                <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Caractéristiques</p>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.caracteristiques.map((carac) => (
-                      <span
-                        key={carac}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E0F4FF] text-[#0077B6] rounded-full text-sm font-medium"
-                      >
-                        <Check className="w-3.5 h-3.5" />
-                        {CARACTERISTIQUES_LABELS[carac] || carac}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </ToggleableSection>
-      )}
 
       {/* Section Étude Comparative */}
       <div className="border-t-2 border-[#0077B6] pt-6 mt-8">

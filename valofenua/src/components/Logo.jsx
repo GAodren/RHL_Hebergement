@@ -1,61 +1,85 @@
-export default function Logo({ className = "w-10 h-10", showText = true, textClassName = "" }) {
+export default function Logo({ className = "h-12", showText = true, textClassName = "", compact = false }) {
   return (
-    <div className="flex items-center gap-2">
-      {/* Logo SVG - Maison stylisée avec vague polynésienne */}
+    <div className="flex items-center gap-3">
+      {/* Logo SVG - Design géométrique maison avec vagues */}
       <svg
         className={className}
-        viewBox="0 0 48 48"
+        viewBox="0 0 60 60"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Fond avec dégradé océan */}
         <defs>
-          <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="blueGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#0077B6" />
             <stop offset="100%" stopColor="#00A8E8" />
           </linearGradient>
-          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#E0F4FF" />
+          <linearGradient id="blueGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#48CAE4" />
             <stop offset="100%" stopColor="#90E0EF" />
+          </linearGradient>
+          <linearGradient id="darkBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#023E8A" />
+            <stop offset="100%" stopColor="#0077B6" />
           </linearGradient>
         </defs>
 
-        {/* Cercle de fond */}
-        <circle cx="24" cy="24" r="22" fill="url(#oceanGradient)" />
-
-        {/* Maison stylisée */}
+        {/* Toit en losange - partie supérieure */}
         <path
-          d="M24 10L12 20V36H20V28H28V36H36V20L24 10Z"
+          d="M30 2L50 22L30 42L10 22L30 2Z"
+          fill="url(#darkBlue)"
+        />
+
+        {/* Petite maison au centre du toit */}
+        <path
+          d="M30 10L38 18V28H22V18L30 10Z"
           fill="white"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-
-        {/* Toit avec accent */}
-        <path
-          d="M10 21L24 9L38 21"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-
-        {/* Vague polynésienne en bas */}
-        <path
-          d="M8 38C12 35 16 38 20 35C24 32 28 35 32 32C36 29 40 32 42 30"
-          stroke="url(#waveGradient)"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          fill="none"
           opacity="0.9"
+        />
+        <path
+          d="M20 19L30 9L40 19"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+
+        {/* Vagues géométriques en bas */}
+        <path
+          d="M5 35L20 50H40L55 35L40 35L30 45L20 35H5Z"
+          fill="url(#blueGradient1)"
+        />
+        <path
+          d="M10 40L22 52H38L50 40L38 40L30 48L22 40H10Z"
+          fill="url(#blueGradient2)"
+          opacity="0.8"
+        />
+
+        {/* Accent de vague */}
+        <path
+          d="M15 45L25 55H35L45 45"
+          stroke="#CAF0F8"
+          strokeWidth="2"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.6"
         />
       </svg>
 
-      {showText && (
-        <span className={`font-bold text-xl ${textClassName || 'text-[#0077B6]'}`}>
-          Valo<span className="text-[#00A8E8]">Fenua</span>
+      {showText && !compact && (
+        <div className="flex flex-col">
+          <span className={`font-bold text-xl tracking-wide ${textClassName || 'text-[#023E8A]'}`}>
+            VALOFENUA
+          </span>
+          <span className="text-xs text-[#0077B6] tracking-wider -mt-0.5">
+            Estimation Immobilière
+          </span>
+        </div>
+      )}
+
+      {showText && compact && (
+        <span className={`font-bold text-xl tracking-wide ${textClassName || 'text-[#023E8A]'}`}>
+          VALOFENUA
         </span>
       )}
     </div>

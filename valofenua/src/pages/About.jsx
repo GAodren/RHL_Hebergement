@@ -21,7 +21,7 @@ export default function About() {
       <section className="bg-gradient-to-b from-[#E0F4FF] to-white py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex justify-center mb-6">
-            <Logo className="w-16 h-16" showText={false} />
+            <Logo className="h-16" showText={false} />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-800 mb-4">
             À propos de ValoFenua

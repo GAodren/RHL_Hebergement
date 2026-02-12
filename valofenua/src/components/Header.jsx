@@ -31,7 +31,7 @@ export default function Header() {
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="hover:opacity-90 transition-opacity flex-shrink-0">
-            <Logo className="w-10 h-10" />
+            <Logo className="h-10" />
           </Link>
 
           {/* Navigation desktop - centrée */}
