@@ -48,13 +48,14 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialCommentaireAgent }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const [adjustedPrice, setAdjustedPrice] = useState(initialAdjustedPrice || prix_moyen);
   const [nomClient, setNomClient] = useState(initialNomClient || '');
-  const [commentaireAgent, setCommentaireAgent] = useState(initialCommentaireAgent || '');
+  const [texteAnalyseMarche, setTexteAnalyseMarche] = useState(initialTexteAnalyseMarche || '');
+  const [texteEtudeComparative, setTexteEtudeComparative] = useState(initialTexteEtudeComparative || '');
 
   // État de visibilité des sections pour le PDF
   const [sectionVisibility, setSectionVisibility] = useState(
@@ -114,13 +115,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const handleExportPDF = async () => {
     const hasAdjusted = adjustedPrice !== prix_moyen;
 
-    // Sauvegarder toutes les préférences d'affichage + nom du client + commentaire
+    // Sauvegarder toutes les préférences d'affichage + nom du client + textes personnalisés
     if (estimationId) {
       const updates = {
         section_visibility: sectionVisibility,
         hidden_comparables: hiddenComparables,
         nom_client: nomClient || null,
-        commentaire_agent: commentaireAgent || null,
+        texte_analyse_marche: texteAnalyseMarche || null,
+        texte_etude_comparative: texteEtudeComparative || null,
       };
       if (hasAdjusted) {
         updates.prix_ajuste = adjustedPrice;
@@ -136,7 +138,8 @@ export default function EstimationResult({ result, formData, onReset, estimation
         bienPhoto,
         photosSupplementaires,
         nomClient,
-        commentaireAgent,
+        texteAnalyseMarche,
+        texteEtudeComparative,
         estimationId,
         sectionVisibility,
         hiddenComparables
@@ -326,22 +329,34 @@ export default function EstimationResult({ result, formData, onReset, estimation
             />
           </div>
 
-          {/* Commentaire personnalisé */}
+          {/* Texte après Analyse du marché (page 3) */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-600 mb-2">
               <MessageSquare className="w-4 h-4" />
-              Commentaire de l'agent <span className="text-slate-400">(optionnel)</span>
+              Texte sous "Analyse du marché local" <span className="text-slate-400">(optionnel)</span>
             </label>
             <textarea
-              value={commentaireAgent}
-              onChange={(e) => setCommentaireAgent(e.target.value)}
-              placeholder="Ajoutez votre analyse personnelle, vos recommandations ou toute information complémentaire pour le client..."
-              rows={4}
+              value={texteAnalyseMarche}
+              onChange={(e) => setTexteAnalyseMarche(e.target.value)}
+              placeholder="Commentaire sur le marché local, tendances observées, positionnement du bien..."
+              rows={3}
               className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none"
             />
-            <p className="text-xs text-slate-400 mt-1">
-              Ce texte apparaîtra dans le PDF après l'analyse du marché
-            </p>
+          </div>
+
+          {/* Texte après Étude comparative (page 4) */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-slate-600 mb-2">
+              <MessageSquare className="w-4 h-4" />
+              Texte sous "Étude comparative" <span className="text-slate-400">(optionnel)</span>
+            </label>
+            <textarea
+              value={texteEtudeComparative}
+              onChange={(e) => setTexteEtudeComparative(e.target.value)}
+              placeholder="Analyse des biens comparables, différences notables, justification du positionnement prix..."
+              rows={3}
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none"
+            />
           </div>
         </div>
       </div>

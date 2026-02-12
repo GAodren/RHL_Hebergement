@@ -604,7 +604,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', commentaireAgent = '', sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Visibilité par défaut si non fournie
@@ -870,11 +870,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
           </View>
         )}
 
-        {/* Commentaire de l'agent */}
-        {commentaireAgent && (
+        {/* Texte personnalisé après analyse marché */}
+        {texteAnalyseMarche && (
           <View style={styles.agentCommentBox}>
-            <Text style={styles.agentCommentTitle}>Analyse de l'agent</Text>
-            <Text style={styles.agentCommentText}>{commentaireAgent}</Text>
+            <Text style={styles.agentCommentText}>{texteAnalyseMarche}</Text>
           </View>
         )}
 
@@ -920,6 +919,13 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
             <Text style={{ fontSize: 12, color: '#64748B' }}>
               Aucun bien similaire à afficher
             </Text>
+          </View>
+        )}
+
+        {/* Texte personnalisé après étude comparative */}
+        {texteEtudeComparative && (
+          <View style={styles.agentCommentBox}>
+            <Text style={styles.agentCommentText}>{texteEtudeComparative}</Text>
           </View>
         )}
 

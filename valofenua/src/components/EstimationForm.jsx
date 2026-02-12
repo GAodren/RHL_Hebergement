@@ -47,7 +47,8 @@ export default function EstimationForm({ initialState }) {
   const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
   const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
   const [initialNomClient, setInitialNomClient] = useState(initialState?.nomClient || '');
-  const [initialCommentaireAgent, setInitialCommentaireAgent] = useState(initialState?.commentaireAgent || '');
+  const [initialTexteAnalyseMarche, setInitialTexteAnalyseMarche] = useState(initialState?.texteAnalyseMarche || '');
+  const [initialTexteEtudeComparative, setInitialTexteEtudeComparative] = useState(initialState?.texteEtudeComparative || '');
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
   const extraPhotosInputRef = useRef(null);
@@ -68,7 +69,8 @@ export default function EstimationForm({ initialState }) {
           setBienPhoto(estimation.photo_url);
           setPhotosSupplementaires(estimation.photos_supplementaires || []);
           setInitialNomClient(estimation.nom_client || '');
-          setInitialCommentaireAgent(estimation.commentaire_agent || '');
+          setInitialTexteAnalyseMarche(estimation.texte_analyse_marche || '');
+          setInitialTexteEtudeComparative(estimation.texte_etude_comparative || '');
         }
         setLoadingFromDb(false);
       }
@@ -335,7 +337,8 @@ export default function EstimationForm({ initialState }) {
           initialSectionVisibility={initialSectionVisibility}
           initialHiddenComparables={initialHiddenComparables}
           initialNomClient={initialNomClient}
-          initialCommentaireAgent={initialCommentaireAgent}
+          initialTexteAnalyseMarche={initialTexteAnalyseMarche}
+          initialTexteEtudeComparative={initialTexteEtudeComparative}
         />
       </div>
     );

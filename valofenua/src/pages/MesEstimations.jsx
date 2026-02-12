@@ -108,7 +108,8 @@ export default function MesEstimations() {
         sectionVisibility: estimation.section_visibility,
         hiddenComparables: estimation.hidden_comparables || [],
         nomClient: estimation.nom_client || '',
-        commentaireAgent: estimation.commentaire_agent || '',
+        texteAnalyseMarche: estimation.texte_analyse_marche || '',
+        texteEtudeComparative: estimation.texte_etude_comparative || '',
       }
     });
   };
@@ -204,7 +205,8 @@ export default function MesEstimations() {
     photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
     hiddenComparables: estimation.hidden_comparables || [],
-    commentaireAgent: estimation.commentaire_agent || '',
+    texteAnalyseMarche: estimation.texte_analyse_marche || '',
+    texteEtudeComparative: estimation.texte_etude_comparative || '',
   });
 
   if (loading) {
@@ -376,7 +378,8 @@ export default function MesEstimations() {
                               bienPhoto={estimation.photo_url}
                               photosSupplementaires={pdfData.photosSupplementaires}
                               nomClient={estimation.nom_client || ''}
-                              commentaireAgent={pdfData.commentaireAgent}
+                              texteAnalyseMarche={pdfData.texteAnalyseMarche}
+                              texteEtudeComparative={pdfData.texteEtudeComparative}
                               sectionVisibility={pdfData.sectionVisibility}
                               hiddenComparables={pdfData.hiddenComparables}
                             />
