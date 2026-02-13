@@ -30,7 +30,7 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="hover:opacity-90 transition-opacity flex-shrink-0">
+          <Link to="/" className="hover:opacity-90 transition-opacity flex-shrink-0 ml-2">
             <Logo className="h-10" />
           </Link>
 

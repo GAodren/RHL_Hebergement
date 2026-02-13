@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* Logo et description */}
           <div className="md:col-span-1">
-            <Logo className="h-12" />
+            <Logo className="h-12" showText={false} />
             <p className="mt-4 text-slate-400 text-sm leading-relaxed">
               L'outil d'estimation immobilière professionnel dédié au marché polynésien.
             </p>
