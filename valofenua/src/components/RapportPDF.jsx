@@ -935,6 +935,13 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
       <Page size="A4" style={styles.page}>
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
+        {/* Texte personnalisé synthèse */}
+        {texteSynthese && (
+          <View style={styles.agentCommentBox}>
+            <Text style={styles.agentCommentText}>{texteSynthese}</Text>
+          </View>
+        )}
+
         <View style={styles.estimationContainer}>
           {/* Prix principal */}
           <View style={styles.estimationBox}>
@@ -970,13 +977,6 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
             <Text style={styles.priceM2Value}>{formatPriceXPF(prixM2Display)}/m²</Text>
           </View>
         </View>
-
-        {/* Texte personnalisé synthèse */}
-        {texteSynthese && (
-          <View style={styles.agentCommentBox}>
-            <Text style={styles.agentCommentText}>{texteSynthese}</Text>
-          </View>
-        )}
 
         <Text style={styles.pageNumber}>5 / 6</Text>
       </Page>
