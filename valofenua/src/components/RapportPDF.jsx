@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Visibilité par défaut si non fournie
@@ -971,12 +971,19 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
           </View>
         </View>
 
+        {/* Texte personnalisé synthèse */}
+        {texteSynthese && (
+          <View style={styles.agentCommentBox}>
+            <Text style={styles.agentCommentText}>{texteSynthese}</Text>
+          </View>
+        )}
+
         <Text style={styles.pageNumber}>5 / 6</Text>
       </Page>
 
       {/* === PAGE 6: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
-        <Text style={styles.pageTitle}>Conclusion</Text>
+        <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
         {/* Contact */}
         <View style={styles.contactSection}>

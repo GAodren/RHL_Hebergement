@@ -110,6 +110,7 @@ export default function MesEstimations() {
         nomClient: estimation.nom_client || '',
         texteAnalyseMarche: estimation.texte_analyse_marche || '',
         texteEtudeComparative: estimation.texte_etude_comparative || '',
+        texteSynthese: estimation.texte_synthese || '',
       }
     });
   };
@@ -207,6 +208,7 @@ export default function MesEstimations() {
     hiddenComparables: estimation.hidden_comparables || [],
     texteAnalyseMarche: estimation.texte_analyse_marche || '',
     texteEtudeComparative: estimation.texte_etude_comparative || '',
+    texteSynthese: estimation.texte_synthese || '',
   });
 
   if (loading) {
@@ -380,6 +382,7 @@ export default function MesEstimations() {
                               nomClient={estimation.nom_client || ''}
                               texteAnalyseMarche={pdfData.texteAnalyseMarche}
                               texteEtudeComparative={pdfData.texteEtudeComparative}
+                              texteSynthese={pdfData.texteSynthese}
                               sectionVisibility={pdfData.sectionVisibility}
                               hiddenComparables={pdfData.hiddenComparables}
                             />
