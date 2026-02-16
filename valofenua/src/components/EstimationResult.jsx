@@ -48,7 +48,7 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
@@ -56,6 +56,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const [nomClient, setNomClient] = useState(initialNomClient || '');
   const [texteAnalyseMarche, setTexteAnalyseMarche] = useState(initialTexteAnalyseMarche || '');
   const [texteEtudeComparative, setTexteEtudeComparative] = useState(initialTexteEtudeComparative || '');
+  const [texteSynthese, setTexteSynthese] = useState(initialTexteSynthese || '');
 
   // État de visibilité des sections pour le PDF
   const [sectionVisibility, setSectionVisibility] = useState(
@@ -123,6 +124,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         nom_client: nomClient || null,
         texte_analyse_marche: texteAnalyseMarche || null,
         texte_etude_comparative: texteEtudeComparative || null,
+        texte_synthese: texteSynthese || null,
       };
       if (hasAdjusted) {
         updates.prix_ajuste = adjustedPrice;
@@ -140,6 +142,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         nomClient,
         texteAnalyseMarche,
         texteEtudeComparative,
+        texteSynthese,
         estimationId,
         sectionVisibility,
         hiddenComparables
@@ -354,6 +357,36 @@ export default function EstimationResult({ result, formData, onReset, estimation
             }
           }}
           placeholder="Analyse des biens comparables, différences notables, justification du positionnement prix..."
+          rows={6}
+          className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none text-sm"
+        />
+      </div>
+
+      {/* Section Synthèse et Estimation */}
+      <div className="border-t-2 border-[#0077B6] pt-6 mt-8">
+        <h2 className="text-xl font-bold text-[#0077B6] mb-4">Synthèse et Estimation</h2>
+      </div>
+
+      {/* Texte personnalisé pour Synthèse et Estimation */}
+      <div className="bg-white rounded-xl shadow-sm p-4 border border-dashed border-slate-300">
+        <div className="flex items-center justify-between mb-2">
+          <label className="flex items-center gap-2 text-sm text-slate-500">
+            <MessageSquare className="w-4 h-4" />
+            Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
+          </label>
+          <span className={`text-xs ${texteSynthese.split('\n').length > 13 ? 'text-red-500' : 'text-slate-400'}`}>
+            {texteSynthese.split('\n').length}/13 lignes
+          </span>
+        </div>
+        <textarea
+          value={texteSynthese}
+          onChange={(e) => {
+            const lines = e.target.value.split('\n');
+            if (lines.length <= 13) {
+              setTexteSynthese(e.target.value);
+            }
+          }}
+          placeholder="Synthèse de l'estimation, justification du prix retenu, recommandations..."
           rows={6}
           className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors resize-none text-sm"
         />
