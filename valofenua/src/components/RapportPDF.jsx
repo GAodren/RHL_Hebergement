@@ -545,8 +545,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contactLogo: {
-    width: 100,
-    height: 100,
+    width: 140,
+    height: 140,
     objectFit: 'contain',
     marginBottom: 20,
   },
