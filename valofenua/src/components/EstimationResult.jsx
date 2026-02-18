@@ -8,6 +8,17 @@ import MarketTrends from './MarketTrends';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
 import { updateEstimation } from '../utils/estimations';
 
+// Estimation du nombre de lignes visuelles dans le PDF (~80 caractères par ligne)
+const CHARS_PER_LINE = 80;
+const MAX_VISUAL_LINES = 13;
+
+function countVisualLines(text) {
+  if (!text) return 0;
+  return text.split('\n').reduce((total, line) => {
+    return total + (line.length === 0 ? 1 : Math.ceil(line.length / CHARS_PER_LINE));
+  }, 0);
+}
+
 // Labels pour l'état du bien
 const ETATS_BIEN_LABELS = {
   neuf: 'Neuf / Récent',
@@ -301,15 +312,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <MessageSquare className="w-4 h-4" />
             Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
           </label>
-          <span className={`text-xs ${texteAnalyseMarche.split('\n').length > 13 ? 'text-red-500' : 'text-slate-400'}`}>
-            {texteAnalyseMarche.split('\n').length}/13 lignes
+          <span className={`text-xs ${countVisualLines(texteAnalyseMarche) > MAX_VISUAL_LINES ? 'text-red-500' : 'text-slate-400'}`}>
+            {countVisualLines(texteAnalyseMarche)}/{MAX_VISUAL_LINES} lignes
           </span>
         </div>
         <textarea
           value={texteAnalyseMarche}
           onChange={(e) => {
-            const lines = e.target.value.split('\n');
-            if (lines.length <= 13) {
+            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES) {
               setTexteAnalyseMarche(e.target.value);
             }
           }}
@@ -344,15 +354,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <MessageSquare className="w-4 h-4" />
             Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
           </label>
-          <span className={`text-xs ${texteEtudeComparative.split('\n').length > 13 ? 'text-red-500' : 'text-slate-400'}`}>
-            {texteEtudeComparative.split('\n').length}/13 lignes
+          <span className={`text-xs ${countVisualLines(texteEtudeComparative) > MAX_VISUAL_LINES ? 'text-red-500' : 'text-slate-400'}`}>
+            {countVisualLines(texteEtudeComparative)}/{MAX_VISUAL_LINES} lignes
           </span>
         </div>
         <textarea
           value={texteEtudeComparative}
           onChange={(e) => {
-            const lines = e.target.value.split('\n');
-            if (lines.length <= 13) {
+            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES) {
               setTexteEtudeComparative(e.target.value);
             }
           }}
@@ -374,15 +383,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <MessageSquare className="w-4 h-4" />
             Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
           </label>
-          <span className={`text-xs ${texteSynthese.split('\n').length > 13 ? 'text-red-500' : 'text-slate-400'}`}>
-            {texteSynthese.split('\n').length}/13 lignes
+          <span className={`text-xs ${countVisualLines(texteSynthese) > MAX_VISUAL_LINES ? 'text-red-500' : 'text-slate-400'}`}>
+            {countVisualLines(texteSynthese)}/{MAX_VISUAL_LINES} lignes
           </span>
         </div>
         <textarea
           value={texteSynthese}
           onChange={(e) => {
-            const lines = e.target.value.split('\n');
-            if (lines.length <= 13) {
+            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES) {
               setTexteSynthese(e.target.value);
             }
           }}
