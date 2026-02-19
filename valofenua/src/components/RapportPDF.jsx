@@ -422,17 +422,16 @@ const styles = StyleSheet.create({
 
   // === PAGE 5: ESTIMATION FINALE ===
   estimationContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 25,
   },
   estimationBox: {
     backgroundColor: '#0077B6',
-    borderRadius: 16,
-    padding: 40,
+    borderRadius: 12,
+    padding: 25,
     alignItems: 'center',
     width: '100%',
-    maxWidth: 400,
+    maxWidth: 350,
   },
   estimationLabel: {
     fontSize: 12,
@@ -467,7 +466,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   priceRangeContainer: {
-    marginTop: 40,
+    marginTop: 25,
     width: '100%',
   },
   priceRangeTitle: {
