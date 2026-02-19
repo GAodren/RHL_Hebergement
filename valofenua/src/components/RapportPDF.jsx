@@ -1044,11 +1044,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
             </View>
           </View>
-          {/* Description en dessous, limitée à 3 lignes (~200 caractères) */}
+          {/* Description en dessous (limitée à 10 lignes dans le profil) */}
           {agencyDescription && (
             <View style={styles.agencyDescriptionBox}>
               <Text style={styles.agencyDescriptionText}>
-                {agencyDescription.length > 200 ? agencyDescription.substring(0, 200) + '...' : agencyDescription}
+                {agencyDescription}
               </Text>
             </View>
           )}

@@ -470,20 +470,17 @@ export default function EstimationForm({ initialState }) {
               <label htmlFor="nb_chambres" className="block text-sm font-medium text-slate-700 mb-2">
                 Nombre de chambres <span className="text-slate-400 font-normal">(optionnel)</span>
               </label>
-              <select
+              <input
+                type="number"
                 id="nb_chambres"
                 name="nb_chambres"
                 value={formData.nb_chambres}
                 onChange={handleChange}
+                min="1"
+                max="10"
+                placeholder="Ex: 3"
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
-              >
-                <option value="">Sélectionnez (optionnel)</option>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                  <option key={n} value={n}>
-                    {n} {n === 1 ? 'chambre' : 'chambres'}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           )}
 

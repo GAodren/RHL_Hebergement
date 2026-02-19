@@ -59,8 +59,28 @@ export default function Profil({ embedded = false }) {
     }
   }, [profile]);
 
+  // Compteur de lignes visuelles (~80 caractères par ligne)
+  const CHARS_PER_LINE = 80;
+  const MAX_DESCRIPTION_LINES = 10;
+
+  const countVisualLines = (text) => {
+    if (!text) return 0;
+    return text.split('\n').reduce((total, line) => {
+      return total + (line.length === 0 ? 1 : Math.ceil(line.length / CHARS_PER_LINE));
+    }, 0);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Limiter la description à 10 lignes
+    if (name === 'description_agence') {
+      const lines = countVisualLines(value);
+      if (lines > MAX_DESCRIPTION_LINES) {
+        return; // Ne pas mettre à jour si dépassement
+      }
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -319,14 +339,17 @@ export default function Profil({ embedded = false }) {
               <div>
                 <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
                   Description de l'agence
+                  <span className={`font-normal ml-2 ${countVisualLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500' : 'text-slate-400'}`}>
+                    ({countVisualLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes)
+                  </span>
                 </label>
                 <textarea
                   id="description_agence"
                   name="description_agence"
                   value={formData.description_agence}
                   onChange={handleChange}
-                  rows={3}
-                  placeholder="Présentez votre agence en quelques lignes..."
+                  rows={5}
+                  placeholder="Présentez votre agence en quelques lignes (10 lignes max)..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
               </div>
