@@ -210,6 +210,38 @@ export function AuthProvider({ children }) {
     }
   }, [user, updateProfile]);
 
+  const uploadAgentPhoto = useCallback(async (file) => {
+    if (!user) return { error: { message: 'Non connecté' } };
+
+    try {
+      const fileName = `${user.id}/photo_agent`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('logos')
+        .upload(fileName, file, {
+          upsert: true,
+          contentType: file.type
+        });
+
+      if (uploadError) {
+        console.error('Erreur upload photo agent:', uploadError);
+        return { error: uploadError };
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('logos')
+        .getPublicUrl(fileName);
+
+      const urlWithCache = `${publicUrl}?t=${Date.now()}`;
+
+      const { data, error } = await updateProfile({ photo_agent_url: urlWithCache });
+      return { data, error, url: urlWithCache };
+    } catch (error) {
+      console.error('Erreur uploadAgentPhoto:', error);
+      return { error };
+    }
+  }, [user, updateProfile]);
+
   const refreshProfile = useCallback(() => {
     if (user) {
       return fetchProfile(user.id, user.email);
@@ -224,6 +256,7 @@ export function AuthProvider({ children }) {
     logout,
     updateProfile,
     uploadLogo,
+    uploadAgentPhoto,
     refreshProfile,
   };
 

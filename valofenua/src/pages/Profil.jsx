@@ -18,8 +18,9 @@ import {
 } from 'lucide-react';
 
 export default function Profil({ embedded = false }) {
-  const { user, profile, updateProfile, uploadLogo, loading: authLoading } = useAuth();
-  const fileInputRef = useRef(null);
+  const { user, profile, updateProfile, uploadLogo, uploadAgentPhoto, loading: authLoading } = useAuth();
+  const logoInputRef = useRef(null);
+  const photoAgentInputRef = useRef(null);
   const hasInitialized = useRef(false);
 
   const [formData, setFormData] = useState({
@@ -33,9 +34,11 @@ export default function Profil({ embedded = false }) {
     description_agence: '',
   });
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [logoPreview, setLogoPreview] = useState(null);
+  const [photoAgentPreview, setPhotoAgentPreview] = useState(null);
 
   // Charger les données du profil uniquement au premier chargement
   useEffect(() => {
@@ -52,6 +55,7 @@ export default function Profil({ embedded = false }) {
         description_agence: profile.description_agence || '',
       });
       setLogoPreview(profile.logo_url || null);
+      setPhotoAgentPreview(profile.photo_agent_url || null);
     }
   }, [profile]);
 
@@ -74,35 +78,35 @@ export default function Profil({ embedded = false }) {
     }
     setSaving(false);
 
-    // Masquer le message après 3 secondes
     setTimeout(() => setMessage({ type: '', text: '' }), 3000);
   };
 
   const handleLogoClick = () => {
-    fileInputRef.current?.click();
+    logoInputRef.current?.click();
+  };
+
+  const handlePhotoAgentClick = () => {
+    photoAgentInputRef.current?.click();
   };
 
   const handleLogoChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Vérifier le type de fichier (JPG et PNG uniquement)
     const allowedTypes = ['image/jpeg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
       setMessage({ type: 'error', text: 'Formats acceptés : JPG ou PNG uniquement' });
       return;
     }
 
-    // Vérifier la taille (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
       setMessage({ type: 'error', text: 'L\'image ne doit pas dépasser 2 Mo' });
       return;
     }
 
-    setUploading(true);
+    setUploadingLogo(true);
     setMessage({ type: '', text: '' });
 
-    // Prévisualisation locale
     const reader = new FileReader();
     reader.onload = (e) => setLogoPreview(e.target?.result);
     reader.readAsDataURL(file);
@@ -116,7 +120,43 @@ export default function Profil({ embedded = false }) {
       setMessage({ type: 'success', text: 'Logo mis à jour avec succès' });
       setLogoPreview(url);
     }
-    setUploading(false);
+    setUploadingLogo(false);
+
+    setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+  };
+
+  const handlePhotoAgentChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      setMessage({ type: 'error', text: 'Formats acceptés : JPG ou PNG uniquement' });
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setMessage({ type: 'error', text: 'L\'image ne doit pas dépasser 2 Mo' });
+      return;
+    }
+
+    setUploadingPhoto(true);
+    setMessage({ type: '', text: '' });
+
+    const reader = new FileReader();
+    reader.onload = (e) => setPhotoAgentPreview(e.target?.result);
+    reader.readAsDataURL(file);
+
+    const { error, url } = await uploadAgentPhoto(file);
+
+    if (error) {
+      setMessage({ type: 'error', text: 'Erreur lors de l\'upload de la photo' });
+      setPhotoAgentPreview(profile?.photo_agent_url || null);
+    } else {
+      setMessage({ type: 'success', text: 'Photo mise à jour avec succès' });
+      setPhotoAgentPreview(url);
+    }
+    setUploadingPhoto(false);
 
     setTimeout(() => setMessage({ type: '', text: '' }), 3000);
   };
@@ -160,19 +200,27 @@ export default function Profil({ embedded = false }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Section Logo */}
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* ========== SECTION AGENCE ========== */}
+          <div className="border-b-2 border-[#0077B6] pb-2">
+            <h2 className="text-xl font-bold text-[#0077B6] flex items-center gap-2">
+              <Building2 className="w-6 h-6" />
+              Mon Agence
+            </h2>
+          </div>
+
+          {/* Logo de l'agence */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
               <ImagePlus className="w-5 h-5 text-[#0077B6]" />
               Logo de l'agence
-            </h2>
+            </h3>
             <div className="flex items-center gap-6">
               <div
                 onClick={handleLogoClick}
                 className="relative w-32 h-32 rounded-xl border-2 border-dashed border-slate-300 hover:border-[#0077B6] transition-colors cursor-pointer overflow-hidden bg-slate-50 flex items-center justify-center group"
               >
-                {uploading ? (
+                {uploadingLogo ? (
                   <Loader2 className="w-8 h-8 text-[#0077B6] animate-spin" />
                 ) : logoPreview ? (
                   <>
@@ -193,7 +241,7 @@ export default function Profil({ embedded = false }) {
                 )}
               </div>
               <input
-                ref={fileInputRef}
+                ref={logoInputRef}
                 type="file"
                 accept="image/jpeg,image/png"
                 onChange={handleLogoChange}
@@ -202,19 +250,151 @@ export default function Profil({ embedded = false }) {
               <div className="text-sm text-slate-500">
                 <p>Formats acceptés : JPG, PNG</p>
                 <p>Taille maximale : 2 Mo</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Informations de l'agence */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-[#0077B6]" />
+              Informations de l'agence
+            </h3>
+            <div className="space-y-4">
+              {/* Nom de l'agence */}
+              <div>
+                <label htmlFor="agence" className="block text-sm font-medium text-slate-700 mb-2">
+                  Nom de l'agence
+                </label>
+                <input
+                  type="text"
+                  id="agence"
+                  name="agence"
+                  value={formData.agence}
+                  onChange={handleChange}
+                  placeholder="Agence Immobilière Tahiti"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
+                />
+              </div>
+
+              {/* Adresse de l'agence */}
+              <div>
+                <label htmlFor="adresse" className="block text-sm font-medium text-slate-700 mb-2">
+                  Adresse
+                </label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="text"
+                    id="adresse"
+                    name="adresse"
+                    value={formData.adresse}
+                    onChange={handleChange}
+                    placeholder="123 Rue du Commerce, 98713 Papeete"
+                    className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Site web */}
+              <div>
+                <label htmlFor="site_web" className="block text-sm font-medium text-slate-700 mb-2">
+                  Site web
+                </label>
+                <div className="relative">
+                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="url"
+                    id="site_web"
+                    name="site_web"
+                    value={formData.site_web}
+                    onChange={handleChange}
+                    placeholder="https://www.mon-agence.pf"
+                    className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Description de l'agence */}
+              <div>
+                <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
+                  Description de l'agence
+                </label>
+                <textarea
+                  id="description_agence"
+                  name="description_agence"
+                  value={formData.description_agence}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Présentez votre agence en quelques lignes..."
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ========== SECTION AGENT ========== */}
+          <div className="border-b-2 border-[#0077B6] pb-2 mt-10">
+            <h2 className="text-xl font-bold text-[#0077B6] flex items-center gap-2">
+              <User className="w-6 h-6" />
+              Mon Profil Agent
+            </h2>
+          </div>
+
+          {/* Photo de l'agent */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+              <User className="w-5 h-5 text-[#0077B6]" />
+              Ma photo
+            </h3>
+            <div className="flex items-center gap-6">
+              <div
+                onClick={handlePhotoAgentClick}
+                className="relative w-32 h-32 rounded-full border-2 border-dashed border-slate-300 hover:border-[#0077B6] transition-colors cursor-pointer overflow-hidden bg-slate-50 flex items-center justify-center group"
+              >
+                {uploadingPhoto ? (
+                  <Loader2 className="w-8 h-8 text-[#0077B6] animate-spin" />
+                ) : photoAgentPreview ? (
+                  <>
+                    <img
+                      src={photoAgentPreview}
+                      alt="Photo de l'agent"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Upload className="w-8 h-8 text-white" />
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center p-4">
+                    <User className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                    <span className="text-xs text-slate-500">Ajouter</span>
+                  </div>
+                )}
+              </div>
+              <input
+                ref={photoAgentInputRef}
+                type="file"
+                accept="image/jpeg,image/png"
+                onChange={handlePhotoAgentChange}
+                className="hidden"
+              />
+              <div className="text-sm text-slate-500">
+                <p>Formats acceptés : JPG, PNG</p>
+                <p>Taille maximale : 2 Mo</p>
                 <p className="mt-2 text-[#0077B6]">
-                  Ce logo apparaîtra sur vos rapports d'estimation PDF
+                  Cette photo apparaîtra sur vos rapports PDF
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Section Informations personnelles */}
+          {/* Informations personnelles */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-[#0077B6]" />
               Informations personnelles
-            </h2>
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Prénom */}
               <div>
@@ -286,37 +466,9 @@ export default function Profil({ embedded = false }) {
                   />
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Section Informations professionnelles */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-[#0077B6]" />
-              Informations professionnelles
-            </h2>
-            <div className="space-y-4">
-              {/* Nom de l'agence */}
-              <div>
-                <label htmlFor="agence" className="block text-sm font-medium text-slate-700 mb-2">
-                  Nom de l'agence
-                </label>
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="text"
-                    id="agence"
-                    name="agence"
-                    value={formData.agence}
-                    onChange={handleChange}
-                    placeholder="Agence Immobilière Tahiti"
-                    className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
-                  />
-                </div>
-              </div>
 
               {/* Numéro de carte professionnelle */}
-              <div>
+              <div className="sm:col-span-2">
                 <label htmlFor="numero_carte_pro" className="block text-sm font-medium text-slate-700 mb-2">
                   Numéro de carte professionnelle
                 </label>
@@ -333,73 +485,10 @@ export default function Profil({ embedded = false }) {
                   />
                 </div>
               </div>
-
-              {/* Adresse de l'agence */}
-              <div>
-                <label htmlFor="adresse" className="block text-sm font-medium text-slate-700 mb-2">
-                  Adresse de l'agence
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="text"
-                    id="adresse"
-                    name="adresse"
-                    value={formData.adresse}
-                    onChange={handleChange}
-                    placeholder="123 Rue du Commerce, 98713 Papeete"
-                    className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* Site web */}
-              <div>
-                <label htmlFor="site_web" className="block text-sm font-medium text-slate-700 mb-2">
-                  Site web
-                </label>
-                <div className="relative">
-                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="url"
-                    id="site_web"
-                    name="site_web"
-                    value={formData.site_web}
-                    onChange={handleChange}
-                    placeholder="https://www.mon-agence.pf"
-                    className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
-                  />
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Section À propos de l'agence */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[#0077B6]" />
-              À propos de l'agence
-            </h2>
-            <div>
-              <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
-                Description de votre agence
-              </label>
-              <textarea
-                id="description_agence"
-                name="description_agence"
-                value={formData.description_agence}
-                onChange={handleChange}
-                rows={4}
-                placeholder="Présentez votre agence en quelques lignes... (expertise, années d'expérience, zones couvertes, etc.)"
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
-              />
-              <p className="text-xs text-slate-500 mt-2">
-                Cette description apparaîtra sur vos rapports d'estimation PDF
-              </p>
-            </div>
-          </div>
-
-          {/* Message de feedback (en bas, visible après enregistrement) */}
+          {/* Message de feedback (en bas) */}
           {message.text && (
             <div className={`flex items-center gap-3 p-4 rounded-lg ${
               message.type === 'success'
