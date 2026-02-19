@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     objectFit: 'contain',
-    borderRadius: 6,
+    borderRadius: 10,
   },
   coverAgencyInfo: {
     flex: 1,
@@ -549,7 +549,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     objectFit: 'contain',
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 20,
   },
   contactAgencyName: {
