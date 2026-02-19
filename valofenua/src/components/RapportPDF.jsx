@@ -682,12 +682,6 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               <Text style={styles.coverBienLabel}>Surface terrain</Text>
               <Text style={styles.coverBienValue}>{formData.surface_terrain || '-'} m²</Text>
             </View>
-            {formData.nb_chambres && (
-              <View style={styles.coverBienItem}>
-                <Text style={styles.coverBienLabel}>Chambres</Text>
-                <Text style={styles.coverBienValue}>{formData.nb_chambres}</Text>
-              </View>
-            )}
             <View style={styles.coverBienItem}>
               <Text style={styles.coverBienLabel}>Localisation</Text>
               <Text style={styles.coverBienValue}>{formData.commune}</Text>
