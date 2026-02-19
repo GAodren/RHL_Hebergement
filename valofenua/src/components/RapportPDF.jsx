@@ -624,11 +624,15 @@ const styles = StyleSheet.create({
     color: '#64748B',
     marginBottom: 4,
   },
+  agencyDescriptionBox: {
+    marginTop: 15,
+    paddingTop: 15,
+    borderTop: '1px solid #E2E8F0',
+  },
   agencyDescriptionText: {
     fontSize: 10,
     color: '#475569',
-    marginTop: 8,
-    lineHeight: 1.4,
+    lineHeight: 1.5,
     fontStyle: 'italic',
   },
 });
@@ -1038,9 +1042,16 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               {agencyName && <Text style={styles.contactNameLarge}>{agencyName}</Text>}
               {agencyAddress && <Text style={styles.contactSubtextLarge}>{agencyAddress}</Text>}
               {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
-              {agencyDescription && <Text style={styles.agencyDescriptionText}>{agencyDescription}</Text>}
             </View>
           </View>
+          {/* Description en dessous, limitée à 3 lignes (~200 caractères) */}
+          {agencyDescription && (
+            <View style={styles.agencyDescriptionBox}>
+              <Text style={styles.agencyDescriptionText}>
+                {agencyDescription.length > 200 ? agencyDescription.substring(0, 200) + '...' : agencyDescription}
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Bloc Agent - pleine largeur */}
