@@ -213,7 +213,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
       />
 
       {/* Caractéristiques du bien - TOGGLEABLE (seulement si des données existent) */}
-      {(formData.etat_bien || (formData.caracteristiques && formData.caracteristiques.length > 0)) && (
+      {(formData.etat_bien || formData.nb_chambres || (formData.caracteristiques && formData.caracteristiques.length > 0)) && (
         <ToggleableSection
           id="bienDetails"
           visible={sectionVisibility.bienDetails}
@@ -232,6 +232,16 @@ export default function EstimationResult({ result, formData, onReset, estimation
                   <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">État du bien</p>
                   <p className="text-sm font-semibold text-slate-700">
                     {ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}
+                  </p>
+                </div>
+              )}
+
+              {/* Nombre de chambres */}
+              {formData.nb_chambres && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Nombre de chambres</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {formData.nb_chambres} {Number(formData.nb_chambres) === 1 ? 'chambre' : 'chambres'}
                   </p>
                 </div>
               )}
