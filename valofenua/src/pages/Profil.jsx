@@ -319,14 +319,18 @@ export default function Profil({ embedded = false }) {
               <div>
                 <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
                   Description de l'agence
+                  <span className="text-slate-400 font-normal ml-2">
+                    ({formData.description_agence.length}/800)
+                  </span>
                 </label>
                 <textarea
                   id="description_agence"
                   name="description_agence"
                   value={formData.description_agence}
                   onChange={handleChange}
-                  rows={3}
-                  placeholder="Présentez votre agence en quelques lignes..."
+                  rows={4}
+                  maxLength={800}
+                  placeholder="Présentez votre agence en quelques lignes (10 lignes max)..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
               </div>
