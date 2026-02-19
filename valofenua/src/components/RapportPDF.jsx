@@ -585,6 +585,45 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 2,
   },
+  // Styles pour blocs pleine largeur
+  contactBlockFull: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 12,
+    padding: 25,
+    border: '1px solid #E2E8F0',
+    marginBottom: 20,
+  },
+  contactBlockContentHorizontal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 25,
+  },
+  contactInfoColumn: {
+    flex: 1,
+  },
+  agencyLogoLarge: {
+    width: 120,
+    height: 120,
+    objectFit: 'contain',
+    borderRadius: 12,
+  },
+  agentPhotoLarge: {
+    width: 120,
+    height: 120,
+    objectFit: 'cover',
+    borderRadius: 60,
+  },
+  contactNameLarge: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1E293B',
+    marginBottom: 8,
+  },
+  contactSubtextLarge: {
+    fontSize: 12,
+    color: '#64748B',
+    marginBottom: 4,
+  },
 });
 
 export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
@@ -980,32 +1019,33 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
       <Page size="A4" style={styles.contactPage}>
         <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
-        {/* Deux blocs côte à côte */}
-        <View style={styles.contactBlocksContainer}>
-          {/* Bloc Agence */}
-          <View style={styles.contactBlock}>
-            <Text style={styles.contactBlockTitle}>L'Agence</Text>
-            <View style={styles.contactBlockContent}>
-              {agentLogo && (
-                <Image style={styles.agencyLogo} src={agentLogo} />
-              )}
-              {agencyName && <Text style={styles.contactName}>{agencyName}</Text>}
-              {agencyAddress && <Text style={styles.contactSubtext}>{agencyAddress}</Text>}
-              {agencyWebsite && <Text style={styles.contactSubtext}>{agencyWebsite}</Text>}
+        {/* Bloc Agence - pleine largeur */}
+        <View style={styles.contactBlockFull}>
+          <Text style={styles.contactBlockTitle}>L'Agence</Text>
+          <View style={styles.contactBlockContentHorizontal}>
+            {agentLogo && (
+              <Image style={styles.agencyLogoLarge} src={agentLogo} />
+            )}
+            <View style={styles.contactInfoColumn}>
+              {agencyName && <Text style={styles.contactNameLarge}>{agencyName}</Text>}
+              {agencyAddress && <Text style={styles.contactSubtextLarge}>{agencyAddress}</Text>}
+              {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
             </View>
           </View>
+        </View>
 
-          {/* Bloc Agent */}
-          <View style={styles.contactBlock}>
-            <Text style={styles.contactBlockTitle}>Votre Agent</Text>
-            <View style={styles.contactBlockContent}>
-              {agentPhoto && (
-                <Image style={styles.agentPhoto} src={agentPhoto} />
-              )}
-              {agentFullName && <Text style={styles.contactName}>{agentFullName}</Text>}
-              {agentPhone && <Text style={styles.contactSubtext}>{agentPhone}</Text>}
-              {agentEmail && <Text style={styles.contactSubtext}>{agentEmail}</Text>}
-              {cartePro && <Text style={styles.contactSubtext}>Carte pro : {cartePro}</Text>}
+        {/* Bloc Agent - pleine largeur */}
+        <View style={styles.contactBlockFull}>
+          <Text style={styles.contactBlockTitle}>Votre Agent</Text>
+          <View style={styles.contactBlockContentHorizontal}>
+            {agentPhoto && (
+              <Image style={styles.agentPhotoLarge} src={agentPhoto} />
+            )}
+            <View style={styles.contactInfoColumn}>
+              {agentFullName && <Text style={styles.contactNameLarge}>{agentFullName}</Text>}
+              {agentPhone && <Text style={styles.contactSubtextLarge}>{agentPhone}</Text>}
+              {agentEmail && <Text style={styles.contactSubtextLarge}>{agentEmail}</Text>}
+              {cartePro && <Text style={styles.contactSubtextLarge}>Carte pro : {cartePro}</Text>}
             </View>
           </View>
         </View>
