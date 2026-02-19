@@ -84,6 +84,7 @@ export default function MesEstimations() {
       type_bien: estimation.type_bien,
       surface: estimation.surface,
       surface_terrain: estimation.surface_terrain,
+      nb_chambres: estimation.nb_chambres || '',
       etat_bien: estimation.etat_bien,
       caracteristiques: estimation.caracteristiques || [],
     };

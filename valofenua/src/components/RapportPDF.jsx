@@ -600,7 +600,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
   };
 
   // Vérifier si on a des détails du bien à afficher
-  const hasBienDetails = formData.etat_bien || (formData.caracteristiques && formData.caracteristiques.length > 0);
+  const hasBienDetails = formData.etat_bien || formData.nb_chambres || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
   // Filtrer les biens similaires en excluant les masqués
   const visibleComparables = result.comparables
@@ -682,6 +682,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               <Text style={styles.coverBienLabel}>Surface terrain</Text>
               <Text style={styles.coverBienValue}>{formData.surface_terrain || '-'} m²</Text>
             </View>
+            {formData.nb_chambres && (
+              <View style={styles.coverBienItem}>
+                <Text style={styles.coverBienLabel}>Chambres</Text>
+                <Text style={styles.coverBienValue}>{formData.nb_chambres}</Text>
+              </View>
+            )}
             <View style={styles.coverBienItem}>
               <Text style={styles.coverBienLabel}>Localisation</Text>
               <Text style={styles.coverBienValue}>{formData.commune}</Text>
@@ -746,12 +752,21 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
             </View>
           </View>
 
-          {formData.etat_bien && (
-            <View style={{ marginBottom: 15 }}>
-              <Text style={styles.caracLabel}>État du bien</Text>
-              <Text style={styles.caracValue}>{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</Text>
-            </View>
-          )}
+          <View style={styles.caracteristiquesRow}>
+            {formData.nb_chambres && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>Nombre de chambres</Text>
+                <Text style={styles.caracValue}>{formData.nb_chambres} {Number(formData.nb_chambres) === 1 ? 'chambre' : 'chambres'}</Text>
+              </View>
+            )}
+            {formData.etat_bien && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>État du bien</Text>
+                <Text style={styles.caracValue}>{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</Text>
+              </View>
+            )}
+          </View>
+
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
             <View>

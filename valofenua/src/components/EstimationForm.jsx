@@ -33,6 +33,7 @@ export default function EstimationForm({ initialState }) {
       type_bien: '',
       surface: '',
       surface_terrain: '',
+      nb_chambres: '',
       etat_bien: '',
       caracteristiques: [],
     }
@@ -164,6 +165,7 @@ export default function EstimationForm({ initialState }) {
         type_bien: '',
         surface: '',
         surface_terrain: '',
+        nb_chambres: '',
         etat_bien: '',
         caracteristiques: [],
       }));
@@ -286,6 +288,7 @@ export default function EstimationForm({ initialState }) {
       type_bien: '',
       surface: '',
       surface_terrain: '',
+      nb_chambres: '',
       etat_bien: '',
       caracteristiques: [],
     });
@@ -458,6 +461,29 @@ export default function EstimationForm({ initialState }) {
                 placeholder={formData.categorie === 'Terrain' ? 'Ex: 800' : 'Ex: 500 (optionnel)'}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all"
               />
+            </div>
+          )}
+
+          {/* Nombre de chambres - Maison ou Appartement */}
+          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement') && (
+            <div className="animate-fadeIn">
+              <label htmlFor="nb_chambres" className="block text-sm font-medium text-slate-700 mb-2">
+                Nombre de chambres <span className="text-slate-400 font-normal">(optionnel)</span>
+              </label>
+              <select
+                id="nb_chambres"
+                name="nb_chambres"
+                value={formData.nb_chambres}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
+              >
+                <option value="">Sélectionnez (optionnel)</option>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                  <option key={n} value={n}>
+                    {n} {n === 1 ? 'chambre' : 'chambres'}
+                  </option>
+                ))}
+              </select>
             </div>
           )}
 
