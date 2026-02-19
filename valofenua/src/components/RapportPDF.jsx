@@ -519,21 +519,21 @@ const styles = StyleSheet.create({
   },
   disclaimerBox: {
     backgroundColor: '#FEF3C7',
-    borderRadius: 8,
-    padding: 15,
+    borderRadius: 6,
+    padding: 10,
     marginTop: 'auto',
     border: '1px solid #FCD34D',
   },
   disclaimerTitle: {
-    fontSize: 10,
+    fontSize: 8,
     fontWeight: 'bold',
     color: '#92400E',
-    marginBottom: 5,
+    marginBottom: 3,
   },
   disclaimerText: {
-    fontSize: 9,
+    fontSize: 7,
     color: '#92400E',
-    lineHeight: 1.4,
+    lineHeight: 1.3,
   },
   contactBlocksContainer: {
     flexDirection: 'row',
