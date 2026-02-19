@@ -442,14 +442,29 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   estimationPrice: {
-    fontSize: 42,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 5,
+    marginBottom: 15,
   },
-  estimationPriceXPF: {
-    fontSize: 14,
+  estimationPriceM2: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginTop: 5,
+  },
+  estimationPriceM2Label: {
+    fontSize: 9,
     color: '#BAE6FD',
+    textAlign: 'center',
+    marginBottom: 2,
+  },
+  estimationPriceM2Value: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
   priceRangeContainer: {
     marginTop: 40,
@@ -494,20 +509,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: '#F59E0B',
-  },
-  priceM2Info: {
-    marginTop: 20,
-    textAlign: 'center',
-  },
-  priceM2Label: {
-    fontSize: 9,
-    color: '#64748B',
-  },
-  priceM2Value: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#1E293B',
-    marginTop: 2,
   },
 
   // === PAGE 6: CONTACT ===
@@ -856,12 +857,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
             <Text style={styles.sectionTitle}>Indicateurs du Marché</Text>
             <View style={styles.statsGrid}>
               <View style={styles.statCard}>
-                <Text style={styles.statLabel}>Prix/m² du secteur</Text>
-                <Text style={styles.statValue}>{formatPriceXPF(prix_m2_moyen)}</Text>
+                <Text style={styles.statLabel}>Secteur</Text>
+                <Text style={styles.statValue}>{formData.commune}</Text>
               </View>
               <View style={styles.statCard}>
-                <Text style={styles.statLabel}>Surface du bien</Text>
-                <Text style={styles.statValue}>{surfacePrincipale} m²</Text>
+                <Text style={styles.statLabel}>Prix/m² du secteur</Text>
+                <Text style={styles.statValue}>{formatPriceXPF(prix_m2_moyen)}</Text>
               </View>
               <View style={styles.statCard}>
                 <Text style={styles.statLabel}>Prix/m² (fourchette basse)</Text>
@@ -941,19 +942,15 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
       <Page size="A4" style={styles.page}>
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
-        {/* Texte personnalisé synthèse */}
-        {texteSynthese && (
-          <View style={styles.agentCommentBox}>
-            <Text style={styles.agentCommentText}>{texteSynthese}</Text>
-          </View>
-        )}
-
         <View style={styles.estimationContainer}>
           {/* Prix principal */}
           <View style={styles.estimationBox}>
             <Text style={styles.estimationLabel}>Avis de Valeur</Text>
-            <Text style={styles.estimationPrice}>{formatPriceMF(displayPrice)}</Text>
-            <Text style={styles.estimationPriceXPF}>soit {formatPriceXPF(displayPrice)}</Text>
+            <Text style={styles.estimationPrice}>{formatPriceXPF(displayPrice)}</Text>
+            <View style={styles.estimationPriceM2}>
+              <Text style={styles.estimationPriceM2Label}>Prix au m² estimé</Text>
+              <Text style={styles.estimationPriceM2Value}>{formatPriceXPF(prixM2Display)}/m²</Text>
+            </View>
           </View>
 
           {/* Fourchette de prix */}
@@ -976,13 +973,14 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               </View>
             </View>
           )}
-
-          {/* Prix au m² */}
-          <View style={styles.priceM2Info}>
-            <Text style={styles.priceM2Label}>Prix au m² estimé</Text>
-            <Text style={styles.priceM2Value}>{formatPriceXPF(prixM2Display)}/m²</Text>
-          </View>
         </View>
+
+        {/* Texte personnalisé synthèse */}
+        {texteSynthese && (
+          <View style={styles.agentCommentBox}>
+            <Text style={styles.agentCommentText}>{texteSynthese}</Text>
+          </View>
+        )}
 
         <Text style={styles.pageNumber}>5 / 6</Text>
       </Page>
