@@ -59,15 +59,13 @@ export default function Profil({ embedded = false }) {
     }
   }, [profile]);
 
-  // Compteur de lignes visuelles (~80 caractères par ligne)
-  const CHARS_PER_LINE = 80;
+  // Compteur de lignes (retours à la ligne uniquement)
   const MAX_DESCRIPTION_LINES = 10;
 
-  const countVisualLines = (text) => {
+  const countLines = (text) => {
     if (!text) return 0;
-    return text.split('\n').reduce((total, line) => {
-      return total + (line.length === 0 ? 1 : Math.ceil(line.length / CHARS_PER_LINE));
-    }, 0);
+    // Compte le nombre de retours à la ligne + 1 (première ligne)
+    return (text.match(/\n/g) || []).length + 1;
   };
 
   const handleChange = (e) => {
@@ -75,7 +73,7 @@ export default function Profil({ embedded = false }) {
 
     // Limiter la description à 10 lignes
     if (name === 'description_agence') {
-      const lines = countVisualLines(value);
+      const lines = countLines(value);
       if (lines > MAX_DESCRIPTION_LINES) {
         return; // Ne pas mettre à jour si dépassement
       }
@@ -339,8 +337,8 @@ export default function Profil({ embedded = false }) {
               <div>
                 <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
                   Description de l'agence
-                  <span className={`font-normal ml-2 ${countVisualLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500' : 'text-slate-400'}`}>
-                    ({countVisualLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes)
+                  <span className={`font-normal ml-2 ${countLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500' : 'text-slate-400'}`}>
+                    ({countLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes)
                   </span>
                 </label>
                 <textarea
