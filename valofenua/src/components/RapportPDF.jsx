@@ -520,88 +520,70 @@ const styles = StyleSheet.create({
   disclaimerBox: {
     backgroundColor: '#FEF3C7',
     borderRadius: 8,
-    padding: 20,
-    marginTop: 30,
+    padding: 15,
+    marginTop: 'auto',
     border: '1px solid #FCD34D',
   },
   disclaimerTitle: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: 'bold',
     color: '#92400E',
-    marginBottom: 8,
+    marginBottom: 5,
   },
   disclaimerText: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#92400E',
-    lineHeight: 1.5,
+    lineHeight: 1.4,
   },
-  contactSection: {
-    marginBottom: 'auto',
+  contactBlocksContainer: {
+    flexDirection: 'row',
+    gap: 20,
+    marginBottom: 20,
   },
-  contactCard: {
+  contactBlock: {
+    flex: 1,
     backgroundColor: '#F8FAFC',
     borderRadius: 12,
-    padding: 30,
+    padding: 20,
     border: '1px solid #E2E8F0',
+  },
+  contactBlockTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#0077B6',
+    marginBottom: 15,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  contactBlockContent: {
     alignItems: 'center',
   },
-  contactLogo: {
-    width: 160,
-    height: 160,
+  agencyLogo: {
+    width: 100,
+    height: 100,
     objectFit: 'contain',
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 12,
   },
-  contactAgencyName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1E293B',
-    marginBottom: 5,
-    textAlign: 'center',
+  agentPhoto: {
+    width: 100,
+    height: 100,
+    objectFit: 'cover',
+    borderRadius: 50,
+    marginBottom: 12,
   },
-  contactAgentName: {
+  contactName: {
     fontSize: 14,
-    color: '#475569',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  contactDetails: {
-    width: '100%',
-    borderTop: '1px solid #E2E8F0',
-    paddingTop: 20,
-  },
-  contactRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 40,
-    marginBottom: 10,
-  },
-  contactItem: {
-    alignItems: 'center',
-  },
-  contactLabel: {
-    fontSize: 8,
-    color: '#64748B',
-    textTransform: 'uppercase',
-    marginBottom: 3,
-  },
-  contactValue: {
-    fontSize: 11,
+    fontWeight: 'bold',
     color: '#1E293B',
-    fontWeight: 'bold',
-  },
-  ctaBox: {
-    marginTop: 30,
-    backgroundColor: '#0077B6',
-    borderRadius: 8,
-    padding: 20,
-    alignItems: 'center',
-  },
-  ctaText: {
-    fontSize: 12,
-    color: '#FFFFFF',
+    marginBottom: 4,
     textAlign: 'center',
-    fontWeight: 'bold',
+  },
+  contactSubtext: {
+    fontSize: 10,
+    color: '#64748B',
+    textAlign: 'center',
+    marginBottom: 2,
   },
 });
 
@@ -631,6 +613,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
   const agentPhone = agentProfile?.telephone || '';
   const agentEmail = agentProfile?.email || '';
   const agentLogo = agentProfile?.logo_url || null;
+  const agentPhoto = agentProfile?.photo_agent_url || null;
   const cartePro = agentProfile?.numero_carte_pro || '';
   const agencyAddress = agentProfile?.adresse || '';
   const agencyWebsite = agentProfile?.site_web || '';
@@ -988,48 +971,33 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
       <Page size="A4" style={styles.contactPage}>
         <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
-        {/* Contact */}
-        <View style={styles.contactSection}>
-          <View style={styles.contactCard}>
-            {agentLogo && (
-              <Image style={styles.contactLogo} src={agentLogo} />
-            )}
-            {agencyName && <Text style={styles.contactAgencyName}>{agencyName}</Text>}
-            {agentFullName && <Text style={styles.contactAgentName}>{agentFullName}</Text>}
-
-            <View style={styles.contactDetails}>
-              <View style={styles.contactRow}>
-                {agentPhone && (
-                  <View style={styles.contactItem}>
-                    <Text style={styles.contactLabel}>Téléphone</Text>
-                    <Text style={styles.contactValue}>{agentPhone}</Text>
-                  </View>
-                )}
-                {agentEmail && (
-                  <View style={styles.contactItem}>
-                    <Text style={styles.contactLabel}>Email</Text>
-                    <Text style={styles.contactValue}>{agentEmail}</Text>
-                  </View>
-                )}
-              </View>
-              {(agencyAddress || agencyWebsite) && (
-                <View style={styles.contactRow}>
-                  {agencyAddress && (
-                    <View style={styles.contactItem}>
-                      <Text style={styles.contactLabel}>Adresse</Text>
-                      <Text style={styles.contactValue}>{agencyAddress}</Text>
-                    </View>
-                  )}
-                  {agencyWebsite && (
-                    <View style={styles.contactItem}>
-                      <Text style={styles.contactLabel}>Site web</Text>
-                      <Text style={styles.contactValue}>{agencyWebsite}</Text>
-                    </View>
-                  )}
-                </View>
+        {/* Deux blocs côte à côte */}
+        <View style={styles.contactBlocksContainer}>
+          {/* Bloc Agence */}
+          <View style={styles.contactBlock}>
+            <Text style={styles.contactBlockTitle}>L'Agence</Text>
+            <View style={styles.contactBlockContent}>
+              {agentLogo && (
+                <Image style={styles.agencyLogo} src={agentLogo} />
               )}
+              {agencyName && <Text style={styles.contactName}>{agencyName}</Text>}
+              {agencyAddress && <Text style={styles.contactSubtext}>{agencyAddress}</Text>}
+              {agencyWebsite && <Text style={styles.contactSubtext}>{agencyWebsite}</Text>}
             </View>
+          </View>
 
+          {/* Bloc Agent */}
+          <View style={styles.contactBlock}>
+            <Text style={styles.contactBlockTitle}>Votre Agent</Text>
+            <View style={styles.contactBlockContent}>
+              {agentPhoto && (
+                <Image style={styles.agentPhoto} src={agentPhoto} />
+              )}
+              {agentFullName && <Text style={styles.contactName}>{agentFullName}</Text>}
+              {agentPhone && <Text style={styles.contactSubtext}>{agentPhone}</Text>}
+              {agentEmail && <Text style={styles.contactSubtext}>{agentEmail}</Text>}
+              {cartePro && <Text style={styles.contactSubtext}>Carte pro : {cartePro}</Text>}
+            </View>
           </View>
         </View>
 
