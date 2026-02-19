@@ -477,7 +477,7 @@ export default function EstimationForm({ initialState }) {
                 value={formData.nb_chambres}
                 onChange={handleChange}
                 min="1"
-                max="50"
+                max="10"
                 placeholder="Ex: 3"
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
               />
