@@ -690,8 +690,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               <Text style={styles.coverBienValue}>{formData.categorie} {formData.type_bien || ''}</Text>
             </View>
             <View style={styles.coverBienItem}>
-              <Text style={styles.coverBienLabel}>Surface</Text>
-              <Text style={styles.coverBienValue}>{surfacePrincipale} m²</Text>
+              <Text style={styles.coverBienLabel}>Surface habitable</Text>
+              <Text style={styles.coverBienValue}>{formData.surface || '-'} m²</Text>
+            </View>
+            <View style={styles.coverBienItem}>
+              <Text style={styles.coverBienLabel}>Surface terrain</Text>
+              <Text style={styles.coverBienValue}>{formData.surface_terrain || '-'} m²</Text>
             </View>
             <View style={styles.coverBienItem}>
               <Text style={styles.coverBienLabel}>Localisation</Text>
@@ -725,7 +729,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
           <View style={{ marginBottom: 25 }}>
             <Text style={styles.sectionTitle}>Galerie Photos</Text>
             <View style={styles.photosGrid}>
-              {photosSupplementaires.slice(0, 4).map((photo, index) => {
+              {photosSupplementaires.slice(0, 6).map((photo, index) => {
                 const photoUrl = photo.url || photo;
                 const description = photo.description || '';
                 return (
