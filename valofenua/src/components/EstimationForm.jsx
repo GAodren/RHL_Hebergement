@@ -54,7 +54,7 @@ export default function EstimationForm({ initialState }) {
   const fileInputRef = useRef(null);
   const extraPhotosInputRef = useRef(null);
 
-  const MAX_EXTRA_PHOTOS = 5;
+  const MAX_EXTRA_PHOTOS = 6;
 
   // Recharger les données depuis la BDD si on a un estimationId (pour récupérer les dernières modifications)
   useEffect(() => {
