@@ -624,6 +624,13 @@ const styles = StyleSheet.create({
     color: '#64748B',
     marginBottom: 4,
   },
+  agencyDescriptionText: {
+    fontSize: 10,
+    color: '#475569',
+    marginTop: 8,
+    lineHeight: 1.4,
+    fontStyle: 'italic',
+  },
 });
 
 export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
@@ -656,6 +663,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
   const cartePro = agentProfile?.numero_carte_pro || '';
   const agencyAddress = agentProfile?.adresse || '';
   const agencyWebsite = agentProfile?.site_web || '';
+  const agencyDescription = agentProfile?.description_agence || '';
 
   // Le prix affiché est soit le prix ajusté, soit le prix moyen
   const displayPrice = adjustedPrice || prix_moyen;
@@ -1030,6 +1038,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               {agencyName && <Text style={styles.contactNameLarge}>{agencyName}</Text>}
               {agencyAddress && <Text style={styles.contactSubtextLarge}>{agencyAddress}</Text>}
               {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
+              {agencyDescription && <Text style={styles.agencyDescriptionText}>{agencyDescription}</Text>}
             </View>
           </View>
         </View>
