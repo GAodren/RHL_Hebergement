@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     objectFit: 'contain',
+    borderRadius: 6,
   },
   coverAgencyInfo: {
     flex: 1,
@@ -545,9 +546,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contactLogo: {
-    width: 140,
-    height: 140,
+    width: 160,
+    height: 160,
     objectFit: 'contain',
+    borderRadius: 8,
     marginBottom: 20,
   },
   contactAgencyName: {
@@ -1031,12 +1033,6 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               )}
             </View>
 
-            {/* CTA */}
-            <View style={styles.ctaBox}>
-              <Text style={styles.ctaText}>
-                Passons à l'étape suivante : rencontrons-nous pour définir votre stratégie de vente.
-              </Text>
-            </View>
           </View>
         </View>
 
