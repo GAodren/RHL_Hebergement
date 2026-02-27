@@ -113,9 +113,9 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
                 onChange={(e) => setCustomPriceInput(e.target.value)}
                 onKeyDown={handleCustomInputKeyDown}
                 placeholder="Ex: 120,5"
-                className="w-32 text-2xl font-bold text-center text-[#0077B6] border-2 border-[#0077B6] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0077B6]/30"
+                className="w-40 text-2xl font-bold text-[#0077B6] border-2 border-[#0077B6] rounded-lg pl-3 pr-12 py-2 focus:outline-none focus:ring-2 focus:ring-[#0077B6]/30"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-lg font-medium text-slate-400">MF</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-lg font-medium text-slate-400 pointer-events-none">MF</span>
             </div>
             <button
               onClick={handleCustomPriceSubmit}

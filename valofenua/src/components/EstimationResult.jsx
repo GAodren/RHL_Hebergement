@@ -136,10 +136,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
         texte_analyse_marche: texteAnalyseMarche || null,
         texte_etude_comparative: texteEtudeComparative || null,
         texte_synthese: texteSynthese || null,
+        // Toujours mettre à jour le prix ajusté (soit la nouvelle valeur, soit null pour effacer)
+        prix_ajuste: hasAdjusted ? adjustedPrice : null,
       };
-      if (hasAdjusted) {
-        updates.prix_ajuste = adjustedPrice;
-      }
       await updateEstimation(estimationId, updates);
     }
 
