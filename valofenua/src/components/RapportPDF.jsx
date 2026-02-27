@@ -666,6 +666,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
   const agentPhoto = agentProfile?.photo_agent_url || null;
   const cartePro = agentProfile?.numero_carte_pro || '';
   const agencyAddress = agentProfile?.adresse || '';
+  const agencyPhone = agentProfile?.telephone_agence || '';
   const agencyWebsite = agentProfile?.site_web || '';
   const agencyDescription = agentProfile?.description_agence || '';
 
@@ -1041,6 +1042,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
             <View style={styles.contactInfoColumn}>
               {agencyName && <Text style={styles.contactNameLarge}>{agencyName}</Text>}
               {agencyAddress && <Text style={styles.contactSubtextLarge}>{agencyAddress}</Text>}
+              {agencyPhone && <Text style={styles.contactSubtextLarge}>{agencyPhone}</Text>}
               {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
             </View>
           </View>
