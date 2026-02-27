@@ -45,15 +45,13 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: '#94A3B8',
   },
-  // Logo en haut à droite des pages (conteneur avec overflow hidden pour border-radius)
+  // Logo en haut à droite des pages
   pageLogoContainer: {
     position: 'absolute',
     top: 20,
     right: 20,
     width: 70,
     height: 70,
-    borderRadius: 10,
-    overflow: 'hidden',
   },
   pageLogoImage: {
     width: '100%',
@@ -158,8 +156,6 @@ const styles = StyleSheet.create({
   coverAgencyLogoContainer: {
     width: 70,
     height: 70,
-    borderRadius: 10,
-    overflow: 'hidden',
   },
   coverAgencyLogoImage: {
     width: '100%',
@@ -630,8 +626,6 @@ const styles = StyleSheet.create({
   agencyLogoLargeContainer: {
     width: 120,
     height: 120,
-    borderRadius: 12,
-    overflow: 'hidden',
   },
   agencyLogoLargeImage: {
     width: '100%',
