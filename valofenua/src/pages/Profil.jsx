@@ -30,6 +30,7 @@ export default function Profil({ embedded = false }) {
     agence: '',
     numero_carte_pro: '',
     adresse: '',
+    telephone_agence: '',
     site_web: '',
     description_agence: '',
   });
@@ -51,6 +52,7 @@ export default function Profil({ embedded = false }) {
         agence: profile.agence || '',
         numero_carte_pro: profile.numero_carte_pro || '',
         adresse: profile.adresse || '',
+        telephone_agence: profile.telephone_agence || '',
         site_web: profile.site_web || '',
         description_agence: profile.description_agence || '',
       });
@@ -309,6 +311,25 @@ export default function Profil({ embedded = false }) {
                     value={formData.adresse}
                     onChange={handleChange}
                     placeholder="123 Rue du Commerce, 98713 Papeete"
+                    className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Téléphone de l'agence */}
+              <div>
+                <label htmlFor="telephone_agence" className="block text-sm font-medium text-slate-700 mb-2">
+                  Téléphone de l'agence
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="tel"
+                    id="telephone_agence"
+                    name="telephone_agence"
+                    value={formData.telephone_agence}
+                    onChange={handleChange}
+                    placeholder="40 12 34 56"
                     className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors"
                   />
                 </div>
