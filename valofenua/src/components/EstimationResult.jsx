@@ -451,7 +451,10 @@ export default function EstimationResult({ result, formData, onReset, estimation
       {/* Note - toujours affichée (non toggleable) */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
         <p className="text-sm text-amber-800">
-          <span className="font-semibold">Information :</span> Cette estimation est basée sur les annonces actives du marché immobilier polynésien et ne constitue pas une évaluation officielle.
+          Ce document a été réalisé par l'agence à partir des données du marché immobilier de votre secteur publiées sur le web. Ces données sont mises à jour en temps réel afin de suivre au plus près les évolutions du marché.
+        </p>
+        <p className="text-sm text-amber-800 mt-2">
+          Les indicateurs et estimations de cette étude sont communiqués sous l'entière responsabilité du professionnel.
         </p>
       </div>
     </div>
