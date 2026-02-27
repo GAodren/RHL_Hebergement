@@ -45,15 +45,20 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: '#94A3B8',
   },
-  // Logo en haut à droite des pages
-  pageLogo: {
+  // Logo en haut à droite des pages (conteneur avec overflow hidden pour border-radius)
+  pageLogoContainer: {
     position: 'absolute',
     top: 20,
     right: 20,
     width: 70,
     height: 70,
-    objectFit: 'contain',
     borderRadius: 10,
+    overflow: 'hidden',
+  },
+  pageLogoImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
   },
 
   // === PAGE 1: COUVERTURE ===
@@ -150,11 +155,16 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     borderTop: '2px solid #0077B6',
   },
-  coverAgencyLogo: {
+  coverAgencyLogoContainer: {
     width: 70,
     height: 70,
-    objectFit: 'contain',
     borderRadius: 10,
+    overflow: 'hidden',
+  },
+  coverAgencyLogoImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
   },
   coverAgencyInfo: {
     flex: 1,
@@ -569,12 +579,17 @@ const styles = StyleSheet.create({
   contactBlockContent: {
     alignItems: 'center',
   },
-  agencyLogo: {
+  agencyLogoContainer: {
     width: 100,
     height: 100,
-    objectFit: 'contain',
     borderRadius: 10,
+    overflow: 'hidden',
     marginBottom: 12,
+  },
+  agencyLogoImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
   },
   agentPhoto: {
     width: 100,
@@ -612,11 +627,16 @@ const styles = StyleSheet.create({
   contactInfoColumn: {
     flex: 1,
   },
-  agencyLogoLarge: {
+  agencyLogoLargeContainer: {
     width: 120,
     height: 120,
-    objectFit: 'contain',
     borderRadius: 12,
+    overflow: 'hidden',
+  },
+  agencyLogoLargeImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
   },
   agentPhotoLarge: {
     width: 120,
@@ -754,7 +774,9 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
           {/* Section agence */}
           <View style={styles.coverAgencySection}>
             {agentLogo && (
-              <Image style={styles.coverAgencyLogo} src={agentLogo} />
+              <View style={styles.coverAgencyLogoContainer}>
+                <Image style={styles.coverAgencyLogoImage} src={agentLogo} />
+              </View>
             )}
             <View style={styles.coverAgencyInfo}>
               {agencyName && <Text style={styles.coverAgencyName}>{agencyName}</Text>}
@@ -770,7 +792,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 2: FICHE TECHNIQUE === */}
       <Page size="A4" style={styles.page}>
-        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
         <Text style={styles.pageTitle}>Fiche Technique du Bien</Text>
 
         {/* Photos supplémentaires */}
@@ -845,7 +871,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 3: ANALYSE DU MARCHÉ === */}
       <Page size="A4" style={styles.page}>
-        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
         <View style={styles.marketHeader}>
           <Text style={styles.pageTitle}>Analyse du Marché Local</Text>
         </View>
@@ -944,7 +974,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 4: BIENS SIMILAIRES === */}
       <Page size="A4" style={styles.page}>
-        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
         <Text style={styles.pageTitle}>Étude Comparative</Text>
         <Text style={styles.sectionTitle}>Biens similaires sur le marché</Text>
 
@@ -997,7 +1031,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 5: ESTIMATION FINALE === */}
       <Page size="A4" style={styles.page}>
-        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
         <View style={styles.estimationContainer}>
@@ -1045,7 +1083,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 6: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
-        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
         <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
         {/* Bloc Agence - pleine largeur */}
@@ -1053,7 +1095,9 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
           <Text style={styles.contactBlockTitle}>L'Agence</Text>
           <View style={styles.contactBlockContentHorizontal}>
             {agentLogo && (
-              <Image style={styles.agencyLogoLarge} src={agentLogo} />
+              <View style={styles.agencyLogoLargeContainer}>
+                <Image style={styles.agencyLogoLargeImage} src={agentLogo} />
+              </View>
             )}
             <View style={styles.contactInfoColumn}>
               {agencyName && <Text style={styles.contactNameLarge}>{agencyName}</Text>}
