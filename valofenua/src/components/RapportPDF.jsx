@@ -50,10 +50,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20,
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     objectFit: 'contain',
-    borderRadius: 6,
+    borderRadius: 10,
   },
 
   // === PAGE 1: COUVERTURE ===
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingBottom: 10,
     borderBottom: '2px solid #0077B6',
+    alignSelf: 'flex-start',
   },
   sectionTitle: {
     fontSize: 12,
