@@ -167,39 +167,6 @@ export default function RapportEstimation() {
                 <p className="text-sm text-slate-500">Téléchargez le PDF pour le visualiser</p>
               </div>
 
-              {/* Résumé du contenu */}
-              <div className="space-y-4">
-                <div className="bg-white rounded-lg p-4 border border-slate-200">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Bien estimé</p>
-                  <p className="font-medium text-slate-800">{getBienLabel()}</p>
-                </div>
-
-                {hasAdjustedPrice ? (
-                  <>
-                    <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-                      <p className="text-xs text-emerald-600 uppercase tracking-wide mb-1">Prix proposé</p>
-                      <p className="text-2xl font-bold text-emerald-700">{formatPriceMF(adjustedPrice)}</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 border border-slate-200">
-                      <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Estimation algorithmique</p>
-                      <p className="font-medium text-slate-600">{formatPriceMF(result.prix_moyen)}</p>
-                    </div>
-                  </>
-                ) : (
-                  <div className="bg-white rounded-lg p-4 border border-slate-200">
-                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Estimation</p>
-                    <p className="text-2xl font-bold text-[#0077B6]">{formatPriceMF(result.prix_moyen)}</p>
-                  </div>
-                )}
-
-                <div className="bg-white rounded-lg p-4 border border-slate-200">
-                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Fourchette</p>
-                  <p className="font-medium text-slate-800">
-                    {formatPriceMF(result.prix_bas)} - {formatPriceMF(result.prix_haut)}
-                  </p>
-                </div>
-              </div>
-
               {/* Bouton télécharger mobile */}
               <PDFDownloadLink
                 document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} hiddenComparables={hiddenComparables || []} />}
