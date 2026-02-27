@@ -45,6 +45,16 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: '#94A3B8',
   },
+  // Logo en haut à droite des pages
+  pageLogo: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    width: 50,
+    height: 50,
+    objectFit: 'contain',
+    borderRadius: 6,
+  },
 
   // === PAGE 1: COUVERTURE ===
   coverPage: {
@@ -759,6 +769,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 2: FICHE TECHNIQUE === */}
       <Page size="A4" style={styles.page}>
+        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
         <Text style={styles.pageTitle}>Fiche Technique du Bien</Text>
 
         {/* Photos supplémentaires */}
@@ -833,6 +844,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 3: ANALYSE DU MARCHÉ === */}
       <Page size="A4" style={styles.page}>
+        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
         <View style={styles.marketHeader}>
           <Text style={styles.pageTitle}>Analyse du Marché Local</Text>
         </View>
@@ -931,6 +943,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 4: BIENS SIMILAIRES === */}
       <Page size="A4" style={styles.page}>
+        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
         <Text style={styles.pageTitle}>Étude Comparative</Text>
         <Text style={styles.sectionTitle}>Biens similaires sur le marché</Text>
 
@@ -983,6 +996,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 5: ESTIMATION FINALE === */}
       <Page size="A4" style={styles.page}>
+        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
         <View style={styles.estimationContainer}>
@@ -1030,6 +1044,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
       {/* === PAGE 6: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
+        {agentLogo && <Image style={styles.pageLogo} src={agentLogo} />}
         <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
         {/* Bloc Agence - pleine largeur */}
