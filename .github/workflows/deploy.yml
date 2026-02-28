@@ -39,14 +39,19 @@ jobs:
           publish_branch: deploy
           force_orphan: true
 
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
       - name: Deploy to Hostinger via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-        with:
-          server: ${{ secrets.SFTP_HOST }}
-          port: 65002
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          local_path: ./valofenua/dist/
-          remote_path: ${{ secrets.SFTP_REMOTE_PATH }}
-          sftp_only: true
-          delete_remote_files: true
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_REMOTE_PATH: ${{ secrets.SFTP_REMOTE_PATH }}
+        run: |
+          cd valofenua/dist
+          sshpass -p "$SFTP_PASSWORD" sftp -o StrictHostKeyChecking=no -P 65002 "$SFTP_USER@$SFTP_HOST" << EOF
+          cd $SFTP_REMOTE_PATH
+          put -r *
+          bye
+          EOF
