@@ -59,11 +59,12 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
   const navigate = useNavigate();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const [adjustedPrice, setAdjustedPrice] = useState(initialAdjustedPrice || prix_moyen);
+  const [commission, setCommission] = useState(initialCommission || 0);
   const [nomClient, setNomClient] = useState(initialNomClient || '');
   const [texteAnalyseMarche, setTexteAnalyseMarche] = useState(initialTexteAnalyseMarche || '');
   const [texteEtudeComparative, setTexteEtudeComparative] = useState(initialTexteEtudeComparative || '');
@@ -89,6 +90,10 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
   const handlePriceChange = useCallback((newPrice) => {
     setAdjustedPrice(newPrice);
+  }, []);
+
+  const handleCommissionChange = useCallback((newCommission) => {
+    setCommission(newCommission);
   }, []);
 
   const toggleSection = useCallback((sectionId) => {
@@ -138,6 +143,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         texte_synthese: texteSynthese || null,
         // Toujours mettre à jour le prix ajusté (soit la nouvelle valeur, soit null pour effacer)
         prix_ajuste: hasAdjusted ? adjustedPrice : null,
+        commission: commission > 0 ? commission : null,
       };
       await updateEstimation(estimationId, updates);
     }
@@ -147,6 +153,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         result,
         formData,
         adjustedPrice: hasAdjusted ? adjustedPrice : null,
+        commission: commission > 0 ? commission : null,
         bienPhoto,
         photosSupplementaires,
         nomClient,
@@ -208,7 +215,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
         prixMoyen={prix_moyen}
         prixHaut={prix_haut}
         onPriceChange={handlePriceChange}
+        onCommissionChange={handleCommissionChange}
         initialValue={initialAdjustedPrice}
+        initialCommission={initialCommission}
       />
 
       {/* Caractéristiques du bien - TOGGLEABLE (seulement si des données existent) */}

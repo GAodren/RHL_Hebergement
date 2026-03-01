@@ -51,6 +51,7 @@ export default function EstimationForm({ initialState }) {
   const [initialTexteAnalyseMarche, setInitialTexteAnalyseMarche] = useState(initialState?.texteAnalyseMarche || '');
   const [initialTexteEtudeComparative, setInitialTexteEtudeComparative] = useState(initialState?.texteEtudeComparative || '');
   const [initialTexteSynthese, setInitialTexteSynthese] = useState(initialState?.texteSynthese || '');
+  const [initialCommission, setInitialCommission] = useState(initialState?.commission || 0);
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
   const extraPhotosInputRef = useRef(null);
@@ -74,6 +75,7 @@ export default function EstimationForm({ initialState }) {
           setInitialTexteAnalyseMarche(estimation.texte_analyse_marche || '');
           setInitialTexteEtudeComparative(estimation.texte_etude_comparative || '');
           setInitialTexteSynthese(estimation.texte_synthese || '');
+          setInitialCommission(estimation.commission || 0);
         }
         setLoadingFromDb(false);
       }
@@ -345,6 +347,7 @@ export default function EstimationForm({ initialState }) {
           initialTexteAnalyseMarche={initialTexteAnalyseMarche}
           initialTexteEtudeComparative={initialTexteEtudeComparative}
           initialTexteSynthese={initialTexteSynthese}
+          initialCommission={initialCommission}
         />
       </div>
     );
