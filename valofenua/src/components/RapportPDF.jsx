@@ -552,6 +552,59 @@ const styles = StyleSheet.create({
     color: '#92400E',
     lineHeight: 1.3,
   },
+  // Styles pour la commission
+  commissionBox: {
+    marginTop: 20,
+    backgroundColor: '#F0FDF4',
+    borderRadius: 8,
+    padding: 15,
+    border: '1px solid #BBF7D0',
+  },
+  commissionTitle: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#166534',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  commissionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  commissionLabel: {
+    fontSize: 10,
+    color: '#64748B',
+  },
+  commissionValue: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#1E293B',
+  },
+  commissionValueGreen: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#16A34A',
+  },
+  commissionDivider: {
+    borderTop: '1px solid #BBF7D0',
+    marginVertical: 8,
+  },
+  finalPriceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  finalPriceLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#166534',
+  },
+  finalPriceValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#166534',
+  },
   contactBlocksContainer: {
     flexDirection: 'row',
     gap: 20,
@@ -662,7 +715,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Visibilité par défaut si non fournie
@@ -697,6 +750,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
 
   // Le prix affiché est soit le prix ajusté, soit le prix moyen
   const displayPrice = adjustedPrice || prix_moyen;
+
+  // Calcul de la commission si définie
+  const hasCommission = commission && commission > 0;
+  const commissionAmount = hasCommission ? Math.round(displayPrice * (commission / 100)) : 0;
+  const finalPriceWithCommission = hasCommission ? displayPrice + commissionAmount : displayPrice;
 
   // Pour les terrains, on utilise surface_terrain, sinon surface habitable
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
@@ -1060,6 +1118,26 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
                   <Text style={styles.priceRangeLabel}>Prix haut</Text>
                   <Text style={styles.priceHigh}>{formatPriceMF(prix_haut)}</Text>
                 </View>
+              </View>
+            </View>
+          )}
+
+          {/* Commission d'agence */}
+          {hasCommission && (
+            <View style={styles.commissionBox}>
+              <Text style={styles.commissionTitle}>Détail du prix de vente</Text>
+              <View style={styles.commissionRow}>
+                <Text style={styles.commissionLabel}>Prix net vendeur</Text>
+                <Text style={styles.commissionValue}>{formatPriceMF(displayPrice)}</Text>
+              </View>
+              <View style={styles.commissionRow}>
+                <Text style={styles.commissionLabel}>Commission agence ({commission}%)</Text>
+                <Text style={styles.commissionValueGreen}>+ {formatPriceMF(commissionAmount)}</Text>
+              </View>
+              <View style={styles.commissionDivider} />
+              <View style={styles.finalPriceRow}>
+                <Text style={styles.finalPriceLabel}>Prix de vente FAI</Text>
+                <Text style={styles.finalPriceValue}>{formatPriceMF(finalPriceWithCommission)}</Text>
               </View>
             </View>
           )}

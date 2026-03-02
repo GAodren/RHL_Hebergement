@@ -112,6 +112,7 @@ export default function MesEstimations() {
         texteAnalyseMarche: estimation.texte_analyse_marche || '',
         texteEtudeComparative: estimation.texte_etude_comparative || '',
         texteSynthese: estimation.texte_synthese || '',
+        commission: estimation.commission || 0,
       }
     });
   };
@@ -204,6 +205,7 @@ export default function MesEstimations() {
       comparables: estimation.comparables || [],
     },
     adjustedPrice: estimation.prix_ajuste,
+    commission: estimation.commission,
     photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
     hiddenComparables: estimation.hidden_comparables || [],
@@ -377,6 +379,7 @@ export default function MesEstimations() {
                               result={pdfData.result}
                               formData={pdfData.formData}
                               adjustedPrice={pdfData.adjustedPrice}
+                              commission={pdfData.commission}
                               agentProfile={profile}
                               bienPhoto={estimation.photo_url}
                               photosSupplementaires={pdfData.photosSupplementaires}

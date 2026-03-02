@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Minus, Plus, RotateCcw, Sliders, Edit3, Check, X } from 'lucide-react';
+import { Minus, Plus, RotateCcw, Sliders, Edit3, Check, X, Percent } from 'lucide-react';
 import { formatPriceMF, formatPriceXPF } from '../utils/formatPrice';
 
-export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceChange, initialValue }) {
+export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceChange, onCommissionChange, initialValue, initialCommission }) {
   const minPrice = Math.round(prixBas * 0.9);
   const maxPrice = Math.round(prixHaut * 1.1);
   const step = 500000;
@@ -10,11 +10,23 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
   const [adjustedPrice, setAdjustedPrice] = useState(initialValue || prixMoyen);
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [customPriceInput, setCustomPriceInput] = useState('');
+  const [commission, setCommission] = useState(initialCommission || 0);
+  const [showCommission, setShowCommission] = useState(initialCommission > 0);
   const inputRef = useRef(null);
 
   useEffect(() => {
     onPriceChange(adjustedPrice);
   }, [adjustedPrice, onPriceChange]);
+
+  useEffect(() => {
+    if (onCommissionChange) {
+      onCommissionChange(commission);
+    }
+  }, [commission, onCommissionChange]);
+
+  // Calcul du prix final avec commission
+  const commissionAmount = Math.round(adjustedPrice * (commission / 100));
+  const finalPrice = adjustedPrice + commissionAmount;
 
   const percentageDiff = ((adjustedPrice - prixMoyen) / prixMoyen * 100).toFixed(1);
   const percentageSign = Number(percentageDiff) >= 0 ? '+' : '';
@@ -40,6 +52,24 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
   const handleReset = () => {
     setAdjustedPrice(prixMoyen);
     setIsCustomMode(false);
+  };
+
+  const handleCommissionChange = (e) => {
+    const value = e.target.value;
+    // Permettre les valeurs vides ou les nombres avec maximum 2 décimales
+    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+      const numValue = value === '' ? 0 : parseFloat(value);
+      if (!isNaN(numValue) && numValue >= 0 && numValue <= 20) {
+        setCommission(numValue);
+      }
+    }
+  };
+
+  const handleToggleCommission = () => {
+    if (showCommission) {
+      setCommission(0);
+    }
+    setShowCommission(!showCommission);
   };
 
   // Mode prix personnalisé
@@ -266,6 +296,88 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
           <Plus className="w-4 h-4" />
           0,5 MF
         </button>
+      </div>
+
+      {/* Section Commission */}
+      <div className="mt-5 pt-5 border-t border-slate-200">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Percent className="w-4 h-4 text-slate-500" />
+            <span className="text-sm font-medium text-slate-700">Ajouter votre commission</span>
+          </div>
+          <button
+            onClick={handleToggleCommission}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              showCommission ? 'bg-[#0077B6]' : 'bg-slate-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
+                showCommission ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+
+        {showCommission && (
+          <div className="bg-slate-50 rounded-lg p-4 space-y-4">
+            {/* Input pourcentage */}
+            <div className="flex items-center gap-3">
+              <label className="text-sm text-slate-600 flex-shrink-0">Taux de commission :</label>
+              <div className="relative flex-1 max-w-32">
+                <input
+                  type="number"
+                  value={commission || ''}
+                  onChange={handleCommissionChange}
+                  placeholder="0"
+                  min="0"
+                  max="20"
+                  step="0.5"
+                  className="w-full px-3 py-2 pr-8 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors text-center font-medium"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">%</span>
+              </div>
+            </div>
+
+            {/* Boutons de présets */}
+            <div className="flex flex-wrap gap-2">
+              {[3, 4, 5, 6].map((percent) => (
+                <button
+                  key={percent}
+                  onClick={() => setCommission(percent)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    commission === percent
+                      ? 'bg-[#0077B6] text-white'
+                      : 'bg-white border border-slate-200 text-slate-600 hover:border-[#0077B6] hover:text-[#0077B6]'
+                  }`}
+                >
+                  {percent}%
+                </button>
+              ))}
+            </div>
+
+            {/* Récapitulatif avec commission */}
+            {commission > 0 && (
+              <div className="bg-white rounded-lg p-3 border border-slate-200 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Prix de vente</span>
+                  <span className="font-medium text-slate-700">{formatPriceMF(adjustedPrice)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Commission ({commission}%)</span>
+                  <span className="font-medium text-emerald-600">+ {formatPriceMF(commissionAmount)}</span>
+                </div>
+                <div className="border-t border-slate-100 pt-2 flex justify-between">
+                  <span className="text-sm font-semibold text-slate-700">Prix final TTC</span>
+                  <span className="text-lg font-bold text-[#0077B6]">{formatPriceMF(finalPrice)}</span>
+                </div>
+                <p className="text-xs text-slate-400 text-center">
+                  soit {formatPriceXPF(finalPrice)}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
