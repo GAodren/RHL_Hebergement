@@ -761,7 +761,8 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
   const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
   const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
-  const prixM2Display = surfacePrincipale ? Math.round(displayPrice / surfacePrincipale) : 0;
+  // Utiliser le prix avec commission pour l'affichage
+  const prixM2Display = surfacePrincipale ? Math.round(finalPriceWithCommission / surfacePrincipale) : 0;
 
   const formatDate = () => {
     return new Date().toLocaleDateString('fr-FR', {
@@ -1091,10 +1092,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
         <View style={styles.estimationContainer}>
-          {/* Prix principal */}
+          {/* Prix principal (incluant la commission si définie) */}
           <View style={styles.estimationBox}>
             <Text style={styles.estimationLabel}>Avis de Valeur</Text>
-            <Text style={styles.estimationPrice}>{formatPriceXPF(displayPrice)}</Text>
+            <Text style={styles.estimationPrice}>{formatPriceXPF(finalPriceWithCommission)}</Text>
             <View style={styles.estimationPriceM2}>
               <Text style={styles.estimationPriceM2Label}>Prix au m² estimé</Text>
               <Text style={styles.estimationPriceM2Value}>{formatPriceXPF(prixM2Display)}/m²</Text>
@@ -1122,25 +1123,6 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             </View>
           )}
 
-          {/* Commission d'agence */}
-          {hasCommission && (
-            <View style={styles.commissionBox}>
-              <Text style={styles.commissionTitle}>Détail du prix de vente</Text>
-              <View style={styles.commissionRow}>
-                <Text style={styles.commissionLabel}>Prix net vendeur</Text>
-                <Text style={styles.commissionValue}>{formatPriceMF(displayPrice)}</Text>
-              </View>
-              <View style={styles.commissionRow}>
-                <Text style={styles.commissionLabel}>Commission agence ({commission}%)</Text>
-                <Text style={styles.commissionValueGreen}>+ {formatPriceMF(commissionAmount)}</Text>
-              </View>
-              <View style={styles.commissionDivider} />
-              <View style={styles.finalPriceRow}>
-                <Text style={styles.finalPriceLabel}>Prix de vente FAI</Text>
-                <Text style={styles.finalPriceValue}>{formatPriceMF(finalPriceWithCommission)}</Text>
-              </View>
-            </View>
-          )}
         </View>
 
         {/* Texte personnalisé synthèse */}
