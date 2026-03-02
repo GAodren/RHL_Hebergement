@@ -38,6 +38,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     backgroundColor: '#FFFFFF',
   },
+  // Style pour texte bold (utiliser fontFamily au lieu de fontWeight)
+  textBold: {
+    fontFamily: 'Helvetica-Bold',
+  },
   pageNumber: {
     position: 'absolute',
     bottom: 20,
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
   },
   coverTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 8,
     textAlign: 'center',
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
   },
   coverClientName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   coverBienInfo: {
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
   },
   coverBienValue: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   coverAgencySection: {
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
   },
   coverAgencyName: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 2,
   },
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
   // === PAGE 2: FICHE TECHNIQUE ===
   pageTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 20,
     paddingBottom: 10,
@@ -199,7 +203,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 12,
     textTransform: 'uppercase',
@@ -253,7 +257,7 @@ const styles = StyleSheet.create({
   caracValue: {
     fontSize: 12,
     color: '#1E293B',
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   badgesList: {
     flexDirection: 'row',
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
   },
   chartTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 15,
   },
@@ -310,12 +314,12 @@ const styles = StyleSheet.create({
   },
   variationPositive: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#10B981',
   },
   variationNegative: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#EF4444',
   },
   variationSince: {
@@ -325,7 +329,7 @@ const styles = StyleSheet.create({
   },
   currentPrice: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   chartYears: {
@@ -357,7 +361,7 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
 
@@ -371,7 +375,7 @@ const styles = StyleSheet.create({
   },
   agentCommentTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 10,
   },
@@ -418,13 +422,13 @@ const styles = StyleSheet.create({
   },
   comparableType: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 4,
   },
   comparablePrice: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 6,
   },
@@ -459,7 +463,7 @@ const styles = StyleSheet.create({
   },
   estimationPrice: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#FFFFFF',
     marginBottom: 15,
   },
@@ -478,7 +482,7 @@ const styles = StyleSheet.create({
   },
   estimationPriceM2Value: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#FFFFFF',
     textAlign: 'center',
   },
@@ -488,7 +492,7 @@ const styles = StyleSheet.create({
   },
   priceRangeTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 15,
     textAlign: 'center',
@@ -513,17 +517,17 @@ const styles = StyleSheet.create({
   },
   priceLow: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#10B981',
   },
   priceMid: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
   },
   priceHigh: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#F59E0B',
   },
 
@@ -544,7 +548,7 @@ const styles = StyleSheet.create({
   },
   disclaimerTitle: {
     fontSize: 7,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#92400E',
     marginBottom: 2,
   },
@@ -563,7 +567,7 @@ const styles = StyleSheet.create({
   },
   commissionTitle: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#166534',
     marginBottom: 10,
     textAlign: 'center',
@@ -579,12 +583,12 @@ const styles = StyleSheet.create({
   },
   commissionValue: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   commissionValueGreen: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#16A34A',
   },
   commissionDivider: {
@@ -598,12 +602,12 @@ const styles = StyleSheet.create({
   },
   finalPriceLabel: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#166534',
   },
   finalPriceValue: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#166534',
   },
   contactBlocksContainer: {
@@ -620,7 +624,7 @@ const styles = StyleSheet.create({
   },
   contactBlockTitle: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 8,
     textTransform: 'uppercase',
@@ -650,7 +654,7 @@ const styles = StyleSheet.create({
   },
   contactName: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 3,
     textAlign: 'center',
@@ -694,7 +698,7 @@ const styles = StyleSheet.create({
   },
   contactNameLarge: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 2,
   },
