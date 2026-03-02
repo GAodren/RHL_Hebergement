@@ -686,21 +686,21 @@ const styles = StyleSheet.create({
     objectFit: 'contain',
   },
   agentPhotoLarge: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     objectFit: 'cover',
-    borderRadius: 60,
+    borderRadius: 40,
   },
   contactNameLarge: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#1E293B',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   contactSubtextLarge: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#64748B',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   agencyDescriptionBox: {
     marginTop: 15,
@@ -1160,7 +1160,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
               {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
             </View>
           </View>
-          {/* Description en dessous (limitée à 10 lignes dans le profil) */}
+          {/* Description en dessous (limitée à 20 lignes dans le profil) */}
           {agencyDescription && (
             <View style={styles.agencyDescriptionBox}>
               <Text style={styles.agencyDescriptionText}>
@@ -1170,10 +1170,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        {/* Bloc Agent - pleine largeur */}
-        <View style={styles.contactBlockFull}>
-          <Text style={styles.contactBlockTitle}>Votre Agent</Text>
-          <View style={styles.contactBlockContentHorizontal}>
+        {/* Bloc Agent - pleine largeur (réduit) */}
+        <View style={{ ...styles.contactBlockFull, padding: 15, marginBottom: 15 }}>
+          <Text style={{ ...styles.contactBlockTitle, marginBottom: 10, fontSize: 10 }}>Votre Agent</Text>
+          <View style={{ ...styles.contactBlockContentHorizontal, gap: 15 }}>
             {agentPhoto && (
               <Image style={styles.agentPhotoLarge} src={agentPhoto} />
             )}
