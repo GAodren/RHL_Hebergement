@@ -529,28 +529,29 @@ const styles = StyleSheet.create({
 
   // === PAGE 6: CONTACT ===
   contactPage: {
-    padding: 40,
+    padding: 30,
+    paddingTop: 25,
     fontFamily: 'Helvetica',
     backgroundColor: '#FFFFFF',
     flex: 1,
   },
   disclaimerBox: {
     backgroundColor: '#FEF3C7',
-    borderRadius: 6,
-    padding: 10,
+    borderRadius: 4,
+    padding: 8,
     marginTop: 'auto',
     border: '1px solid #FCD34D',
   },
   disclaimerTitle: {
-    fontSize: 8,
+    fontSize: 7,
     fontWeight: 'bold',
     color: '#92400E',
-    marginBottom: 3,
+    marginBottom: 2,
   },
   disclaimerText: {
-    fontSize: 7,
+    fontSize: 6,
     color: '#92400E',
-    lineHeight: 1.3,
+    lineHeight: 1.2,
   },
   // Styles pour la commission
   commissionBox: {
@@ -607,21 +608,21 @@ const styles = StyleSheet.create({
   },
   contactBlocksContainer: {
     flexDirection: 'row',
-    gap: 20,
-    marginBottom: 20,
+    gap: 12,
+    marginBottom: 12,
   },
   contactBlock: {
     flex: 1,
     backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    padding: 20,
+    borderRadius: 8,
+    padding: 12,
     border: '1px solid #E2E8F0',
   },
   contactBlockTitle: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
     color: '#0077B6',
-    marginBottom: 15,
+    marginBottom: 8,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -629,11 +630,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   agencyLogoContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 8,
     overflow: 'hidden',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   agencyLogoImage: {
     width: '100%',
@@ -641,44 +642,44 @@ const styles = StyleSheet.create({
     objectFit: 'contain',
   },
   agentPhoto: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     objectFit: 'cover',
-    borderRadius: 50,
-    marginBottom: 12,
+    borderRadius: 35,
+    marginBottom: 8,
   },
   contactName: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#1E293B',
-    marginBottom: 4,
+    marginBottom: 3,
     textAlign: 'center',
   },
   contactSubtext: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#64748B',
     textAlign: 'center',
-    marginBottom: 2,
+    marginBottom: 1,
   },
   // Styles pour blocs pleine largeur
   contactBlockFull: {
     backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    padding: 25,
+    borderRadius: 8,
+    padding: 15,
     border: '1px solid #E2E8F0',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   contactBlockContentHorizontal: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 25,
+    gap: 15,
   },
   contactInfoColumn: {
     flex: 1,
   },
   agencyLogoLargeContainer: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
   },
   agencyLogoLargeImage: {
     width: '100%',
@@ -686,31 +687,31 @@ const styles = StyleSheet.create({
     objectFit: 'contain',
   },
   agentPhotoLarge: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     objectFit: 'cover',
-    borderRadius: 40,
+    borderRadius: 30,
   },
   contactNameLarge: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#1E293B',
-    marginBottom: 4,
-  },
-  contactSubtextLarge: {
-    fontSize: 10,
-    color: '#64748B',
     marginBottom: 2,
   },
+  contactSubtextLarge: {
+    fontSize: 9,
+    color: '#64748B',
+    marginBottom: 1,
+  },
   agencyDescriptionBox: {
-    marginTop: 15,
-    paddingTop: 15,
+    marginTop: 8,
+    paddingTop: 8,
     borderTop: '1px solid #E2E8F0',
   },
   agencyDescriptionText: {
-    fontSize: 10,
+    fontSize: 8,
     color: '#475569',
-    lineHeight: 1.5,
+    lineHeight: 1.3,
     fontStyle: 'italic',
   },
 });
@@ -1138,11 +1139,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
       {/* === PAGE 6: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
         {agentLogo && (
-          <View style={styles.pageLogoContainer}>
+          <View style={{ ...styles.pageLogoContainer, width: 50, height: 50, top: 15, right: 15 }}>
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
+        <Text style={{ ...styles.pageTitle, fontSize: 16, marginBottom: 12, paddingBottom: 6 }}>Votre Interlocuteur</Text>
 
         {/* Bloc Agence - pleine largeur */}
         <View style={styles.contactBlockFull}>
@@ -1171,9 +1172,9 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         </View>
 
         {/* Bloc Agent - pleine largeur (réduit) */}
-        <View style={{ ...styles.contactBlockFull, padding: 15, marginBottom: 15 }}>
-          <Text style={{ ...styles.contactBlockTitle, marginBottom: 10, fontSize: 10 }}>Votre Agent</Text>
-          <View style={{ ...styles.contactBlockContentHorizontal, gap: 15 }}>
+        <View style={{ ...styles.contactBlockFull, padding: 12, marginBottom: 8 }}>
+          <Text style={{ ...styles.contactBlockTitle, marginBottom: 6, fontSize: 9 }}>Votre Agent</Text>
+          <View style={{ ...styles.contactBlockContentHorizontal, gap: 12 }}>
             {agentPhoto && (
               <Image style={styles.agentPhotoLarge} src={agentPhoto} />
             )}
