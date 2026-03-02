@@ -298,7 +298,12 @@ export default function MesEstimations() {
             {estimations.map((estimation) => {
               const Icon = getCategorieIcon(estimation.categorie);
               const pdfData = getPDFData(estimation);
-              const displayPrice = estimation.prix_ajuste || estimation.prix_moyen;
+              const basePrice = estimation.prix_ajuste || estimation.prix_moyen;
+              // Inclure la commission dans le prix affiché
+              const commissionAmount = estimation.commission && estimation.commission > 0
+                ? Math.round(basePrice * (estimation.commission / 100))
+                : 0;
+              const displayPrice = basePrice + commissionAmount;
 
               return (
                 <div
@@ -345,9 +350,9 @@ export default function MesEstimations() {
                     <div className="flex items-center gap-6 lg:gap-8">
                       <div className="text-right">
                         <p className="text-xs text-slate-500 uppercase tracking-wide">
-                          {estimation.prix_ajuste ? 'Prix proposé' : 'Estimation'}
+                          {estimation.prix_ajuste || commissionAmount > 0 ? 'Prix de vente' : 'Estimation'}
                         </p>
-                        <p className={`text-lg font-bold ${estimation.prix_ajuste ? 'text-emerald-600' : 'text-[#0077B6]'}`}>
+                        <p className={`text-lg font-bold ${estimation.prix_ajuste || commissionAmount > 0 ? 'text-emerald-600' : 'text-[#0077B6]'}`}>
                           {formatPriceMF(displayPrice)}
                         </p>
                       </div>
