@@ -62,7 +62,7 @@ export default function Profil({ embedded = false }) {
   }, [profile]);
 
   // Compteur de lignes (retours à la ligne uniquement)
-  const MAX_DESCRIPTION_LINES = 10;
+  const MAX_DESCRIPTION_LINES = 20;
 
   const countLines = (text) => {
     if (!text) return 0;
@@ -367,8 +367,8 @@ export default function Profil({ embedded = false }) {
                   name="description_agence"
                   value={formData.description_agence}
                   onChange={handleChange}
-                  rows={5}
-                  placeholder="Présentez votre agence en quelques lignes (10 lignes max)..."
+                  rows={8}
+                  placeholder="Présentez votre agence en quelques lignes (20 lignes max)..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
               </div>
