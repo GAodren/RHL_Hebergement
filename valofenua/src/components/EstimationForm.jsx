@@ -446,7 +446,7 @@ export default function EstimationForm({ initialState }) {
             <option value="">{formData.ile ? 'Sélectionnez une commune' : 'Sélectionnez d\'abord une île'}</option>
             {communesFiltrees.map((c) => (
               <option key={c.commune} value={c.commune}>
-                {c.commune} ({c.nb_annonces} annonces)
+                {c.commune}
               </option>
             ))}
           </select>
