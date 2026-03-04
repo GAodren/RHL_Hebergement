@@ -62,7 +62,7 @@ export default function Profil({ embedded = false }) {
   }, [profile]);
 
   // Limites pour la description
-  const MAX_DESCRIPTION_LINES = 20;
+  const MAX_DESCRIPTION_LINES = 40;
   const MAX_CHARS_PER_LINE = 130;
 
   const countLines = (text) => {
@@ -370,7 +370,7 @@ export default function Profil({ embedded = false }) {
                   name="description_agence"
                   value={formData.description_agence}
                   onChange={handleChange}
-                  rows={8}
+                  rows={12}
                   placeholder="Présentez votre agence en quelques lignes..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
