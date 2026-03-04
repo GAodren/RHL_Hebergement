@@ -464,7 +464,7 @@ export default function EstimationForm({ initialState }) {
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
           >
-            <option value="">Sélectionnez une catégorie</option>
+            <option value="" disabled>Sélectionnez une catégorie</option>
             {CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
@@ -492,7 +492,7 @@ export default function EstimationForm({ initialState }) {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
               >
-                <option value="">
+                <option value="" disabled>
                   {isTypeBienRequired ? 'Sélectionnez un type' : 'Sélectionnez un type (optionnel)'}
                 </option>
                 {getTypesForCategory().map((type) => (
@@ -575,7 +575,7 @@ export default function EstimationForm({ initialState }) {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
               >
-                <option value="">Sélectionnez l'état</option>
+                <option value="" disabled>Sélectionnez l'état (optionnel)</option>
                 {ETATS_BIEN.map((etat) => (
                   <option key={etat.value} value={etat.value}>
                     {etat.label}
