@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Target, Loader2, AlertCircle, ImagePlus, X, Check } from 'lucide-react';
-import { getEstimation, COMMUNES, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
+import { getEstimation, CATEGORIES, TYPES_BIEN_MAISON, TYPES_BIEN_APPARTEMENT } from '../utils/api';
+import { supabase } from '../utils/supabase';
 import { saveEstimation, uploadBienPhoto, uploadPhotosSupplementaires, updateEstimation, getEstimationById } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
 import EstimationResult from './EstimationResult';
@@ -28,6 +29,7 @@ export default function EstimationForm({ initialState }) {
   const { user } = useAuth();
   const [formData, setFormData] = useState(
     initialState?.formData || {
+      ile: '',
       commune: '',
       categorie: '',
       type_bien: '',
@@ -41,6 +43,10 @@ export default function EstimationForm({ initialState }) {
   const [result, setResult] = useState(initialState?.result || null);
   const [loading, setLoading] = useState(false);
   const [loadingFromDb, setLoadingFromDb] = useState(!!initialState?.estimationId);
+
+  // Données des communes depuis Supabase
+  const [communesData, setCommunesData] = useState([]);
+  const [loadingCommunes, setLoadingCommunes] = useState(true);
   const [error, setError] = useState(null);
   const [bienPhoto, setBienPhoto] = useState(initialState?.bienPhoto || null);
   const [photosSupplementaires, setPhotosSupplementaires] = useState(initialState?.photosSupplementaires || []);
@@ -82,6 +88,40 @@ export default function EstimationForm({ initialState }) {
     };
     loadLatestData();
   }, [initialState?.estimationId]);
+
+  // Charger les communes depuis Supabase
+  useEffect(() => {
+    const loadCommunes = async () => {
+      setLoadingCommunes(true);
+      try {
+        const { data, error } = await supabase
+          .from('communes_disponibles')
+          .select('*')
+          .order('ile')
+          .order('commune');
+
+        if (error) {
+          console.error('Erreur chargement communes:', error);
+        } else {
+          setCommunesData(data || []);
+        }
+      } catch (err) {
+        console.error('Erreur chargement communes:', err);
+      } finally {
+        setLoadingCommunes(false);
+      }
+    };
+    loadCommunes();
+  }, []);
+
+  // Extraire les îles distinctes
+  const iles = [...new Set(communesData.map((c) => c.ile))].sort();
+
+  // Filtrer les communes par île sélectionnée
+  const communesFiltrees = communesData.filter((c) => c.ile === formData.ile);
+
+  // Récupérer les infos de la commune sélectionnée
+  const communeSelectionnee = communesData.find((c) => c.commune === formData.commune);
 
   // Gestion de l'upload de photo
   const handlePhotoChange = (e) => {
@@ -159,8 +199,15 @@ export default function EstimationForm({ initialState }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // Si on change l'île, on reset la commune
+    if (name === 'ile') {
+      setFormData((prev) => ({
+        ...prev,
+        ile: value,
+        commune: '',
+      }));
     // Si on change la catégorie, on reset les champs conditionnels
-    if (name === 'categorie') {
+    } else if (name === 'categorie') {
       setFormData((prev) => ({
         ...prev,
         categorie: value,
@@ -191,6 +238,10 @@ export default function EstimationForm({ initialState }) {
     setError(null);
 
     // Validation
+    if (!formData.ile) {
+      setError('Veuillez sélectionner une île');
+      return;
+    }
     if (!formData.commune) {
       setError('Veuillez sélectionner une commune');
       return;
@@ -285,6 +336,7 @@ export default function EstimationForm({ initialState }) {
   const handleReset = () => {
     setResult(null);
     setFormData({
+      ile: '',
       commune: '',
       categorie: '',
       type_bien: '',
@@ -356,6 +408,28 @@ export default function EstimationForm({ initialState }) {
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 md:p-8 max-w-xl mx-auto">
       <div className="space-y-6">
+        {/* Île */}
+        <div>
+          <label htmlFor="ile" className="block text-sm font-medium text-slate-700 mb-2">
+            Île <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="ile"
+            name="ile"
+            value={formData.ile}
+            onChange={handleChange}
+            disabled={loadingCommunes}
+            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white disabled:bg-slate-100 disabled:cursor-wait"
+          >
+            <option value="">{loadingCommunes ? 'Chargement...' : 'Sélectionnez une île'}</option>
+            {iles.map((ile) => (
+              <option key={ile} value={ile}>
+                {ile}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Commune */}
         <div>
           <label htmlFor="commune" className="block text-sm font-medium text-slate-700 mb-2">
@@ -366,12 +440,13 @@ export default function EstimationForm({ initialState }) {
             name="commune"
             value={formData.commune}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
+            disabled={!formData.ile}
+            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white disabled:bg-slate-100 disabled:cursor-not-allowed"
           >
-            <option value="">Sélectionnez une commune</option>
-            {COMMUNES.map((commune) => (
-              <option key={commune} value={commune}>
-                {commune}
+            <option value="">{formData.ile ? 'Sélectionnez une commune' : 'Sélectionnez d\'abord une île'}</option>
+            {communesFiltrees.map((c) => (
+              <option key={c.commune} value={c.commune}>
+                {c.commune} ({c.nb_annonces} annonces)
               </option>
             ))}
           </select>
@@ -671,6 +746,15 @@ export default function EstimationForm({ initialState }) {
           <div className="flex items-center gap-2 p-4 bg-red-50 text-red-700 rounded-xl">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <p>{error}</p>
+          </div>
+        )}
+
+        {/* Avertissement fiabilité approximative */}
+        {communeSelectionnee?.fiabilite === 'approximative' && (
+          <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+            <p className="text-sm text-orange-700">
+              Estimation approximative - Peu d'annonces disponibles dans cette commune
+            </p>
           </div>
         )}
 
