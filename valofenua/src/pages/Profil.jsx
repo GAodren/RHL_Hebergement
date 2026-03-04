@@ -61,22 +61,28 @@ export default function Profil({ embedded = false }) {
     }
   }, [profile]);
 
-  // Compteur de lignes (retours à la ligne uniquement)
-  const MAX_DESCRIPTION_LINES = 10;
+  // Limites pour la description
+  const MAX_DESCRIPTION_LINES = 40;
+  const MAX_CHARS_PER_LINE = 130;
 
   const countLines = (text) => {
     if (!text) return 0;
-    // Compte le nombre de retours à la ligne + 1 (première ligne)
     return (text.match(/\n/g) || []).length + 1;
+  };
+
+  const hasLineTooLong = (text) => {
+    if (!text) return false;
+    const lines = text.split('\n');
+    return lines.some(line => line.length > MAX_CHARS_PER_LINE);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Limiter la description à 10 lignes
+    // Limiter la description à 20 lignes ET 130 caractères par ligne
     if (name === 'description_agence') {
       const lines = countLines(value);
-      if (lines > MAX_DESCRIPTION_LINES) {
+      if (lines > MAX_DESCRIPTION_LINES || hasLineTooLong(value)) {
         return; // Ne pas mettre à jour si dépassement
       }
     }
@@ -358,19 +364,24 @@ export default function Profil({ embedded = false }) {
               <div>
                 <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
                   Description de l'agence
-                  <span className={`font-normal ml-2 ${countLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500' : 'text-slate-400'}`}>
-                    ({countLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes)
-                  </span>
                 </label>
                 <textarea
                   id="description_agence"
                   name="description_agence"
                   value={formData.description_agence}
                   onChange={handleChange}
-                  rows={5}
-                  placeholder="Présentez votre agence en quelques lignes (10 lignes max)..."
+                  rows={12}
+                  placeholder="Présentez votre agence en quelques lignes..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
+                <div className="flex justify-end gap-4 mt-1 text-xs">
+                  <span className={countLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500 font-medium' : 'text-slate-400'}>
+                    {countLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes
+                  </span>
+                  <span className="text-slate-400">
+                    (max {MAX_CHARS_PER_LINE} car./ligne)
+                  </span>
+                </div>
               </div>
             </div>
           </div>

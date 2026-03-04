@@ -38,6 +38,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     backgroundColor: '#FFFFFF',
   },
+  // Style pour texte bold (utiliser fontFamily au lieu de fontWeight)
+  textBold: {
+    fontFamily: 'Helvetica-Bold',
+  },
   pageNumber: {
     position: 'absolute',
     bottom: 20,
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
   },
   coverTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 8,
     textAlign: 'center',
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
   },
   coverClientName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   coverBienInfo: {
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
   },
   coverBienValue: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   coverAgencySection: {
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
   },
   coverAgencyName: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 2,
   },
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
   // === PAGE 2: FICHE TECHNIQUE ===
   pageTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 20,
     paddingBottom: 10,
@@ -199,7 +203,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 12,
     textTransform: 'uppercase',
@@ -253,7 +257,7 @@ const styles = StyleSheet.create({
   caracValue: {
     fontSize: 12,
     color: '#1E293B',
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   badgesList: {
     flexDirection: 'row',
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
   },
   chartTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 15,
   },
@@ -310,12 +314,12 @@ const styles = StyleSheet.create({
   },
   variationPositive: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#10B981',
   },
   variationNegative: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#EF4444',
   },
   variationSince: {
@@ -325,7 +329,7 @@ const styles = StyleSheet.create({
   },
   currentPrice: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
   chartYears: {
@@ -357,7 +361,7 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
   },
 
@@ -371,7 +375,7 @@ const styles = StyleSheet.create({
   },
   agentCommentTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 10,
   },
@@ -418,13 +422,13 @@ const styles = StyleSheet.create({
   },
   comparableType: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
     marginBottom: 4,
   },
   comparablePrice: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 6,
   },
@@ -459,7 +463,7 @@ const styles = StyleSheet.create({
   },
   estimationPrice: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#FFFFFF',
     marginBottom: 15,
   },
@@ -478,7 +482,7 @@ const styles = StyleSheet.create({
   },
   estimationPriceM2Value: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#FFFFFF',
     textAlign: 'center',
   },
@@ -488,7 +492,7 @@ const styles = StyleSheet.create({
   },
   priceRangeTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
     marginBottom: 15,
     textAlign: 'center',
@@ -513,62 +517,116 @@ const styles = StyleSheet.create({
   },
   priceLow: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#10B981',
   },
   priceMid: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
   },
   priceHigh: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#F59E0B',
   },
 
   // === PAGE 6: CONTACT ===
   contactPage: {
-    padding: 40,
+    padding: 30,
+    paddingTop: 25,
     fontFamily: 'Helvetica',
     backgroundColor: '#FFFFFF',
     flex: 1,
   },
   disclaimerBox: {
     backgroundColor: '#FEF3C7',
-    borderRadius: 6,
-    padding: 10,
+    borderRadius: 4,
+    padding: 8,
     marginTop: 'auto',
     border: '1px solid #FCD34D',
   },
   disclaimerTitle: {
-    fontSize: 8,
-    fontWeight: 'bold',
+    fontSize: 7,
+    fontFamily: 'Helvetica-Bold',
     color: '#92400E',
-    marginBottom: 3,
+    marginBottom: 2,
   },
   disclaimerText: {
-    fontSize: 7,
+    fontSize: 6,
     color: '#92400E',
-    lineHeight: 1.3,
+    lineHeight: 1.2,
+  },
+  // Styles pour la commission
+  commissionBox: {
+    marginTop: 20,
+    backgroundColor: '#F0FDF4',
+    borderRadius: 8,
+    padding: 15,
+    border: '1px solid #BBF7D0',
+  },
+  commissionTitle: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#166534',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  commissionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  commissionLabel: {
+    fontSize: 10,
+    color: '#64748B',
+  },
+  commissionValue: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#1E293B',
+  },
+  commissionValueGreen: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#16A34A',
+  },
+  commissionDivider: {
+    borderTop: '1px solid #BBF7D0',
+    marginVertical: 8,
+  },
+  finalPriceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  finalPriceLabel: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#166534',
+  },
+  finalPriceValue: {
+    fontSize: 16,
+    fontFamily: 'Helvetica-Bold',
+    color: '#166534',
   },
   contactBlocksContainer: {
     flexDirection: 'row',
-    gap: 20,
-    marginBottom: 20,
+    gap: 12,
+    marginBottom: 12,
   },
   contactBlock: {
     flex: 1,
     backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    padding: 20,
+    borderRadius: 8,
+    padding: 12,
     border: '1px solid #E2E8F0',
   },
   contactBlockTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
-    marginBottom: 15,
+    marginBottom: 8,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -576,11 +634,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   agencyLogoContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 8,
     overflow: 'hidden',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   agencyLogoImage: {
     width: '100%',
@@ -588,44 +646,44 @@ const styles = StyleSheet.create({
     objectFit: 'contain',
   },
   agentPhoto: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     objectFit: 'cover',
-    borderRadius: 50,
-    marginBottom: 12,
+    borderRadius: 35,
+    marginBottom: 8,
   },
   contactName: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
-    marginBottom: 4,
+    marginBottom: 3,
     textAlign: 'center',
   },
   contactSubtext: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#64748B',
     textAlign: 'center',
-    marginBottom: 2,
+    marginBottom: 1,
   },
   // Styles pour blocs pleine largeur
   contactBlockFull: {
     backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    padding: 25,
+    borderRadius: 8,
+    padding: 15,
     border: '1px solid #E2E8F0',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   contactBlockContentHorizontal: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 25,
+    gap: 15,
   },
   contactInfoColumn: {
     flex: 1,
   },
   agencyLogoLargeContainer: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
   },
   agencyLogoLargeImage: {
     width: '100%',
@@ -633,36 +691,36 @@ const styles = StyleSheet.create({
     objectFit: 'contain',
   },
   agentPhotoLarge: {
-    width: 120,
-    height: 120,
+    width: 60,
+    height: 60,
     objectFit: 'cover',
-    borderRadius: 60,
+    borderRadius: 30,
   },
   contactNameLarge: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
-    marginBottom: 8,
+    marginBottom: 2,
   },
   contactSubtextLarge: {
-    fontSize: 12,
+    fontSize: 9,
     color: '#64748B',
-    marginBottom: 4,
+    marginBottom: 1,
   },
   agencyDescriptionBox: {
-    marginTop: 15,
-    paddingTop: 15,
+    marginTop: 8,
+    paddingTop: 8,
     borderTop: '1px solid #E2E8F0',
   },
   agencyDescriptionText: {
-    fontSize: 10,
+    fontSize: 8,
     color: '#475569',
-    lineHeight: 1.5,
+    lineHeight: 1.3,
     fontStyle: 'italic',
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Visibilité par défaut si non fournie
@@ -698,12 +756,18 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
   // Le prix affiché est soit le prix ajusté, soit le prix moyen
   const displayPrice = adjustedPrice || prix_moyen;
 
+  // Calcul de la commission si définie
+  const hasCommission = commission && commission > 0;
+  const commissionAmount = hasCommission ? Math.round(displayPrice * (commission / 100)) : 0;
+  const finalPriceWithCommission = hasCommission ? displayPrice + commissionAmount : displayPrice;
+
   // Pour les terrains, on utilise surface_terrain, sinon surface habitable
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
 
   const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
   const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
-  const prixM2Display = surfacePrincipale ? Math.round(displayPrice / surfacePrincipale) : 0;
+  // Utiliser le prix avec commission pour l'affichage
+  const prixM2Display = surfacePrincipale ? Math.round(finalPriceWithCommission / surfacePrincipale) : 0;
 
   const formatDate = () => {
     return new Date().toLocaleDateString('fr-FR', {
@@ -1033,10 +1097,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
         <View style={styles.estimationContainer}>
-          {/* Prix principal */}
+          {/* Prix principal (incluant la commission si définie) */}
           <View style={styles.estimationBox}>
             <Text style={styles.estimationLabel}>Avis de Valeur</Text>
-            <Text style={styles.estimationPrice}>{formatPriceXPF(displayPrice)}</Text>
+            <Text style={styles.estimationPrice}>{formatPriceXPF(finalPriceWithCommission)}</Text>
             <View style={styles.estimationPriceM2}>
               <Text style={styles.estimationPriceM2Label}>Prix au m² estimé</Text>
               <Text style={styles.estimationPriceM2Value}>{formatPriceXPF(prixM2Display)}/m²</Text>
@@ -1063,6 +1127,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               </View>
             </View>
           )}
+
         </View>
 
         {/* Texte personnalisé synthèse */}
@@ -1078,11 +1143,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
       {/* === PAGE 6: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
         {agentLogo && (
-          <View style={styles.pageLogoContainer}>
+          <View style={{ ...styles.pageLogoContainer, width: 50, height: 50, top: 15, right: 15 }}>
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
+        <Text style={{ ...styles.pageTitle, fontSize: 16, marginBottom: 12, paddingBottom: 6 }}>Votre Interlocuteur</Text>
 
         {/* Bloc Agence - pleine largeur */}
         <View style={styles.contactBlockFull}>
@@ -1100,7 +1165,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
               {agencyWebsite && <Text style={styles.contactSubtextLarge}>{agencyWebsite}</Text>}
             </View>
           </View>
-          {/* Description en dessous (limitée à 10 lignes dans le profil) */}
+          {/* Description en dessous (limitée à 20 lignes dans le profil) */}
           {agencyDescription && (
             <View style={styles.agencyDescriptionBox}>
               <Text style={styles.agencyDescriptionText}>
@@ -1111,17 +1176,17 @@ export default function RapportPDF({ result, formData, adjustedPrice, agentProfi
         </View>
 
         {/* Bloc Agent - pleine largeur */}
-        <View style={styles.contactBlockFull}>
-          <Text style={styles.contactBlockTitle}>Votre Agent</Text>
-          <View style={styles.contactBlockContentHorizontal}>
+        <View style={{ ...styles.contactBlockFull, padding: 15, marginBottom: 10 }}>
+          <Text style={{ ...styles.contactBlockTitle, marginBottom: 8, fontSize: 10 }}>Votre Agent</Text>
+          <View style={{ ...styles.contactBlockContentHorizontal, gap: 15 }}>
             {agentPhoto && (
-              <Image style={styles.agentPhotoLarge} src={agentPhoto} />
+              <Image style={{ ...styles.agentPhotoLarge, width: 72, height: 72, borderRadius: 36 }} src={agentPhoto} />
             )}
             <View style={styles.contactInfoColumn}>
-              {agentFullName && <Text style={styles.contactNameLarge}>{agentFullName}</Text>}
-              {agentPhone && <Text style={styles.contactSubtextLarge}>{agentPhone}</Text>}
-              {agentEmail && <Text style={styles.contactSubtextLarge}>{agentEmail}</Text>}
-              {cartePro && <Text style={styles.contactSubtextLarge}>Carte pro : {cartePro}</Text>}
+              {agentFullName && <Text style={{ ...styles.contactNameLarge, fontSize: 14 }}>{agentFullName}</Text>}
+              {agentPhone && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>{agentPhone}</Text>}
+              {agentEmail && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>{agentEmail}</Text>}
+              {cartePro && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>Carte pro : {cartePro}</Text>}
             </View>
           </View>
         </View>
