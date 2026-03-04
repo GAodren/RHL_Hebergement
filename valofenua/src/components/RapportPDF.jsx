@@ -1175,18 +1175,18 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        {/* Bloc Agent - pleine largeur (réduit) */}
-        <View style={{ ...styles.contactBlockFull, padding: 12, marginBottom: 8 }}>
-          <Text style={{ ...styles.contactBlockTitle, marginBottom: 6, fontSize: 9 }}>Votre Agent</Text>
-          <View style={{ ...styles.contactBlockContentHorizontal, gap: 12 }}>
+        {/* Bloc Agent - pleine largeur */}
+        <View style={{ ...styles.contactBlockFull, padding: 15, marginBottom: 10 }}>
+          <Text style={{ ...styles.contactBlockTitle, marginBottom: 8, fontSize: 10 }}>Votre Agent</Text>
+          <View style={{ ...styles.contactBlockContentHorizontal, gap: 15 }}>
             {agentPhoto && (
-              <Image style={styles.agentPhotoLarge} src={agentPhoto} />
+              <Image style={{ ...styles.agentPhotoLarge, width: 72, height: 72, borderRadius: 36 }} src={agentPhoto} />
             )}
             <View style={styles.contactInfoColumn}>
-              {agentFullName && <Text style={styles.contactNameLarge}>{agentFullName}</Text>}
-              {agentPhone && <Text style={styles.contactSubtextLarge}>{agentPhone}</Text>}
-              {agentEmail && <Text style={styles.contactSubtextLarge}>{agentEmail}</Text>}
-              {cartePro && <Text style={styles.contactSubtextLarge}>Carte pro : {cartePro}</Text>}
+              {agentFullName && <Text style={{ ...styles.contactNameLarge, fontSize: 14 }}>{agentFullName}</Text>}
+              {agentPhone && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>{agentPhone}</Text>}
+              {agentEmail && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>{agentEmail}</Text>}
+              {cartePro && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>Carte pro : {cartePro}</Text>}
             </View>
           </View>
         </View>
