@@ -61,8 +61,9 @@ export default function Profil({ embedded = false }) {
     }
   }, [profile]);
 
-  // Compteur de lignes (retours à la ligne uniquement)
+  // Limites pour la description
   const MAX_DESCRIPTION_LINES = 20;
+  const MAX_DESCRIPTION_CHARS = 800;
 
   const countLines = (text) => {
     if (!text) return 0;
@@ -73,10 +74,10 @@ export default function Profil({ embedded = false }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Limiter la description à 10 lignes
+    // Limiter la description à 20 lignes ET 800 caractères
     if (name === 'description_agence') {
       const lines = countLines(value);
-      if (lines > MAX_DESCRIPTION_LINES) {
+      if (lines > MAX_DESCRIPTION_LINES || value.length > MAX_DESCRIPTION_CHARS) {
         return; // Ne pas mettre à jour si dépassement
       }
     }
@@ -358,9 +359,6 @@ export default function Profil({ embedded = false }) {
               <div>
                 <label htmlFor="description_agence" className="block text-sm font-medium text-slate-700 mb-2">
                   Description de l'agence
-                  <span className={`font-normal ml-2 ${countLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500' : 'text-slate-400'}`}>
-                    ({countLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes)
-                  </span>
                 </label>
                 <textarea
                   id="description_agence"
@@ -368,9 +366,17 @@ export default function Profil({ embedded = false }) {
                   value={formData.description_agence}
                   onChange={handleChange}
                   rows={8}
-                  placeholder="Présentez votre agence en quelques lignes (20 lignes max)..."
+                  placeholder="Présentez votre agence en quelques lignes..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
+                <div className="flex justify-end gap-4 mt-1 text-xs">
+                  <span className={formData.description_agence.length >= MAX_DESCRIPTION_CHARS ? 'text-amber-500 font-medium' : 'text-slate-400'}>
+                    {formData.description_agence.length}/{MAX_DESCRIPTION_CHARS} caractères
+                  </span>
+                  <span className={countLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500 font-medium' : 'text-slate-400'}>
+                    {countLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes
+                  </span>
+                </div>
               </div>
             </div>
           </div>
