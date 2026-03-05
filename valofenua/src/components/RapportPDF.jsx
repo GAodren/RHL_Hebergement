@@ -610,6 +610,29 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
     color: '#166534',
   },
+  // Styles pour le prix net
+  prixNetBox: {
+    marginTop: 15,
+    backgroundColor: '#F0FDF4',
+    borderRadius: 8,
+    padding: 15,
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: 350,
+    border: '2px solid #10B981',
+  },
+  prixNetLabel: {
+    fontSize: 10,
+    color: '#166534',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 5,
+  },
+  prixNetValue: {
+    fontSize: 22,
+    fontFamily: 'Helvetica-Bold',
+    color: '#10B981',
+  },
   contactBlocksContainer: {
     flexDirection: 'row',
     gap: 12,
@@ -756,18 +779,13 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   // Le prix affiché est soit le prix ajusté, soit le prix moyen
   const displayPrice = adjustedPrice || prix_moyen;
 
-  // Calcul de la commission si définie
+  // Calcul de la commission (retrait du prix de vente pour obtenir le prix net)
   const hasCommission = commission && commission > 0;
   const commissionAmount = hasCommission ? Math.round(displayPrice * (commission / 100)) : 0;
-  const finalPriceWithCommission = hasCommission ? displayPrice + commissionAmount : displayPrice;
-
-  // Pour les terrains, on utilise surface_terrain, sinon surface habitable
-  const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
-
-  const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
-  const prixM2Haut = surfacePrincipale ? Math.round(prix_haut / surfacePrincipale) : 0;
-  // Utiliser le prix avec commission pour l'affichage
-  const prixM2Display = surfacePrincipale ? Math.round(finalPriceWithCommission / surfacePrincipale) : 0;
+  // Prix de vente = prix affiché (avec commission incluse)
+  const prixDeVente = displayPrice;
+  // Prix net = prix de vente - commission
+  const prixNet = hasCommission ? displayPrice - commissionAmount : displayPrice;
 
   const formatDate = () => {
     return new Date().toLocaleDateString('fr-FR', {
@@ -1097,15 +1115,19 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
         <View style={styles.estimationContainer}>
-          {/* Prix principal (incluant la commission si définie) */}
+          {/* Prix de vente */}
           <View style={styles.estimationBox}>
-            <Text style={styles.estimationLabel}>Avis de Valeur</Text>
-            <Text style={styles.estimationPrice}>{formatPriceXPF(finalPriceWithCommission)}</Text>
-            <View style={styles.estimationPriceM2}>
-              <Text style={styles.estimationPriceM2Label}>Prix au m² estimé</Text>
-              <Text style={styles.estimationPriceM2Value}>{formatPriceXPF(prixM2Display)}/m²</Text>
-            </View>
+            <Text style={styles.estimationLabel}>Prix de Vente</Text>
+            <Text style={styles.estimationPrice}>{formatPriceXPF(prixDeVente)}</Text>
           </View>
+
+          {/* Prix net (si commission définie) */}
+          {hasCommission && (
+            <View style={styles.prixNetBox}>
+              <Text style={styles.prixNetLabel}>Prix Net du Bien</Text>
+              <Text style={styles.prixNetValue}>{formatPriceXPF(prixNet)}</Text>
+            </View>
+          )}
 
           {/* Fourchette de prix */}
           {visibility.priceGap && (
