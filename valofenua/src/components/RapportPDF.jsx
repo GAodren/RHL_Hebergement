@@ -1137,6 +1137,15 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
+        {/* Disclaimer */}
+        <View style={styles.disclaimerBox}>
+          <Text style={styles.disclaimerTitle}>Information importante</Text>
+          <Text style={styles.disclaimerText}>
+            Ce document a été réalisé par l'agence à partir des données du marché immobilier de votre secteur publiées sur le web. Ces données sont mises à jour en temps réel afin de suivre au plus près les évolutions du marché.
+            Les indicateurs et estimations de cette étude sont communiqués sous l'entière responsabilité du professionnel.
+          </Text>
+        </View>
+
         <Text style={styles.pageNumber}>5 / 6</Text>
       </Page>
 
@@ -1189,16 +1198,6 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
               {cartePro && <Text style={{ ...styles.contactSubtextLarge, fontSize: 10 }}>Carte pro : {cartePro}</Text>}
             </View>
           </View>
-        </View>
-
-        {/* Disclaimer */}
-        <View style={styles.disclaimerBox}>
-          <Text style={styles.disclaimerTitle}>Information importante</Text>
-          <Text style={styles.disclaimerText}>
-            Ce document constitue un avis de valeur établi sur la base des données du marché immobilier polynésien.
-            Il est fourni à titre indicatif et ne constitue pas une expertise immobilière au sens juridique du terme.
-            Seule une expertise réalisée par un expert agréé peut faire foi en cas de litige.
-          </Text>
         </View>
 
         <Text style={styles.pageNumber}>6 / 6</Text>
