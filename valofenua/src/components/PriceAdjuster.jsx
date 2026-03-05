@@ -24,9 +24,9 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
     }
   }, [commission, onCommissionChange]);
 
-  // Calcul du prix final avec commission
+  // Calcul du prix net (prix de vente - commission)
   const commissionAmount = Math.round(adjustedPrice * (commission / 100));
-  const finalPrice = adjustedPrice + commissionAmount;
+  const prixNet = adjustedPrice - commissionAmount;
 
   const percentageDiff = ((adjustedPrice - prixMoyen) / prixMoyen * 100).toFixed(1);
   const percentageSign = Number(percentageDiff) >= 0 ? '+' : '';
@@ -303,7 +303,7 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Percent className="w-4 h-4 text-slate-500" />
-            <span className="text-sm font-medium text-slate-700">Ajouter votre commission</span>
+            <span className="text-sm font-medium text-slate-700">Retrait de commission</span>
           </div>
           <button
             onClick={handleToggleCommission}
@@ -365,14 +365,14 @@ export default function PriceAdjuster({ prixBas, prixMoyen, prixHaut, onPriceCha
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-500">Commission ({commission}%)</span>
-                  <span className="font-medium text-emerald-600">+ {formatPriceMF(commissionAmount)}</span>
+                  <span className="font-medium text-red-500">- {formatPriceMF(commissionAmount)}</span>
                 </div>
                 <div className="border-t border-slate-100 pt-2 flex justify-between">
-                  <span className="text-sm font-semibold text-slate-700">Prix final TTC</span>
-                  <span className="text-lg font-bold text-[#0077B6]">{formatPriceMF(finalPrice)}</span>
+                  <span className="text-sm font-semibold text-slate-700">Prix net du bien</span>
+                  <span className="text-lg font-bold text-emerald-600">{formatPriceMF(prixNet)}</span>
                 </div>
                 <p className="text-xs text-slate-400 text-center">
-                  soit {formatPriceXPF(finalPrice)}
+                  soit {formatPriceXPF(prixNet)}
                 </p>
               </div>
             )}
