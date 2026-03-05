@@ -746,6 +746,11 @@ const styles = StyleSheet.create({
 export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
+  // Calcul des prix au m² bas et haut à partir des prix totaux
+  const surface = formData.surface || formData.surface_terrain || 1;
+  const prixM2Bas = Math.round(prix_bas / surface);
+  const prixM2Haut = Math.round(prix_haut / surface);
+
   // Visibilité par défaut si non fournie
   const visibility = sectionVisibility || {
     marketTrends: true,
