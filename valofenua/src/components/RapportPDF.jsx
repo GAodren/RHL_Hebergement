@@ -1305,74 +1305,92 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
       </Page>
 
       {/* === PAGE 5: COMMENT DÉTERMINER LE PRIX DE VENTE === */}
-      <Page size="A4" style={styles.prixVentePage}>
+      <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={styles.prixVenteTitle}>COMMENT DÉTERMINER LE PRIX DE VENTE</Text>
+        <Text style={styles.pageTitle}>Comment déterminer le prix de vente</Text>
 
-        <Text style={styles.prixVenteIntro}>
-          Lors de la vente d'un bien, on est vite tenté de définir un prix trop élevé. Pourtant, afficher un prix plus cher en comparaison du marché est contreproductif. Plus le prix affiché s'éloigne du prix réel du marché, moins vous avez de chances d'attirer de potentiels acheteurs.
+        <Text style={{ fontSize: 11, color: '#334155', lineHeight: 1.6, marginBottom: 20 }}>
+          Le prix de vente est un élément clé pour réussir votre transaction immobilière. Un prix bien calibré attire davantage d'acheteurs et accélère la vente, tandis qu'un prix mal ajusté peut freiner l'intérêt et allonger les délais.
         </Text>
 
-        {/* Schéma pyramide avec chevrons */}
-        <View style={styles.pyramidContainer}>
-          {/* Niveaux avec chevrons */}
-          <View style={styles.pyramidLevelsWrapper}>
-            {/* Niveau rouge - peu d'acheteurs (en haut, petit) */}
-            <View style={styles.pyramidLevel}>
-              <Svg style={styles.pyramidChevron} viewBox="0 0 20 50">
-                <Path d="M0,0 L0,50 L20,25 Z" fill="#DC2626" />
-              </Svg>
-              <View style={[styles.pyramidLevelContent, styles.pyramidLevelRed]}>
-                <Text style={styles.pyramidText}>TRÈS PEU D'ACHETEURS</Text>
-              </View>
-            </View>
-
-            {/* Niveau orange - quelques acheteurs (milieu) */}
-            <View style={styles.pyramidLevel}>
-              <Svg style={styles.pyramidChevron} viewBox="0 0 20 50">
-                <Path d="M0,0 L0,50 L20,25 Z" fill="#F59E0B" />
-              </Svg>
-              <View style={[styles.pyramidLevelContent, styles.pyramidLevelOrange]}>
-                <Text style={styles.pyramidText}>QUELQUES ACHETEURS</Text>
-              </View>
-            </View>
-
-            {/* Niveau vert - majorité d'acheteurs (en bas, large) */}
-            <View style={styles.pyramidLevel}>
-              <Svg style={styles.pyramidChevron} viewBox="0 0 20 50">
-                <Path d="M0,0 L0,50 L20,25 Z" fill="#84CC16" />
-              </Svg>
-              <View style={[styles.pyramidLevelContent, styles.pyramidLevelGreen]}>
-                <Text style={styles.pyramidText}>MAJORITÉ D'ACHETEURS</Text>
-              </View>
-            </View>
+        {/* Les 3 scénarios de prix */}
+        <View style={{ marginBottom: 20 }}>
+          {/* Scénario 1 : Prix trop élevé */}
+          <View style={{ backgroundColor: '#FEF2F2', borderRadius: 8, padding: 15, marginBottom: 12, borderLeft: '4px solid #DC2626' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#DC2626', marginBottom: 6 }}>
+              Prix supérieur au marché (+10% ou plus)
+            </Text>
+            <Text style={{ fontSize: 10, color: '#7F1D1D', lineHeight: 1.5 }}>
+              Très peu d'acheteurs potentiels. Le bien risque de rester longtemps sur le marché, ce qui peut donner l'impression qu'il y a un problème avec le bien. Cela conduit souvent à des baisses de prix successives.
+            </Text>
           </View>
 
-          {/* Légende flèche verticale */}
-          <View style={styles.pyramidLegendContainer}>
-            <View style={styles.pyramidLegendTop}>
-              <Text style={styles.pyramidLegendArrow}>10 %</Text>
-              <Text style={styles.pyramidLegendText}>+ cher</Text>
+          {/* Scénario 2 : Prix du marché */}
+          <View style={{ backgroundColor: '#F0FDF4', borderRadius: 8, padding: 15, marginBottom: 12, borderLeft: '4px solid #16A34A' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#16A34A', marginBottom: 6 }}>
+              Prix aligné sur le marché
+            </Text>
+            <Text style={{ fontSize: 10, color: '#14532D', lineHeight: 1.5 }}>
+              Intérêt optimal des acheteurs. Le bien attire un maximum de visiteurs qualifiés, ce qui peut même créer une situation de concurrence favorable et permettre une négociation minimale.
+            </Text>
+          </View>
+
+          {/* Scénario 3 : Prix sous-évalué */}
+          <View style={{ backgroundColor: '#FEF3C7', borderRadius: 8, padding: 15, marginBottom: 12, borderLeft: '4px solid #D97706' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#D97706', marginBottom: 6 }}>
+              Prix inférieur au marché
+            </Text>
+            <Text style={{ fontSize: 10, color: '#78350F', lineHeight: 1.5 }}>
+              Vente rapide mais perte financière potentielle. Un prix trop bas peut aussi susciter la méfiance des acheteurs qui peuvent penser qu'il y a un vice caché.
+            </Text>
+          </View>
+        </View>
+
+        {/* Section : Comment nous calculons le prix */}
+        <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 18, border: '1px solid #E2E8F0', marginBottom: 15 }}>
+          <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginBottom: 12 }}>
+            Notre méthode d'estimation
+          </Text>
+
+          <View style={{ marginBottom: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>1.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Analyse des biens comparables</Text> : nous étudions les ventes récentes et les biens actuellement en vente dans votre secteur géographique.
+              </Text>
             </View>
-            <View style={styles.pyramidArrowContainer}>
-              <View style={styles.pyramidArrowHead} />
-              <View style={styles.pyramidArrowLine} />
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>2.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Caractéristiques du bien</Text> : surface, nombre de pièces, état général, équipements (piscine, terrasse, vue mer...).
+              </Text>
             </View>
-            <View style={styles.pyramidLegendBottom}>
-              <Text style={styles.pyramidLegendBottomText}>Prix du</Text>
-              <Text style={styles.pyramidLegendBottomText}>marché</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>3.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Emplacement</Text> : commune, quartier, proximité des commerces et services, qualité de l'environnement.
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>4.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Tendances du marché</Text> : évolution des prix dans votre commune sur les derniers mois.
+              </Text>
             </View>
           </View>
         </View>
 
-        {/* Texte d'explication */}
-        <View style={styles.prixVenteExplication}>
-          <Text style={styles.prixVenteExplicationText}>
-            L'Étude Comparative de Marché vous aide à définir un prix juste et réaliste en se basant sur de nombreux facteurs tels que les caractéristiques du bien (nombre de pièces, points forts, points faibles), les données démographiques du quartier (vie de quartier, présence de commerces, répartition des foyers, etc.), les ventes similaires en cours ou terminées. Ce sont ces éléments combinés qui permettent de déterminer un prix qui se rapproche au mieux du prix du marché, tout en répondant à vos attentes et à celles des acquéreurs.
+        {/* Conseil */}
+        <View style={{ backgroundColor: '#EFF6FF', borderRadius: 8, padding: 15, border: '1px solid #BFDBFE' }}>
+          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: '#1E40AF', marginBottom: 6 }}>
+            Notre conseil
+          </Text>
+          <Text style={{ fontSize: 10, color: '#1E3A8A', lineHeight: 1.5 }}>
+            Faites confiance à l'Étude Comparative de Marché pour fixer un prix juste dès le départ. Un bien correctement estimé se vend en moyenne deux fois plus vite qu'un bien surévalué.
           </Text>
         </View>
 
@@ -1507,8 +1525,8 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.justificatifsTitle}>PIÈCES JUSTIFICATIVES</Text>
-        <Text style={styles.justificatifsSubtitle}>POUR LA RÉDACTION DU MANDAT</Text>
+        <Text style={styles.pageTitle}>Pièces justificatives</Text>
+        <Text style={{ fontSize: 12, color: '#64748B', marginBottom: 25, marginTop: -10 }}>Pour la rédaction du mandat</Text>
 
         {/* Section 1: Pour le contact */}
         <View style={styles.justificatifsSection}>
