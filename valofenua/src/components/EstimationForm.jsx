@@ -528,7 +528,7 @@ export default function EstimationForm({ initialState }) {
             <div className="animate-fadeIn">
               <label htmlFor="surface_terrain" className="block text-sm font-medium text-slate-700 mb-2">
                 {formData.categorie === 'Appartement'
-                  ? 'Surface Extérieur (m²)'
+                  ? 'Surface Extérieur (m²) (optionnel)'
                   : 'Surface terrain (m²)'
                 } {formData.categorie === 'Terrain' && <span className="text-red-500">*</span>}
               </label>
@@ -543,7 +543,7 @@ export default function EstimationForm({ initialState }) {
                   formData.categorie === 'Terrain'
                     ? 'Ex: 800'
                     : formData.categorie === 'Appartement'
-                      ? 'Ex: 15 (optionnel)'
+                      ? 'Ex: 15'
                       : 'Ex: 500 (optionnel)'
                 }
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all"
