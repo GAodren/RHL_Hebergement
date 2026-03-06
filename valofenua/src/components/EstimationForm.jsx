@@ -527,10 +527,10 @@ export default function EstimationForm({ initialState }) {
           {(formData.categorie === 'Maison' || formData.categorie === 'Appartement' || formData.categorie === 'Terrain') && (
             <div className="animate-fadeIn">
               <label htmlFor="surface_terrain" className="block text-sm font-medium text-slate-700 mb-2">
-                {formData.categorie === 'Appartement'
-                  ? 'Surface Extérieur (m²) (optionnel)'
-                  : 'Surface terrain (m²)'
-                } {formData.categorie === 'Terrain' && <span className="text-red-500">*</span>}
+                Surface terrain (m²) {formData.categorie === 'Terrain'
+                  ? <span className="text-red-500">*</span>
+                  : <span className="text-slate-400 font-normal">(optionnel)</span>
+                }
               </label>
               <input
                 type="number"
