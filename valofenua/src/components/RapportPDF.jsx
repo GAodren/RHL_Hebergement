@@ -764,7 +764,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   justificatifsSection: {
-    marginBottom: 25,
+    marginBottom: 35,
   },
   justificatifsSectionTitle: {
     fontSize: 12,
@@ -777,7 +777,7 @@ const styles = StyleSheet.create({
   justificatifsItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 8,
+    marginBottom: 14,
     paddingLeft: 5,
   },
   checkbox: {
@@ -1323,17 +1323,17 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}>Si pacsé : certificat de PACS.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si pacsé</Text> : certificat de PACS.</Text>
           </View>
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}>Si divorcé : le jugement de divorce.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si divorcé</Text> : le jugement de divorce.</Text>
           </View>
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}>Si marié : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si marié</Text> : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
           </View>
         </View>
 
@@ -1368,25 +1368,18 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}>Dossier de Diagnostic Technique : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic État des nuisances sonores aériennes / diagnostic gaz / diagnostic mérule / diagnostic DPE / diagnostic plomb / diagnostic termites / diagnostic technique de l'immeuble en copropriété / le diagnostic métrage loi Carrez.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic État des nuisances sonores aériennes / diagnostic gaz / diagnostic mérule / diagnostic DPE / diagnostic plomb / diagnostic termites / diagnostic technique de l'immeuble en copropriété / le diagnostic métrage loi Carrez.</Text>
           </View>
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}>Si le bien est vendu loué : le propriétaire bailleur doit fournir le bail, les trois dernières quittances de loyer et l'état des lieux d'entrée du locataire, Assurance.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu loué</Text> : le propriétaire bailleur doit fournir le bail, les trois dernières quittances de loyer et l'état des lieux d'entrée du locataire, Assurance.</Text>
           </View>
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}>Si le bien est vendu vide mais était loué dernièrement : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu vide mais était loué dernièrement</Text> : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
           </View>
-        </View>
-
-        {/* Note de bas de page */}
-        <View style={styles.justificatifsNote}>
-          <Text style={styles.justificatifsNoteText}>
-            L'acquéreur doit disposer de tous les documents apportant des précisions sur le bien qu'il va acquérir, le but étant de se renseigner afin de se prémunir de tout litige. À titre d'exemple, il est possible que l'on demande au vendeur de remettre au notaire des factures d'électricité, d'eau ; les relevés de compteur. Les agents immobiliers peuvent alors vous conseiller lors de ces étapes essentielles de la vente.
-          </Text>
         </View>
 
         <Text style={styles.pageNumber}>7 / 7</Text>
