@@ -741,6 +741,72 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
     fontStyle: 'italic',
   },
+
+  // === PAGE 7: PIÈCES JUSTIFICATIVES ===
+  justificatifsPage: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+  justificatifsTitle: {
+    fontSize: 18,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  justificatifsSubtitle: {
+    fontSize: 14,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  justificatifsSection: {
+    marginBottom: 25,
+  },
+  justificatifsSectionTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#1E293B',
+    marginBottom: 12,
+    paddingBottom: 6,
+    borderBottom: '1px solid #E2E8F0',
+  },
+  justificatifsItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+    paddingLeft: 5,
+  },
+  checkbox: {
+    width: 12,
+    height: 12,
+    border: '1.5px solid #64748B',
+    borderRadius: 2,
+    marginRight: 10,
+    marginTop: 1,
+  },
+  justificatifsText: {
+    fontSize: 10,
+    color: '#334155',
+    flex: 1,
+    lineHeight: 1.4,
+  },
+  justificatifsNote: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    border: '1px solid #E2E8F0',
+  },
+  justificatifsNoteText: {
+    fontSize: 9,
+    color: '#475569',
+    lineHeight: 1.5,
+    fontStyle: 'italic',
+  },
 });
 
 export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
@@ -868,7 +934,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>1 / 6</Text>
+        <Text style={styles.pageNumber}>1 / 7</Text>
       </Page>
 
       {/* === PAGE 2: FICHE TECHNIQUE === */}
@@ -947,7 +1013,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        <Text style={styles.pageNumber}>2 / 6</Text>
+        <Text style={styles.pageNumber}>2 / 7</Text>
       </Page>
 
       {/* === PAGE 3: ANALYSE DU MARCHÉ === */}
@@ -1050,7 +1116,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>3 / 6</Text>
+        <Text style={styles.pageNumber}>3 / 7</Text>
       </Page>
 
       {/* === PAGE 4: BIENS SIMILAIRES === */}
@@ -1107,7 +1173,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>4 / 6</Text>
+        <Text style={styles.pageNumber}>4 / 7</Text>
       </Page>
 
       {/* === PAGE 5: ESTIMATION FINALE === */}
@@ -1173,7 +1239,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>5 / 6</Text>
+        <Text style={styles.pageNumber}>5 / 7</Text>
       </Page>
 
       {/* === PAGE 6: CONTACT === */}
@@ -1227,7 +1293,103 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>6 / 6</Text>
+        <Text style={styles.pageNumber}>6 / 7</Text>
+      </Page>
+
+      {/* === PAGE 7: PIÈCES JUSTIFICATIVES === */}
+      <Page size="A4" style={styles.justificatifsPage}>
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
+
+        <Text style={styles.justificatifsTitle}>PIÈCES JUSTIFICATIVES</Text>
+        <Text style={styles.justificatifsSubtitle}>POUR LA RÉDACTION DU MANDAT</Text>
+
+        {/* Section 1: Pour le contact */}
+        <View style={styles.justificatifsSection}>
+          <Text style={styles.justificatifsSectionTitle}>1. POUR LE CONTACT</Text>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Une pièce justificative d'identité telle que la carte d'identité ou passeport.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Une copie du livret de famille.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Si pacsé : certificat de PACS.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Si divorcé : le jugement de divorce.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Si marié : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
+          </View>
+        </View>
+
+        {/* Section 2: Pour le bien */}
+        <View style={styles.justificatifsSection}>
+          <Text style={styles.justificatifsSectionTitle}>2. POUR LE BIEN</Text>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>L'acte de propriété.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>La Taxe Foncière.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Les documents relatifs aux divers travaux effectués.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Les plans du logement.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Les documents relatifs à son prêt immobilier (il doit en outre préciser si celui-ci est hypothécaire).</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Dossier de Diagnostic Technique : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic État des nuisances sonores aériennes / diagnostic gaz / diagnostic mérule / diagnostic DPE / diagnostic plomb / diagnostic termites / diagnostic technique de l'immeuble en copropriété / le diagnostic métrage loi Carrez.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Si le bien est vendu loué : le propriétaire bailleur doit fournir le bail, les trois dernières quittances de loyer et l'état des lieux d'entrée du locataire, Assurance.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Si le bien est vendu vide mais était loué dernièrement : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
+          </View>
+        </View>
+
+        {/* Note de bas de page */}
+        <View style={styles.justificatifsNote}>
+          <Text style={styles.justificatifsNoteText}>
+            L'acquéreur doit disposer de tous les documents apportant des précisions sur le bien qu'il va acquérir, le but étant de se renseigner afin de se prémunir de tout litige. À titre d'exemple, il est possible que l'on demande au vendeur de remettre au notaire des factures d'électricité, d'eau ; les relevés de compteur. Les agents immobiliers peuvent alors vous conseiller lors de ces étapes essentielles de la vente.
+          </Text>
+        </View>
+
+        <Text style={styles.pageNumber}>7 / 7</Text>
       </Page>
     </Document>
   );
