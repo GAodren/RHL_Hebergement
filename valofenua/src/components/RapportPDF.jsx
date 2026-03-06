@@ -30,7 +30,7 @@ const CARACTERISTIQUES_LABELS = {
   terrasse: 'Terrasse',
 };
 
-// Styles pour le PDF professionnel 6 pages
+// Styles pour le PDF professionnel 9 pages
 const styles = StyleSheet.create({
   // === PAGE COMMUNE ===
   page: {
@@ -808,6 +808,84 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
 
+  // === PAGE 2: ÉTUDE COMPARATIVE DE MARCHÉ ===
+  ecmPage: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+  },
+  ecmMainTitle: {
+    fontSize: 24,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  ecmSubtitle: {
+    fontSize: 20,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  ecmIntroBox: {
+    backgroundColor: '#F0F9FF',
+    borderRadius: 8,
+    padding: 18,
+    marginBottom: 25,
+    borderLeft: '4px solid #0077B6',
+  },
+  ecmIntroTitle: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    marginBottom: 10,
+  },
+  ecmIntroText: {
+    fontSize: 10,
+    color: '#334155',
+    lineHeight: 1.6,
+    textAlign: 'justify',
+  },
+  ecmSection: {
+    marginBottom: 20,
+  },
+  ecmSectionTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#1E293B',
+    marginBottom: 10,
+    paddingBottom: 5,
+    borderBottom: '1px solid #E2E8F0',
+  },
+  ecmSectionContent: {
+    fontSize: 10,
+    color: '#475569',
+    lineHeight: 1.6,
+    textAlign: 'justify',
+  },
+  ecmIconRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  ecmIconCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#0077B6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ecmIconText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontFamily: 'Helvetica-Bold',
+  },
+  ecmSectionTextBlock: {
+    flex: 1,
+  },
+
   // === PAGE "COMMENT DÉTERMINER LE PRIX DE VENTE" ===
   prixVentePage: {
     padding: 40,
@@ -1062,10 +1140,84 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>1 / 8</Text>
+        <Text style={styles.pageNumber}>1 / 9</Text>
       </Page>
 
-      {/* === PAGE 2: FICHE TECHNIQUE === */}
+      {/* === PAGE 2: ÉTUDE COMPARATIVE DE MARCHÉ === */}
+      <Page size="A4" style={styles.ecmPage}>
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
+
+        <Text style={styles.ecmMainTitle}>ÉTUDE COMPARATIVE</Text>
+        <Text style={styles.ecmSubtitle}>DE MARCHÉ</Text>
+
+        {/* Introduction ECM */}
+        <View style={styles.ecmIntroBox}>
+          <Text style={styles.ecmIntroTitle}>Qu'est-ce qu'une Étude Comparative de Marché (ECM) ?</Text>
+          <Text style={styles.ecmIntroText}>
+            L'étude comparative de marché permet d'évaluer un bien immobilier en le comparant aux autres biens du marché. Le bien est analysé par rapport aux biens similaires récemment vendus, actuellement en vente, ou restés invendus. Cette comparaison s'appuie sur trois critères essentiels : la localisation, les caractéristiques du bien, et les prix pratiqués sur le marché.
+          </Text>
+        </View>
+
+        {/* Section Localisation */}
+        <View style={styles.ecmSection}>
+          <View style={styles.ecmIconRow}>
+            <View style={styles.ecmIconCircle}>
+              <Text style={styles.ecmIconText}>1</Text>
+            </View>
+            <View style={styles.ecmSectionTextBlock}>
+              <Text style={styles.ecmSectionTitle}>Localisation du bien</Text>
+              <Text style={styles.ecmSectionContent}>
+                La situation géographique comprend la ville, la commune, l'emplacement au sein du quartier, l'orientation, la vue et les points d'intérêt ou nuisances à proximité. Cette analyse intègre également les projets d'aménagement susceptibles d'impacter la valeur du bien. L'attractivité de l'adresse et la demande en logement sur le secteur sont des facteurs déterminants.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Section Caractéristiques */}
+        <View style={styles.ecmSection}>
+          <View style={styles.ecmIconRow}>
+            <View style={styles.ecmIconCircle}>
+              <Text style={styles.ecmIconText}>2</Text>
+            </View>
+            <View style={styles.ecmSectionTextBlock}>
+              <Text style={styles.ecmSectionTitle}>Caractéristiques et spécificités</Text>
+              <Text style={styles.ecmSectionContent}>
+                La surface, le nombre de pièces, l'agencement, la date de construction, la qualité des matériaux, les équipements, le diagnostic de performance énergétique, les prestations, les charges et taxes, ainsi que la rareté du bien. Tous ces éléments sont essentiels pour réaliser une analyse cohérente et objective de la valeur du bien immobilier.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Section Prix du marché */}
+        <View style={styles.ecmSection}>
+          <View style={styles.ecmIconRow}>
+            <View style={styles.ecmIconCircle}>
+              <Text style={styles.ecmIconText}>3</Text>
+            </View>
+            <View style={styles.ecmSectionTextBlock}>
+              <Text style={styles.ecmSectionTitle}>Prix du marché immobilier</Text>
+              <Text style={styles.ecmSectionContent}>
+                Pour établir le juste prix de vente, il est nécessaire de prendre en compte tous les facteurs influant sur la valeur : l'analyse de la localisation, les caractéristiques et spécificités, mais aussi le dynamisme du marché. L'ECM s'appuie sur l'étude des biens similaires vendus, des biens récemment mis en vente, et des biens restés invendus sur le secteur.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Conclusion */}
+        <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 15, border: '1px solid #E2E8F0', marginTop: 10 }}>
+          <Text style={{ fontSize: 10, color: '#334155', lineHeight: 1.6, textAlign: 'center', fontStyle: 'italic' }}>
+            Cette méthodologie rigoureuse nous permet de vous proposer une estimation fiable et argumentée, reflétant la réalité du marché immobilier local.
+          </Text>
+        </View>
+
+        <Text style={styles.pageNumber}>2 / 9</Text>
+      </Page>
+
+      {/* === PAGE 3: FICHE TECHNIQUE === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1141,10 +1293,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        <Text style={styles.pageNumber}>2 / 8</Text>
+        <Text style={styles.pageNumber}>3 / 9</Text>
       </Page>
 
-      {/* === PAGE 3: ANALYSE DU MARCHÉ === */}
+      {/* === PAGE 4: ANALYSE DU MARCHÉ === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1244,10 +1396,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>3 / 8</Text>
+        <Text style={styles.pageNumber}>4 / 9</Text>
       </Page>
 
-      {/* === PAGE 4: BIENS SIMILAIRES === */}
+      {/* === PAGE 5: BIENS SIMILAIRES === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1301,10 +1453,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>4 / 8</Text>
+        <Text style={styles.pageNumber}>5 / 9</Text>
       </Page>
 
-      {/* === PAGE 5: COMMENT DÉTERMINER LE PRIX DE VENTE === */}
+      {/* === PAGE 6: COMMENT DÉTERMINER LE PRIX DE VENTE === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1394,10 +1546,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>5 / 8</Text>
+        <Text style={styles.pageNumber}>6 / 9</Text>
       </Page>
 
-      {/* === PAGE 6: SYNTHÈSE ET ESTIMATION === */}
+      {/* === PAGE 7: SYNTHÈSE ET ESTIMATION === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1469,10 +1621,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>6 / 8</Text>
+        <Text style={styles.pageNumber}>7 / 9</Text>
       </Page>
 
-      {/* === PAGE 7: CONTACT === */}
+      {/* === PAGE 8: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
         {agentLogo && (
           <View style={{ ...styles.pageLogoContainer, width: 50, height: 50, top: 15, right: 15 }}>
@@ -1523,10 +1675,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>7 / 8</Text>
+        <Text style={styles.pageNumber}>8 / 9</Text>
       </Page>
 
-      {/* === PAGE 8: PIÈCES JUSTIFICATIVES === */}
+      {/* === PAGE 9: PIÈCES JUSTIFICATIVES === */}
       <Page size="A4" style={styles.justificatifsPage}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1612,7 +1764,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>8 / 8</Text>
+        <Text style={styles.pageNumber}>9 / 9</Text>
       </Page>
     </Document>
   );
