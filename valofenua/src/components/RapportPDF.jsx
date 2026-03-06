@@ -831,79 +831,96 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   pyramidContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 30,
+    marginTop: 20,
+  },
+  pyramidLevelsWrapper: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   pyramidLevel: {
+    flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 3,
+  },
+  pyramidChevron: {
+    width: 20,
+    height: 50,
+  },
+  pyramidLevelContent: {
+    height: 50,
     justifyContent: 'center',
-    marginBottom: 4,
+    paddingHorizontal: 20,
   },
   pyramidLevelRed: {
-    backgroundColor: '#FEE2E2',
-    borderRadius: 4,
-    paddingVertical: 12,
-    width: 180,
-    borderLeft: '4px solid #EF4444',
+    backgroundColor: '#DC2626',
+    width: 200,
   },
   pyramidLevelOrange: {
-    backgroundColor: '#FEF3C7',
-    borderRadius: 4,
-    paddingVertical: 12,
-    width: 260,
-    borderLeft: '4px solid #F59E0B',
+    backgroundColor: '#F59E0B',
+    width: 240,
   },
   pyramidLevelGreen: {
-    backgroundColor: '#D1FAE5',
-    borderRadius: 4,
-    paddingVertical: 14,
-    width: 340,
-    borderLeft: '4px solid #10B981',
+    backgroundColor: '#84CC16',
+    width: 280,
   },
   pyramidText: {
-    fontSize: 10,
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
-    textAlign: 'center',
+    color: '#FFFFFF',
   },
-  pyramidTextRed: {
-    color: '#B91C1C',
-  },
-  pyramidTextOrange: {
-    color: '#B45309',
-  },
-  pyramidTextGreen: {
-    color: '#047857',
-  },
+  pyramidTextRed: {},
+  pyramidTextOrange: {},
+  pyramidTextGreen: {},
   pyramidLegendContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 15,
-    gap: 30,
+    marginLeft: 25,
+    height: 160,
+    justifyContent: 'space-between',
   },
-  pyramidLegendItem: {
+  pyramidArrowContainer: {
+    alignItems: 'center',
+    height: 120,
+    justifyContent: 'center',
+  },
+  pyramidArrowLine: {
+    width: 2,
+    height: 80,
+    backgroundColor: '#64748B',
+  },
+  pyramidArrowHead: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderBottomWidth: 10,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#64748B',
+  },
+  pyramidLegendTop: {
     alignItems: 'center',
   },
   pyramidLegendArrow: {
-    fontSize: 10,
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
-    color: '#EF4444',
-    marginBottom: 3,
+    color: '#64748B',
   },
   pyramidLegendText: {
     fontSize: 9,
     color: '#64748B',
   },
-  pyramidLegendCenter: {
-    backgroundColor: '#0077B6',
-    borderRadius: 4,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+  pyramidLegendBottom: {
+    alignItems: 'center',
   },
-  pyramidLegendCenterText: {
-    fontSize: 10,
+  pyramidLegendBottomText: {
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
-    color: '#FFFFFF',
+    color: '#64748B',
   },
   prixVenteExplication: {
     backgroundColor: '#F8FAFC',
@@ -1300,30 +1317,54 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           Lors de la vente d'un bien, on est vite tenté de définir un prix trop élevé. Pourtant, afficher un prix plus cher en comparaison du marché est contreproductif. Plus le prix affiché s'éloigne du prix réel du marché, moins vous avez de chances d'attirer de potentiels acheteurs.
         </Text>
 
-        {/* Schéma pyramide inversée */}
+        {/* Schéma pyramide avec chevrons */}
         <View style={styles.pyramidContainer}>
-          {/* Niveau rouge - peu d'acheteurs (en haut, petit) */}
-          <View style={[styles.pyramidLevel, styles.pyramidLevelRed]}>
-            <Text style={[styles.pyramidText, styles.pyramidTextRed]}>TRÈS PEU D'ACHETEURS</Text>
-          </View>
-
-          {/* Niveau orange - quelques acheteurs (milieu) */}
-          <View style={[styles.pyramidLevel, styles.pyramidLevelOrange]}>
-            <Text style={[styles.pyramidText, styles.pyramidTextOrange]}>QUELQUES ACHETEURS</Text>
-          </View>
-
-          {/* Niveau vert - majorité d'acheteurs (en bas, large) */}
-          <View style={[styles.pyramidLevel, styles.pyramidLevelGreen]}>
-            <Text style={[styles.pyramidText, styles.pyramidTextGreen]}>MAJORITÉ D'ACHETEURS</Text>
-          </View>
-
-          {/* Légende */}
-          <View style={styles.pyramidLegendContainer}>
-            <View style={styles.pyramidLegendItem}>
-              <Text style={styles.pyramidLegendArrow}>↑ 10% + cher</Text>
+          {/* Niveaux avec chevrons */}
+          <View style={styles.pyramidLevelsWrapper}>
+            {/* Niveau rouge - peu d'acheteurs (en haut, petit) */}
+            <View style={styles.pyramidLevel}>
+              <Svg style={styles.pyramidChevron} viewBox="0 0 20 50">
+                <Path d="M0,0 L0,50 L20,25 Z" fill="#DC2626" />
+              </Svg>
+              <View style={[styles.pyramidLevelContent, styles.pyramidLevelRed]}>
+                <Text style={styles.pyramidText}>TRÈS PEU D'ACHETEURS</Text>
+              </View>
             </View>
-            <View style={styles.pyramidLegendCenter}>
-              <Text style={styles.pyramidLegendCenterText}>Prix du marché</Text>
+
+            {/* Niveau orange - quelques acheteurs (milieu) */}
+            <View style={styles.pyramidLevel}>
+              <Svg style={styles.pyramidChevron} viewBox="0 0 20 50">
+                <Path d="M0,0 L0,50 L20,25 Z" fill="#F59E0B" />
+              </Svg>
+              <View style={[styles.pyramidLevelContent, styles.pyramidLevelOrange]}>
+                <Text style={styles.pyramidText}>QUELQUES ACHETEURS</Text>
+              </View>
+            </View>
+
+            {/* Niveau vert - majorité d'acheteurs (en bas, large) */}
+            <View style={styles.pyramidLevel}>
+              <Svg style={styles.pyramidChevron} viewBox="0 0 20 50">
+                <Path d="M0,0 L0,50 L20,25 Z" fill="#84CC16" />
+              </Svg>
+              <View style={[styles.pyramidLevelContent, styles.pyramidLevelGreen]}>
+                <Text style={styles.pyramidText}>MAJORITÉ D'ACHETEURS</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Légende flèche verticale */}
+          <View style={styles.pyramidLegendContainer}>
+            <View style={styles.pyramidLegendTop}>
+              <Text style={styles.pyramidLegendArrow}>10 %</Text>
+              <Text style={styles.pyramidLegendText}>+ cher</Text>
+            </View>
+            <View style={styles.pyramidArrowContainer}>
+              <View style={styles.pyramidArrowHead} />
+              <View style={styles.pyramidArrowLine} />
+            </View>
+            <View style={styles.pyramidLegendBottom}>
+              <Text style={styles.pyramidLegendBottomText}>Prix du</Text>
+              <Text style={styles.pyramidLegendBottomText}>marché</Text>
             </View>
           </View>
         </View>
