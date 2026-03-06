@@ -1406,6 +1406,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         )}
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
+        <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', marginBottom: 20, lineHeight: 1.5 }}>
+          Cette estimation de prix est basée sur l'analyse approfondie du bien immobilier, de ses spécificités ainsi que des prix des biens similaires sur le marché.
+        </Text>
+
         <View style={styles.estimationContainer}>
           {/* Prix de vente */}
           <View style={styles.estimationBox}>
@@ -1470,7 +1474,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={{ ...styles.pageTitle, fontSize: 16, marginBottom: 12, paddingBottom: 6 }}>Votre Interlocuteur</Text>
+        <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
         {/* Bloc Agence - pleine largeur */}
         <View style={styles.contactBlockFull}>
