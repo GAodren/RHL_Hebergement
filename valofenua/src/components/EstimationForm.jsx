@@ -523,11 +523,14 @@ export default function EstimationForm({ initialState }) {
             </div>
           )}
 
-          {/* Surface terrain - Maison (optionnel) ou Terrain (requis) */}
-          {(formData.categorie === 'Maison' || formData.categorie === 'Terrain') && (
+          {/* Surface terrain - Maison (optionnel), Appartement (balcon/terrasse, optionnel) ou Terrain (requis) */}
+          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement' || formData.categorie === 'Terrain') && (
             <div className="animate-fadeIn">
               <label htmlFor="surface_terrain" className="block text-sm font-medium text-slate-700 mb-2">
-                Surface terrain (m²) {formData.categorie === 'Terrain' && <span className="text-red-500">*</span>}
+                {formData.categorie === 'Appartement'
+                  ? 'Surface extérieure - balcon/terrasse (m²)'
+                  : 'Surface terrain (m²)'
+                } {formData.categorie === 'Terrain' && <span className="text-red-500">*</span>}
               </label>
               <input
                 type="number"
@@ -535,8 +538,14 @@ export default function EstimationForm({ initialState }) {
                 name="surface_terrain"
                 value={formData.surface_terrain}
                 onChange={handleChange}
-                min="10"
-                placeholder={formData.categorie === 'Terrain' ? 'Ex: 800' : 'Ex: 500 (optionnel)'}
+                min="1"
+                placeholder={
+                  formData.categorie === 'Terrain'
+                    ? 'Ex: 800'
+                    : formData.categorie === 'Appartement'
+                      ? 'Ex: 15 (optionnel)'
+                      : 'Ex: 500 (optionnel)'
+                }
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all"
               />
             </div>
