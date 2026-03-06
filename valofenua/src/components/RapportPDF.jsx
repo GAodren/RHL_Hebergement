@@ -764,20 +764,20 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   justificatifsSection: {
-    marginBottom: 20,
+    marginBottom: 35,
   },
   justificatifsSectionTitle: {
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
-    marginBottom: 8,
-    paddingBottom: 4,
+    marginBottom: 12,
+    paddingBottom: 6,
     borderBottom: '1px solid #E2E8F0',
   },
   justificatifsItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 8,
+    marginBottom: 14,
     paddingLeft: 5,
   },
   checkbox: {
@@ -789,10 +789,10 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   justificatifsText: {
-    fontSize: 9,
+    fontSize: 10,
     color: '#334155',
     flex: 1,
-    lineHeight: 1.35,
+    lineHeight: 1.4,
   },
   justificatifsNote: {
     marginTop: 20,
