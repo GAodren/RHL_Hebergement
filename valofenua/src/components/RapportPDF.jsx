@@ -367,10 +367,10 @@ const styles = StyleSheet.create({
 
   // === COMMENTAIRE AGENT ===
   agentCommentBox: {
-    marginTop: 25,
+    marginTop: 15,
     backgroundColor: '#F0F9FF',
     borderRadius: 8,
-    padding: 20,
+    padding: 15,
     borderLeft: '4px solid #0077B6',
   },
   agentCommentTitle: {
