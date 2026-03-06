@@ -1151,8 +1151,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.ecmMainTitle}>ÉTUDE COMPARATIVE</Text>
-        <Text style={styles.ecmSubtitle}>DE MARCHÉ</Text>
+        <Text style={styles.pageTitle}>Étude Comparative de Marché</Text>
 
         {/* Introduction ECM */}
         <View style={styles.ecmIntroBox}>
