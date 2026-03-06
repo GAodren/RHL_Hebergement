@@ -807,6 +807,117 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     fontStyle: 'italic',
   },
+
+  // === PAGE "COMMENT DÉTERMINER LE PRIX DE VENTE" ===
+  prixVentePage: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+  },
+  prixVenteTitle: {
+    fontSize: 20,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    marginBottom: 25,
+    paddingBottom: 10,
+    borderBottom: '2px solid #0077B6',
+    textAlign: 'center',
+  },
+  prixVenteIntro: {
+    fontSize: 11,
+    color: '#334155',
+    lineHeight: 1.6,
+    marginBottom: 30,
+    textAlign: 'justify',
+  },
+  pyramidContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  pyramidLevel: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  pyramidLevelRed: {
+    backgroundColor: '#FEE2E2',
+    borderRadius: 4,
+    paddingVertical: 12,
+    width: 180,
+    borderLeft: '4px solid #EF4444',
+  },
+  pyramidLevelOrange: {
+    backgroundColor: '#FEF3C7',
+    borderRadius: 4,
+    paddingVertical: 12,
+    width: 260,
+    borderLeft: '4px solid #F59E0B',
+  },
+  pyramidLevelGreen: {
+    backgroundColor: '#D1FAE5',
+    borderRadius: 4,
+    paddingVertical: 14,
+    width: 340,
+    borderLeft: '4px solid #10B981',
+  },
+  pyramidText: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+  },
+  pyramidTextRed: {
+    color: '#B91C1C',
+  },
+  pyramidTextOrange: {
+    color: '#B45309',
+  },
+  pyramidTextGreen: {
+    color: '#047857',
+  },
+  pyramidLegendContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15,
+    gap: 30,
+  },
+  pyramidLegendItem: {
+    alignItems: 'center',
+  },
+  pyramidLegendArrow: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#EF4444',
+    marginBottom: 3,
+  },
+  pyramidLegendText: {
+    fontSize: 9,
+    color: '#64748B',
+  },
+  pyramidLegendCenter: {
+    backgroundColor: '#0077B6',
+    borderRadius: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  pyramidLegendCenterText: {
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    color: '#FFFFFF',
+  },
+  prixVenteExplication: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    padding: 20,
+    border: '1px solid #E2E8F0',
+    marginTop: 20,
+  },
+  prixVenteExplicationText: {
+    fontSize: 10,
+    color: '#334155',
+    lineHeight: 1.7,
+    textAlign: 'justify',
+  },
 });
 
 export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
@@ -934,7 +1045,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>1 / 7</Text>
+        <Text style={styles.pageNumber}>1 / 8</Text>
       </Page>
 
       {/* === PAGE 2: FICHE TECHNIQUE === */}
@@ -1013,7 +1124,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        <Text style={styles.pageNumber}>2 / 7</Text>
+        <Text style={styles.pageNumber}>2 / 8</Text>
       </Page>
 
       {/* === PAGE 3: ANALYSE DU MARCHÉ === */}
@@ -1116,7 +1227,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>3 / 7</Text>
+        <Text style={styles.pageNumber}>3 / 8</Text>
       </Page>
 
       {/* === PAGE 4: BIENS SIMILAIRES === */}
@@ -1173,10 +1284,61 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>4 / 7</Text>
+        <Text style={styles.pageNumber}>4 / 8</Text>
       </Page>
 
-      {/* === PAGE 5: ESTIMATION FINALE === */}
+      {/* === PAGE 5: COMMENT DÉTERMINER LE PRIX DE VENTE === */}
+      <Page size="A4" style={styles.prixVentePage}>
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
+        <Text style={styles.prixVenteTitle}>COMMENT DÉTERMINER LE PRIX DE VENTE</Text>
+
+        <Text style={styles.prixVenteIntro}>
+          Lors de la vente d'un bien, on est vite tenté de définir un prix trop élevé. Pourtant, afficher un prix plus cher en comparaison du marché est contreproductif. Plus le prix affiché s'éloigne du prix réel du marché, moins vous avez de chances d'attirer de potentiels acheteurs.
+        </Text>
+
+        {/* Schéma pyramide inversée */}
+        <View style={styles.pyramidContainer}>
+          {/* Niveau rouge - peu d'acheteurs (en haut, petit) */}
+          <View style={[styles.pyramidLevel, styles.pyramidLevelRed]}>
+            <Text style={[styles.pyramidText, styles.pyramidTextRed]}>TRÈS PEU D'ACHETEURS</Text>
+          </View>
+
+          {/* Niveau orange - quelques acheteurs (milieu) */}
+          <View style={[styles.pyramidLevel, styles.pyramidLevelOrange]}>
+            <Text style={[styles.pyramidText, styles.pyramidTextOrange]}>QUELQUES ACHETEURS</Text>
+          </View>
+
+          {/* Niveau vert - majorité d'acheteurs (en bas, large) */}
+          <View style={[styles.pyramidLevel, styles.pyramidLevelGreen]}>
+            <Text style={[styles.pyramidText, styles.pyramidTextGreen]}>MAJORITÉ D'ACHETEURS</Text>
+          </View>
+
+          {/* Légende */}
+          <View style={styles.pyramidLegendContainer}>
+            <View style={styles.pyramidLegendItem}>
+              <Text style={styles.pyramidLegendArrow}>↑ 10% + cher</Text>
+            </View>
+            <View style={styles.pyramidLegendCenter}>
+              <Text style={styles.pyramidLegendCenterText}>Prix du marché</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Texte d'explication */}
+        <View style={styles.prixVenteExplication}>
+          <Text style={styles.prixVenteExplicationText}>
+            L'Étude Comparative de Marché vous aide à définir un prix juste et réaliste en se basant sur de nombreux facteurs tels que les caractéristiques du bien (nombre de pièces, points forts, points faibles), les données démographiques du quartier (vie de quartier, présence de commerces, répartition des foyers, etc.), les ventes similaires en cours ou terminées. Ce sont ces éléments combinés qui permettent de déterminer un prix qui se rapproche au mieux du prix du marché, tout en répondant à vos attentes et à celles des acquéreurs.
+          </Text>
+        </View>
+
+        <Text style={styles.pageNumber}>5 / 8</Text>
+      </Page>
+
+      {/* === PAGE 6: SYNTHÈSE ET ESTIMATION === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1239,10 +1401,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>5 / 7</Text>
+        <Text style={styles.pageNumber}>6 / 8</Text>
       </Page>
 
-      {/* === PAGE 6: CONTACT === */}
+      {/* === PAGE 7: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
         {agentLogo && (
           <View style={{ ...styles.pageLogoContainer, width: 50, height: 50, top: 15, right: 15 }}>
@@ -1293,10 +1455,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>6 / 7</Text>
+        <Text style={styles.pageNumber}>7 / 8</Text>
       </Page>
 
-      {/* === PAGE 7: PIÈCES JUSTIFICATIVES === */}
+      {/* === PAGE 8: PIÈCES JUSTIFICATIVES === */}
       <Page size="A4" style={styles.justificatifsPage}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1382,7 +1544,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>7 / 7</Text>
+        <Text style={styles.pageNumber}>8 / 8</Text>
       </Page>
     </Document>
   );
