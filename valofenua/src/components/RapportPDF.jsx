@@ -30,7 +30,7 @@ const CARACTERISTIQUES_LABELS = {
   terrasse: 'Terrasse',
 };
 
-// Styles pour le PDF professionnel 6 pages
+// Styles pour le PDF professionnel 9 pages
 const styles = StyleSheet.create({
   // === PAGE COMMUNE ===
   page: {
@@ -367,10 +367,10 @@ const styles = StyleSheet.create({
 
   // === COMMENTAIRE AGENT ===
   agentCommentBox: {
-    marginTop: 25,
+    marginTop: 8,
     backgroundColor: '#F0F9FF',
     borderRadius: 8,
-    padding: 20,
+    padding: 10,
     borderLeft: '4px solid #0077B6',
   },
   agentCommentTitle: {
@@ -741,6 +741,278 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
     fontStyle: 'italic',
   },
+
+  // === PAGE 7: PIÈCES JUSTIFICATIVES ===
+  justificatifsPage: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+  justificatifsTitle: {
+    fontSize: 18,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  justificatifsSubtitle: {
+    fontSize: 14,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  justificatifsSection: {
+    marginBottom: 35,
+  },
+  justificatifsSectionTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#1E293B',
+    marginBottom: 12,
+    paddingBottom: 6,
+    borderBottom: '1px solid #E2E8F0',
+  },
+  justificatifsItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 14,
+    paddingLeft: 5,
+  },
+  checkbox: {
+    width: 14,
+    height: 14,
+    border: '1.5px solid #64748B',
+    borderRadius: 2,
+    marginRight: 10,
+    marginTop: 1,
+  },
+  justificatifsText: {
+    fontSize: 10,
+    color: '#334155',
+    flex: 1,
+    lineHeight: 1.4,
+  },
+  justificatifsNote: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    border: '1px solid #E2E8F0',
+  },
+  justificatifsNoteText: {
+    fontSize: 9,
+    color: '#475569',
+    lineHeight: 1.5,
+    fontStyle: 'italic',
+  },
+
+  // === PAGE 2: ÉTUDE COMPARATIVE DE MARCHÉ ===
+  ecmPage: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+  },
+  ecmMainTitle: {
+    fontSize: 24,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  ecmSubtitle: {
+    fontSize: 20,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  ecmIntroBox: {
+    backgroundColor: '#F0F9FF',
+    borderRadius: 8,
+    padding: 18,
+    marginBottom: 25,
+    borderLeft: '4px solid #0077B6',
+  },
+  ecmIntroTitle: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    marginBottom: 10,
+  },
+  ecmIntroText: {
+    fontSize: 10,
+    color: '#334155',
+    lineHeight: 1.6,
+    textAlign: 'justify',
+  },
+  ecmSection: {
+    marginBottom: 20,
+  },
+  ecmSectionTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#1E293B',
+    marginBottom: 10,
+    paddingBottom: 5,
+    borderBottom: '1px solid #E2E8F0',
+  },
+  ecmSectionContent: {
+    fontSize: 10,
+    color: '#475569',
+    lineHeight: 1.6,
+    textAlign: 'justify',
+  },
+  ecmIconRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  ecmIconCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#0077B6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ecmIconText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontFamily: 'Helvetica-Bold',
+  },
+  ecmSectionTextBlock: {
+    flex: 1,
+  },
+
+  // === PAGE "COMMENT DÉTERMINER LE PRIX DE VENTE" ===
+  prixVentePage: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+  },
+  prixVenteTitle: {
+    fontSize: 20,
+    fontFamily: 'Helvetica-Bold',
+    color: '#0077B6',
+    marginBottom: 25,
+    paddingBottom: 10,
+    borderBottom: '2px solid #0077B6',
+    textAlign: 'center',
+  },
+  prixVenteIntro: {
+    fontSize: 11,
+    color: '#334155',
+    lineHeight: 1.6,
+    marginBottom: 30,
+    textAlign: 'justify',
+  },
+  pyramidContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30,
+    marginTop: 20,
+  },
+  pyramidLevelsWrapper: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  pyramidLevel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 3,
+  },
+  pyramidChevron: {
+    width: 20,
+    height: 50,
+  },
+  pyramidLevelContent: {
+    height: 50,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  pyramidLevelRed: {
+    backgroundColor: '#DC2626',
+    width: 200,
+  },
+  pyramidLevelOrange: {
+    backgroundColor: '#F59E0B',
+    width: 240,
+  },
+  pyramidLevelGreen: {
+    backgroundColor: '#84CC16',
+    width: 280,
+  },
+  pyramidText: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: '#FFFFFF',
+  },
+  pyramidTextRed: {},
+  pyramidTextOrange: {},
+  pyramidTextGreen: {},
+  pyramidLegendContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginLeft: 25,
+    height: 160,
+    justifyContent: 'space-between',
+  },
+  pyramidArrowContainer: {
+    alignItems: 'center',
+    height: 120,
+    justifyContent: 'center',
+  },
+  pyramidArrowLine: {
+    width: 2,
+    height: 80,
+    backgroundColor: '#64748B',
+  },
+  pyramidArrowHead: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderBottomWidth: 10,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#64748B',
+  },
+  pyramidLegendTop: {
+    alignItems: 'center',
+  },
+  pyramidLegendArrow: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: '#64748B',
+  },
+  pyramidLegendText: {
+    fontSize: 9,
+    color: '#64748B',
+  },
+  pyramidLegendBottom: {
+    alignItems: 'center',
+  },
+  pyramidLegendBottomText: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    color: '#64748B',
+  },
+  prixVenteExplication: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    padding: 20,
+    border: '1px solid #E2E8F0',
+    marginTop: 20,
+  },
+  prixVenteExplicationText: {
+    fontSize: 10,
+    color: '#334155',
+    lineHeight: 1.7,
+    textAlign: 'justify',
+  },
 });
 
 export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
@@ -868,10 +1140,83 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>1 / 6</Text>
+        <Text style={styles.pageNumber}>1 / 9</Text>
       </Page>
 
-      {/* === PAGE 2: FICHE TECHNIQUE === */}
+      {/* === PAGE 2: ÉTUDE COMPARATIVE DE MARCHÉ === */}
+      <Page size="A4" style={styles.ecmPage}>
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
+
+        <Text style={styles.pageTitle}>Étude Comparative de Marché</Text>
+
+        {/* Introduction ECM */}
+        <View style={styles.ecmIntroBox}>
+          <Text style={styles.ecmIntroTitle}>Qu'est-ce qu'une Étude Comparative de Marché (ECM) ?</Text>
+          <Text style={styles.ecmIntroText}>
+            L'étude comparative de marché permet d'évaluer un bien immobilier en le comparant aux autres biens du marché. Le bien est analysé par rapport aux biens similaires récemment vendus, actuellement en vente, ou restés invendus. Cette comparaison s'appuie sur trois critères essentiels : la localisation, les caractéristiques du bien, et les prix pratiqués sur le marché.
+          </Text>
+        </View>
+
+        {/* Section Localisation */}
+        <View style={styles.ecmSection}>
+          <View style={styles.ecmIconRow}>
+            <View style={styles.ecmIconCircle}>
+              <Text style={styles.ecmIconText}>1</Text>
+            </View>
+            <View style={styles.ecmSectionTextBlock}>
+              <Text style={styles.ecmSectionTitle}>Localisation du bien</Text>
+              <Text style={styles.ecmSectionContent}>
+                La situation géographique comprend la ville, la commune, l'emplacement au sein du quartier, l'orientation, la vue et les points d'intérêt ou nuisances à proximité. Cette analyse intègre également les projets d'aménagement susceptibles d'impacter la valeur du bien. L'attractivité de l'adresse et la demande en logement sur le secteur sont des facteurs déterminants.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Section Caractéristiques */}
+        <View style={styles.ecmSection}>
+          <View style={styles.ecmIconRow}>
+            <View style={styles.ecmIconCircle}>
+              <Text style={styles.ecmIconText}>2</Text>
+            </View>
+            <View style={styles.ecmSectionTextBlock}>
+              <Text style={styles.ecmSectionTitle}>Caractéristiques et spécificités</Text>
+              <Text style={styles.ecmSectionContent}>
+                La surface, le nombre de pièces, l'agencement, la date de construction, la qualité des matériaux, les équipements, le diagnostic de performance énergétique, les prestations, les charges et taxes, ainsi que la rareté du bien. Tous ces éléments sont essentiels pour réaliser une analyse cohérente et objective de la valeur du bien immobilier.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Section Prix du marché */}
+        <View style={styles.ecmSection}>
+          <View style={styles.ecmIconRow}>
+            <View style={styles.ecmIconCircle}>
+              <Text style={styles.ecmIconText}>3</Text>
+            </View>
+            <View style={styles.ecmSectionTextBlock}>
+              <Text style={styles.ecmSectionTitle}>Prix du marché immobilier</Text>
+              <Text style={styles.ecmSectionContent}>
+                Pour établir le juste prix de vente, il est nécessaire de prendre en compte tous les facteurs influant sur la valeur : l'analyse de la localisation, les caractéristiques et spécificités, mais aussi le dynamisme du marché. L'ECM s'appuie sur l'étude des biens similaires vendus, des biens récemment mis en vente, et des biens restés invendus sur le secteur.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Conclusion */}
+        <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 15, border: '1px solid #E2E8F0', marginTop: 10 }}>
+          <Text style={{ fontSize: 10, color: '#334155', lineHeight: 1.6, textAlign: 'center', fontStyle: 'italic' }}>
+            Cette méthodologie rigoureuse nous permet de vous proposer une estimation fiable et argumentée, reflétant la réalité du marché immobilier local.
+          </Text>
+        </View>
+
+        <Text style={styles.pageNumber}>2 / 9</Text>
+      </Page>
+
+      {/* === PAGE 3: FICHE TECHNIQUE === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -947,10 +1292,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        <Text style={styles.pageNumber}>2 / 6</Text>
+        <Text style={styles.pageNumber}>3 / 9</Text>
       </Page>
 
-      {/* === PAGE 3: ANALYSE DU MARCHÉ === */}
+      {/* === PAGE 4: ANALYSE DU MARCHÉ === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1050,10 +1395,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>3 / 6</Text>
+        <Text style={styles.pageNumber}>4 / 9</Text>
       </Page>
 
-      {/* === PAGE 4: BIENS SIMILAIRES === */}
+      {/* === PAGE 5: BIENS SIMILAIRES === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1107,10 +1452,103 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>4 / 6</Text>
+        <Text style={styles.pageNumber}>5 / 9</Text>
       </Page>
 
-      {/* === PAGE 5: ESTIMATION FINALE === */}
+      {/* === PAGE 6: COMMENT DÉTERMINER LE PRIX DE VENTE === */}
+      <Page size="A4" style={styles.page}>
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
+        <Text style={styles.pageTitle}>Comment déterminer le prix de vente</Text>
+
+        <Text style={{ fontSize: 11, color: '#334155', lineHeight: 1.6, marginBottom: 20 }}>
+          Le prix de vente est un élément clé pour réussir votre transaction immobilière. Un prix bien calibré attire davantage d'acheteurs et accélère la vente, tandis qu'un prix mal ajusté peut freiner l'intérêt et allonger les délais.
+        </Text>
+
+        {/* Les 3 scénarios de prix */}
+        <View style={{ marginBottom: 20 }}>
+          {/* Scénario 1 : Prix trop élevé */}
+          <View style={{ backgroundColor: '#FEF2F2', borderRadius: 8, padding: 15, marginBottom: 12, borderLeft: '4px solid #DC2626' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#DC2626', marginBottom: 6 }}>
+              Prix supérieur au marché (+10% ou plus)
+            </Text>
+            <Text style={{ fontSize: 10, color: '#7F1D1D', lineHeight: 1.5 }}>
+              Très peu d'acheteurs potentiels. Le bien risque de rester longtemps sur le marché, ce qui peut donner l'impression qu'il y a un problème avec le bien. Cela conduit souvent à des baisses de prix successives.
+            </Text>
+          </View>
+
+          {/* Scénario 2 : Prix du marché */}
+          <View style={{ backgroundColor: '#F0FDF4', borderRadius: 8, padding: 15, marginBottom: 12, borderLeft: '4px solid #16A34A' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#16A34A', marginBottom: 6 }}>
+              Prix aligné sur le marché
+            </Text>
+            <Text style={{ fontSize: 10, color: '#14532D', lineHeight: 1.5 }}>
+              Intérêt optimal des acheteurs. Le bien attire un maximum de visiteurs qualifiés, ce qui peut même créer une situation de concurrence favorable et permettre une négociation minimale.
+            </Text>
+          </View>
+
+          {/* Scénario 3 : Prix sous-évalué */}
+          <View style={{ backgroundColor: '#FEF3C7', borderRadius: 8, padding: 15, marginBottom: 12, borderLeft: '4px solid #D97706' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#D97706', marginBottom: 6 }}>
+              Prix inférieur au marché
+            </Text>
+            <Text style={{ fontSize: 10, color: '#78350F', lineHeight: 1.5 }}>
+              Vente rapide mais perte financière potentielle. Un prix trop bas peut aussi susciter la méfiance des acheteurs qui peuvent penser qu'il y a un vice caché.
+            </Text>
+          </View>
+        </View>
+
+        {/* Section : Comment nous calculons le prix */}
+        <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 18, border: '1px solid #E2E8F0', marginBottom: 15 }}>
+          <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginBottom: 12 }}>
+            Notre méthode d'estimation
+          </Text>
+
+          <View style={{ marginBottom: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>1.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Analyse des biens comparables</Text> : nous étudions les ventes récentes et les biens actuellement en vente dans votre secteur géographique.
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>2.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Caractéristiques du bien</Text> : surface, nombre de pièces, état général, équipements (piscine, terrasse, vue mer...).
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>3.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Emplacement</Text> : commune, quartier, proximité des commerces et services, qualité de l'environnement.
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginRight: 8 }}>4.</Text>
+              <Text style={{ fontSize: 10, color: '#334155', flex: 1, lineHeight: 1.4 }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold' }}>Tendances du marché</Text> : évolution des prix dans votre commune sur les derniers mois.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Conseil */}
+        <View style={{ backgroundColor: '#EFF6FF', borderRadius: 8, padding: 15, border: '1px solid #BFDBFE' }}>
+          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: '#1E40AF', marginBottom: 6 }}>
+            Notre conseil
+          </Text>
+          <Text style={{ fontSize: 10, color: '#1E3A8A', lineHeight: 1.5 }}>
+            Faites confiance à l'Étude Comparative de Marché pour fixer un prix juste dès le départ. Un bien correctement estimé se vend en moyenne deux fois plus vite qu'un bien surévalué.
+          </Text>
+        </View>
+
+        <Text style={styles.pageNumber}>6 / 9</Text>
+      </Page>
+
+      {/* === PAGE 7: SYNTHÈSE ET ESTIMATION === */}
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1118,6 +1556,15 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
+
+        <View style={{ alignItems: 'center', alignSelf: 'center', marginBottom: 20, maxWidth: 400 }}>
+          <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
+            Cette estimation de prix est basée sur l'analyse approfondie du bien immobilier,
+          </Text>
+          <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
+            de ses spécificités ainsi que des prix des biens similaires sur le marché.
+          </Text>
+        </View>
 
         <View style={styles.estimationContainer}>
           {/* Prix de vente */}
@@ -1173,17 +1620,17 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>5 / 6</Text>
+        <Text style={styles.pageNumber}>7 / 9</Text>
       </Page>
 
-      {/* === PAGE 6: CONTACT === */}
+      {/* === PAGE 8: CONTACT === */}
       <Page size="A4" style={styles.contactPage}>
         {agentLogo && (
           <View style={{ ...styles.pageLogoContainer, width: 50, height: 50, top: 15, right: 15 }}>
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={{ ...styles.pageTitle, fontSize: 16, marginBottom: 12, paddingBottom: 6 }}>Votre Interlocuteur</Text>
+        <Text style={styles.pageTitle}>Votre Interlocuteur</Text>
 
         {/* Bloc Agence - pleine largeur */}
         <View style={styles.contactBlockFull}>
@@ -1227,7 +1674,96 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>6 / 6</Text>
+        <Text style={styles.pageNumber}>8 / 9</Text>
+      </Page>
+
+      {/* === PAGE 9: PIÈCES JUSTIFICATIVES === */}
+      <Page size="A4" style={styles.justificatifsPage}>
+        {agentLogo && (
+          <View style={styles.pageLogoContainer}>
+            <Image style={styles.pageLogoImage} src={agentLogo} />
+          </View>
+        )}
+
+        <Text style={styles.pageTitle}>Pièces justificatives</Text>
+        <Text style={{ fontSize: 12, color: '#64748B', marginBottom: 25, marginTop: -10 }}>Pour la rédaction du mandat</Text>
+
+        {/* Section 1: Pour le contact */}
+        <View style={styles.justificatifsSection}>
+          <Text style={styles.justificatifsSectionTitle}>1. POUR LE CONTACT</Text>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Une pièce justificative d'identité telle que la carte d'identité ou passeport.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Une copie du livret de famille.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si pacsé</Text> : certificat de PACS.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si divorcé</Text> : le jugement de divorce.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si marié</Text> : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
+          </View>
+        </View>
+
+        {/* Section 2: Pour le bien */}
+        <View style={styles.justificatifsSection}>
+          <Text style={styles.justificatifsSectionTitle}>2. POUR LE BIEN</Text>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>L'acte de propriété.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>La Taxe Foncière.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Les documents relatifs aux divers travaux effectués.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Les plans du logement.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Les documents relatifs à son prêt immobilier (il doit en outre préciser si celui-ci est hypothécaire).</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic État des nuisances sonores aériennes / diagnostic gaz / diagnostic mérule / diagnostic DPE / diagnostic plomb / diagnostic termites / diagnostic technique de l'immeuble en copropriété / le diagnostic métrage loi Carrez.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu loué</Text> : le propriétaire bailleur doit fournir le bail, les trois dernières quittances de loyer et l'état des lieux d'entrée du locataire, Assurance.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu vide mais était loué dernièrement</Text> : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
+          </View>
+        </View>
+
+        <Text style={styles.pageNumber}>9 / 9</Text>
       </Page>
     </Document>
   );
