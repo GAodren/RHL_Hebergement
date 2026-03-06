@@ -11,12 +11,19 @@ import { updateEstimation } from '../utils/estimations';
 // Estimation du nombre de lignes visuelles dans le PDF (~80 caractères par ligne)
 const CHARS_PER_LINE = 80;
 const MAX_VISUAL_LINES = 13;
+const MAX_CHARS_PER_LINE = 80;
 
 function countVisualLines(text) {
   if (!text) return 0;
   return text.split('\n').reduce((total, line) => {
     return total + (line.length === 0 ? 1 : Math.ceil(line.length / CHARS_PER_LINE));
   }, 0);
+}
+
+function hasLineTooLong(text) {
+  if (!text) return false;
+  const lines = text.split('\n');
+  return lines.some(line => line.length > MAX_CHARS_PER_LINE);
 }
 
 // Labels pour l'état du bien
@@ -330,14 +337,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <MessageSquare className="w-4 h-4" />
             Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
           </label>
-          <span className={`text-xs ${countVisualLines(texteAnalyseMarche) > MAX_VISUAL_LINES ? 'text-red-500' : 'text-slate-400'}`}>
-            {countVisualLines(texteAnalyseMarche)}/{MAX_VISUAL_LINES} lignes
+          <span className={`text-xs ${countVisualLines(texteAnalyseMarche) > MAX_VISUAL_LINES || hasLineTooLong(texteAnalyseMarche) ? 'text-red-500' : 'text-slate-400'}`}>
+            {countVisualLines(texteAnalyseMarche)}/{MAX_VISUAL_LINES} lignes (max {MAX_CHARS_PER_LINE} car./ligne)
           </span>
         </div>
         <textarea
           value={texteAnalyseMarche}
           onChange={(e) => {
-            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES) {
+            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES && !hasLineTooLong(e.target.value)) {
               setTexteAnalyseMarche(e.target.value);
             }
           }}
@@ -372,14 +379,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <MessageSquare className="w-4 h-4" />
             Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
           </label>
-          <span className={`text-xs ${countVisualLines(texteEtudeComparative) > MAX_VISUAL_LINES ? 'text-red-500' : 'text-slate-400'}`}>
-            {countVisualLines(texteEtudeComparative)}/{MAX_VISUAL_LINES} lignes
+          <span className={`text-xs ${countVisualLines(texteEtudeComparative) > MAX_VISUAL_LINES || hasLineTooLong(texteEtudeComparative) ? 'text-red-500' : 'text-slate-400'}`}>
+            {countVisualLines(texteEtudeComparative)}/{MAX_VISUAL_LINES} lignes (max {MAX_CHARS_PER_LINE} car./ligne)
           </span>
         </div>
         <textarea
           value={texteEtudeComparative}
           onChange={(e) => {
-            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES) {
+            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES && !hasLineTooLong(e.target.value)) {
               setTexteEtudeComparative(e.target.value);
             }
           }}
@@ -401,14 +408,14 @@ export default function EstimationResult({ result, formData, onReset, estimation
             <MessageSquare className="w-4 h-4" />
             Ajouter un texte sous cette section <span className="text-slate-400">(optionnel)</span>
           </label>
-          <span className={`text-xs ${countVisualLines(texteSynthese) > MAX_VISUAL_LINES ? 'text-red-500' : 'text-slate-400'}`}>
-            {countVisualLines(texteSynthese)}/{MAX_VISUAL_LINES} lignes
+          <span className={`text-xs ${countVisualLines(texteSynthese) > MAX_VISUAL_LINES || hasLineTooLong(texteSynthese) ? 'text-red-500' : 'text-slate-400'}`}>
+            {countVisualLines(texteSynthese)}/{MAX_VISUAL_LINES} lignes (max {MAX_CHARS_PER_LINE} car./ligne)
           </span>
         </div>
         <textarea
           value={texteSynthese}
           onChange={(e) => {
-            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES) {
+            if (countVisualLines(e.target.value) <= MAX_VISUAL_LINES && !hasLineTooLong(e.target.value)) {
               setTexteSynthese(e.target.value);
             }
           }}
