@@ -1406,7 +1406,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         )}
         <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
 
-        <View style={{ alignItems: 'center', marginBottom: 20, maxWidth: 400 }}>
+        <View style={{ alignItems: 'center', alignSelf: 'center', marginBottom: 20, maxWidth: 400 }}>
           <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
             Cette estimation de prix est basée sur l'analyse approfondie du bien immobilier,
           </Text>
