@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
-    marginBottom: 25,
+    marginBottom: 12,
   },
   photoItem: {
     width: '48%',
@@ -238,12 +238,12 @@ const styles = StyleSheet.create({
   caracteristiquesBox: {
     backgroundColor: '#F8FAFC',
     borderRadius: 8,
-    padding: 20,
+    padding: 15,
     border: '1px solid #E2E8F0',
   },
   caracteristiquesRow: {
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 8,
   },
   caracteristiquesColumn: {
     flex: 1,
@@ -1279,15 +1279,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-            <View>
-              <Text style={styles.caracLabel}>Atouts</Text>
-              <View style={styles.badgesList}>
-                {formData.caracteristiques.map((carac, index) => (
-                  <View key={index} style={styles.badge}>
-                    <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
-                  </View>
-                ))}
-              </View>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <Text style={styles.caracLabel}>Atouts : </Text>
+              <Text style={styles.caracValue}>
+                {formData.caracteristiques.map((carac) => CARACTERISTIQUES_LABELS[carac] || carac).join(' • ')}
+              </Text>
             </View>
           )}
         </View>
