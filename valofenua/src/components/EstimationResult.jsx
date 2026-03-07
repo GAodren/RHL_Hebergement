@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, User, MessageSquare, Check, Loader2, RefreshCw } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, User, MessageSquare, Check } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
 import MarketTrends from './MarketTrends';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
-import { updateEstimation, uploadComparablePhoto, resetEstimation } from '../utils/estimations';
+import { updateEstimation, uploadComparablePhoto } from '../utils/estimations';
 import { useAuth } from '../context/AuthContext';
 
 // Estimation du nombre de lignes visuelles dans le PDF (~80 caractères par ligne)
@@ -67,7 +67,7 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, onResetToOriginal, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialEditedComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialEditedComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
@@ -78,7 +78,6 @@ export default function EstimationResult({ result, formData, onReset, onResetToO
   const [texteAnalyseMarche, setTexteAnalyseMarche] = useState(initialTexteAnalyseMarche || '');
   const [texteEtudeComparative, setTexteEtudeComparative] = useState(initialTexteEtudeComparative || '');
   const [texteSynthese, setTexteSynthese] = useState(initialTexteSynthese || '');
-  const [resetting, setResetting] = useState(false);
 
   // État de visibilité des sections pour le PDF
   const [sectionVisibility, setSectionVisibility] = useState(
@@ -124,30 +123,40 @@ export default function EstimationResult({ result, formData, onReset, onResetToO
     );
   }, []);
 
-  const handleEditComparable = useCallback((index, edits) => {
-    setEditedComparables(prev => ({
-      ...prev,
+  // Modifier un comparable et sauvegarder automatiquement en BDD
+  const handleEditComparable = useCallback(async (index, edits) => {
+    const newEditedComparables = {
+      ...editedComparables,
       [index]: edits
-    }));
-  }, []);
+    };
+    setEditedComparables(newEditedComparables);
 
-  // Réinitialiser le dossier à ses valeurs originales
-  const handleResetToOriginal = async () => {
-    if (!estimationId) return;
-    if (!confirm('Voulez-vous réinitialiser ce dossier à ses valeurs d\'origine ? Les modifications (photo, prix ajusté, textes, etc.) seront perdues.')) return;
+    // Sauvegarder automatiquement en BDD si estimation existante
+    if (estimationId && user) {
+      // Si la photo est en base64, l'uploader d'abord
+      let editsToSave = { ...edits };
+      if (edits.photo_url && edits.photo_url.startsWith('data:')) {
+        const { url } = await uploadComparablePhoto(user.id, estimationId, index, edits.photo_url);
+        if (url) {
+          editsToSave.photo_url = url;
+          // Mettre à jour l'état avec l'URL
+          setEditedComparables(prev => ({
+            ...prev,
+            [index]: { ...prev[index], photo_url: url }
+          }));
+        }
+      }
 
-    setResetting(true);
-    const { data, error } = await resetEstimation(estimationId);
+      const editedComparablesForDb = {
+        ...editedComparables,
+        [index]: editsToSave
+      };
 
-    if (error) {
-      console.error('Erreur reset:', error);
-      alert('Une erreur est survenue lors de la réinitialisation');
-    } else if (data && onResetToOriginal) {
-      // Appeler le callback parent pour recharger les données
-      onResetToOriginal(data);
+      await updateEstimation(estimationId, {
+        edited_comparables: Object.keys(editedComparablesForDb).length > 0 ? editedComparablesForDb : null
+      });
     }
-    setResetting(false);
-  };
+  }, [editedComparables, estimationId, user]);
 
   const getBienLabel = () => {
     const parts = [];
@@ -508,23 +517,7 @@ export default function EstimationResult({ result, formData, onReset, onResetToO
       </div>
 
       {/* Boutons d'action */}
-      <div className="flex flex-col sm:flex-row justify-center gap-3">
-        {/* Réinitialiser le dossier (uniquement si estimation sauvegardée) */}
-        {estimationId && (
-          <button
-            onClick={handleResetToOriginal}
-            disabled={resetting}
-            className="flex items-center justify-center gap-2 bg-white border-2 border-amber-500 text-amber-600 px-6 py-4 rounded-xl font-medium hover:bg-amber-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {resetting ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <RefreshCw className="w-5 h-5" />
-            )}
-            Réinitialiser le dossier
-          </button>
-        )}
-
+      <div className="flex justify-center">
         {/* Nouvelle estimation */}
         <button
           onClick={onReset}
