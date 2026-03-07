@@ -1,4 +1,4 @@
-import { Home, MapPin, Ruler, Banknote, Eye, EyeOff, Pencil, X, Upload, Save } from 'lucide-react';
+import { Home, MapPin, Ruler, Banknote, Eye, EyeOff, Pencil, X, Upload, Save, RotateCcw } from 'lucide-react';
 import { useState, useRef } from 'react';
 
 export default function SimilarOffers({ comparables, hiddenComparables = [], onToggleComparable, editedComparables = {}, onEditComparable }) {
@@ -70,6 +70,19 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
     closeEditModal();
   };
 
+  // Réinitialiser aux valeurs originales
+  const resetEdit = () => {
+    if (editingIndex !== null) {
+      const originalOffer = offersToShow[editingIndex];
+      setEditForm({
+        prix: originalOffer.prix,
+        surface: originalOffer.surface,
+        photo_url: originalOffer.photo_url || ''
+      });
+      setPreviewImage(cleanPhotoUrl(originalOffer.photo_url));
+    }
+  };
+
   // Formater le prix pour l'affichage
   const formatPrice = (prix) => {
     if (!prix) return '';
@@ -119,7 +132,7 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
                 e.stopPropagation();
                 openEditModal(offer, index);
               }}
-              className="p-1.5 rounded-full shadow-md border bg-[#0077B6] border-[#0077B6] text-white hover:bg-[#005f8a] transition-all"
+              className="p-1.5 rounded-full shadow-md border bg-white border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-[#0077B6] transition-all"
               title="Modifier ce bien"
             >
               <Pencil className="w-4 h-4" />
@@ -338,6 +351,14 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
                 className="flex-1 px-4 py-3 border border-slate-300 text-slate-700 rounded-xl font-medium hover:bg-slate-100 transition-colors"
               >
                 Annuler
+              </button>
+              <button
+                onClick={resetEdit}
+                className="px-4 py-3 border border-orange-300 text-orange-600 rounded-xl font-medium hover:bg-orange-50 transition-colors flex items-center justify-center gap-2"
+                title="Réinitialiser aux valeurs originales"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Reset
               </button>
               <button
                 onClick={saveEdit}
