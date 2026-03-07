@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, User, MessageSquare } from 'lucide-react';
+import { Banknote, RotateCcw, MapPin, Ruler, TrendingUp, Calculator, FileText, Eye, EyeOff, Home, User, MessageSquare, Check } from 'lucide-react';
 import PriceRangeBar from './PriceRangeBar';
 import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
@@ -234,37 +234,49 @@ export default function EstimationResult({ result, formData, onReset, estimation
           visible={sectionVisibility.bienDetails}
           onToggle={toggleSection}
         >
-          <div className="bg-white rounded-xl shadow-lg p-4 border border-slate-100">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="bg-white rounded-xl shadow-lg p-5 border border-slate-100">
+            <div className="flex items-center gap-2 mb-4">
               <Home className="w-5 h-5 text-[#0077B6]" />
               <span className="text-base font-semibold text-slate-800">Caractéristiques du bien</span>
             </div>
 
-            <div className="space-y-1.5 text-sm">
-              {/* État et chambres sur une ligne */}
-              <div className="flex flex-wrap gap-x-6 gap-y-1">
-                {formData.etat_bien && (
-                  <p className="text-slate-700">
-                    <span className="text-slate-500">État : </span>
-                    <span className="font-medium">{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</span>
+            <div className="space-y-4">
+              {/* État du bien */}
+              {formData.etat_bien && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">État du bien</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}
                   </p>
-                )}
-                {formData.nb_chambres && (
-                  <p className="text-slate-700">
-                    <span className="text-slate-500">Chambres : </span>
-                    <span className="font-medium">{formData.nb_chambres}</span>
-                  </p>
-                )}
-              </div>
+                </div>
+              )}
 
-              {/* Atouts sur une ligne */}
+              {/* Nombre de chambres */}
+              {formData.nb_chambres && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Nombre de chambres</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {formData.nb_chambres} {Number(formData.nb_chambres) === 1 ? 'chambre' : 'chambres'}
+                  </p>
+                </div>
+              )}
+
+              {/* Caractéristiques */}
               {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-                <p className="text-slate-700">
-                  <span className="text-slate-500">Atouts : </span>
-                  <span className="font-medium">
-                    {formData.caracteristiques.map((carac) => CARACTERISTIQUES_LABELS[carac] || carac).join(' • ')}
-                  </span>
-                </p>
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Caractéristiques</p>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.caracteristiques.map((carac) => (
+                      <span
+                        key={carac}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E0F4FF] text-[#0077B6] rounded-full text-sm font-medium"
+                      >
+                        <Check className="w-3.5 h-3.5" />
+                        {CARACTERISTIQUES_LABELS[carac] || carac}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           </div>

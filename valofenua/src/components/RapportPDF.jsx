@@ -288,6 +288,14 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: '#0077B6',
   },
+  atoutsCompactRow: {
+    flexDirection: 'row',
+    marginTop: 8,
+  },
+  atoutsCompactText: {
+    fontSize: 10,
+    color: '#1E293B',
+  },
 
   // === PAGE 3: ANALYSE DU MARCHÉ ===
   marketHeader: {
@@ -1048,6 +1056,10 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   // Vérifier si on a des détails du bien à afficher
   const hasBienDetails = formData.etat_bien || formData.nb_chambres || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
+  // Nombre total de photos (principale + supplémentaires)
+  const totalPhotos = (bienPhoto ? 1 : 0) + (photosSupplementaires?.length || 0);
+  const useCompactAtouts = totalPhotos >= 5;
+
   // Filtrer les biens similaires en excluant les masqués
   const visibleComparables = result.comparables
     ? result.comparables.filter((_, index) => !hiddenComparables.includes(index)).slice(0, 4)
@@ -1292,16 +1304,25 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-            <View style={styles.atoutsRow}>
-              <Text style={styles.atoutsLabel}>Atouts :</Text>
-              <View style={styles.badgesList}>
-                {formData.caracteristiques.map((carac, index) => (
-                  <View key={index} style={styles.badge}>
-                    <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
-                  </View>
-                ))}
+            useCompactAtouts ? (
+              <View style={styles.atoutsCompactRow}>
+                <Text style={styles.atoutsLabel}>Atouts : </Text>
+                <Text style={styles.atoutsCompactText}>
+                  {formData.caracteristiques.map((carac) => CARACTERISTIQUES_LABELS[carac] || carac).join(' • ')}
+                </Text>
               </View>
-            </View>
+            ) : (
+              <View style={styles.atoutsRow}>
+                <Text style={styles.atoutsLabel}>Atouts :</Text>
+                <View style={styles.badgesList}>
+                  {formData.caracteristiques.map((carac, index) => (
+                    <View key={index} style={styles.badge}>
+                      <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )
           )}
         </View>
 
