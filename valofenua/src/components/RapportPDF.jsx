@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
-    marginBottom: 12,
+    marginBottom: 6,
   },
   photoItem: {
     width: '48%',
@@ -1227,7 +1227,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
         {/* Photos supplémentaires */}
         {photosSupplementaires && photosSupplementaires.length > 0 && (
-          <View style={{ marginBottom: 25 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={styles.sectionTitle}>Galerie Photos</Text>
             <View style={styles.photosGrid}>
               {photosSupplementaires.slice(0, 6).map((photo, index) => {
@@ -1279,11 +1279,17 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-              <Text style={styles.caracLabel}>Atouts : </Text>
-              <Text style={styles.caracValue}>
-                {formData.caracteristiques.map((carac) => CARACTERISTIQUES_LABELS[carac] || carac).join(' • ')}
-              </Text>
+            <View style={styles.caracteristiquesRow}>
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>Atouts</Text>
+                <View style={styles.badgesList}>
+                  {formData.caracteristiques.map((carac, index) => (
+                    <View key={index} style={styles.badge}>
+                      <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
             </View>
           )}
         </View>
