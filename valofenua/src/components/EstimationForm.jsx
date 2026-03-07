@@ -316,7 +316,30 @@ export default function EstimationForm({ initialState }) {
           }
 
           // Sauvegarder toutes les URLs en une seule requête
+          // Et mettre à jour original_data avec les URLs des photos uploadées
           if (Object.keys(updates).length > 0) {
+            // Construire aussi les valeurs originales avec les URLs
+            const originalData = {
+              photo_url: updates.photo_url || null,
+              photos_supplementaires: updates.photos_supplementaires || [],
+              prix_ajuste: null,
+              commission: 0,
+              hidden_comparables: [],
+              edited_comparables: {},
+              section_visibility: {
+                marketTrends: true,
+                statsGrid: true,
+                similarOffers: true,
+                bienDetails: true,
+              },
+              nom_client: '',
+              texte_analyse_marche: '',
+              texte_etude_comparative: '',
+              texte_synthese: '',
+            };
+            updates.original_data = originalData;
+            updates.photo_url_original = updates.photo_url || null;
+
             const { error: updateError } = await updateEstimation(savedEstimation.id, updates);
             if (updateError) {
               console.error('Erreur mise à jour estimation:', updateError);
@@ -359,6 +382,22 @@ export default function EstimationForm({ initialState }) {
     currentEstimationId.current = null;
   };
 
+  // Callback pour réinitialiser aux valeurs originales (sans changer le formulaire)
+  const handleResetToOriginal = (resetData) => {
+    // Mettre à jour les valeurs initiales avec les données restaurées
+    setBienPhoto(resetData.photo_url);
+    setPhotosSupplementaires(resetData.photos_supplementaires || []);
+    setInitialAdjustedPrice(resetData.prix_ajuste);
+    setInitialCommission(resetData.commission || 0);
+    setInitialHiddenComparables(resetData.hidden_comparables || []);
+    setInitialEditedComparables(resetData.edited_comparables || {});
+    setInitialSectionVisibility(resetData.section_visibility);
+    setInitialNomClient(resetData.nom_client || '');
+    setInitialTexteAnalyseMarche(resetData.texte_analyse_marche || '');
+    setInitialTexteEtudeComparative(resetData.texte_etude_comparative || '');
+    setInitialTexteSynthese(resetData.texte_synthese || '');
+  };
+
   // Obtenir les types de bien selon la catégorie
   const getTypesForCategory = () => {
     switch (formData.categorie) {
@@ -387,10 +426,11 @@ export default function EstimationForm({ initialState }) {
     return (
       <div className="w-full max-w-7xl mx-auto">
         <EstimationResult
-          key={`${currentEstimationId.current}-${JSON.stringify(initialSectionVisibility)}`}
+          key={`${currentEstimationId.current}-${JSON.stringify(initialSectionVisibility)}-${bienPhoto}`}
           result={result}
           formData={formData}
           onReset={handleReset}
+          onResetToOriginal={handleResetToOriginal}
           estimationId={currentEstimationId.current}
           bienPhoto={bienPhoto}
           photosSupplementaires={photosSupplementaires}

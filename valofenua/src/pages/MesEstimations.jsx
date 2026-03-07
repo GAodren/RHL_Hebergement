@@ -108,6 +108,7 @@ export default function MesEstimations() {
         estimationId: estimation.id,
         sectionVisibility: estimation.section_visibility,
         hiddenComparables: estimation.hidden_comparables || [],
+        editedComparables: estimation.edited_comparables || {},
         nomClient: estimation.nom_client || '',
         texteAnalyseMarche: estimation.texte_analyse_marche || '',
         texteEtudeComparative: estimation.texte_etude_comparative || '',
@@ -209,6 +210,7 @@ export default function MesEstimations() {
     photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
     hiddenComparables: estimation.hidden_comparables || [],
+    editedComparables: estimation.edited_comparables || {},
     texteAnalyseMarche: estimation.texte_analyse_marche || '',
     texteEtudeComparative: estimation.texte_etude_comparative || '',
     texteSynthese: estimation.texte_synthese || '',
@@ -394,6 +396,7 @@ export default function MesEstimations() {
                               texteSynthese={pdfData.texteSynthese}
                               sectionVisibility={pdfData.sectionVisibility}
                               hiddenComparables={pdfData.hiddenComparables}
+                              editedComparables={pdfData.editedComparables}
                             />
                           }
                           fileName={getFileName(estimation)}

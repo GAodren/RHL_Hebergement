@@ -122,8 +122,29 @@ export async function uploadPhotosSupplementaires(userId, estimationId, photos) 
 
 /**
  * Sauvegarde une estimation dans la base de données
+ * Stocke également les valeurs originales dans original_data pour permettre le reset
  */
 export async function saveEstimation(userId, formData, result, adjustedPrice = null, photoUrl = null) {
+  // Valeurs originales par défaut (état initial du dossier)
+  const originalData = {
+    photo_url: photoUrl,
+    photos_supplementaires: [],
+    prix_ajuste: null,
+    commission: 0,
+    hidden_comparables: [],
+    edited_comparables: {},
+    section_visibility: {
+      marketTrends: true,
+      statsGrid: true,
+      similarOffers: true,
+      bienDetails: true,
+    },
+    nom_client: '',
+    texte_analyse_marche: '',
+    texte_etude_comparative: '',
+    texte_synthese: '',
+  };
+
   const { data, error } = await supabase
     .from('estimations')
     .insert({
@@ -142,8 +163,10 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
       prix_m2_moyen: result.prix_m2_moyen,
       prix_ajuste: adjustedPrice,
       photo_url: photoUrl,
+      photo_url_original: photoUrl,
       comparables: result.comparables || [],
       photos_supplementaires: [],
+      original_data: originalData,
     })
     .select()
     .single();
@@ -205,6 +228,54 @@ export async function deleteEstimation(id) {
     .eq('id', id);
 
   return { error };
+}
+
+/**
+ * Réinitialise une estimation à ses valeurs originales
+ * Restaure la photo, les textes, le prix ajusté, etc. à leur état initial
+ */
+export async function resetEstimation(id) {
+  // Récupérer l'estimation avec ses données originales
+  const { data: estimation, error: fetchError } = await supabase
+    .from('estimations')
+    .select('original_data, photo_url_original')
+    .eq('id', id)
+    .single();
+
+  if (fetchError) {
+    console.error('Erreur récupération estimation:', fetchError);
+    return { data: null, error: fetchError };
+  }
+
+  // Construire les valeurs à restaurer
+  const originalData = estimation.original_data || {};
+  const resetValues = {
+    photo_url: estimation.photo_url_original || originalData.photo_url || null,
+    photos_supplementaires: originalData.photos_supplementaires || [],
+    prix_ajuste: originalData.prix_ajuste || null,
+    commission: originalData.commission || null,
+    hidden_comparables: originalData.hidden_comparables || [],
+    edited_comparables: originalData.edited_comparables || null,
+    section_visibility: originalData.section_visibility || null,
+    nom_client: originalData.nom_client || null,
+    texte_analyse_marche: originalData.texte_analyse_marche || null,
+    texte_etude_comparative: originalData.texte_etude_comparative || null,
+    texte_synthese: originalData.texte_synthese || null,
+  };
+
+  // Appliquer le reset
+  const { data, error } = await supabase
+    .from('estimations')
+    .update(resetValues)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Erreur reset estimation:', error);
+  }
+
+  return { data, error };
 }
 
 /**
