@@ -382,22 +382,6 @@ export default function EstimationForm({ initialState }) {
     currentEstimationId.current = null;
   };
 
-  // Callback pour réinitialiser aux valeurs originales (sans changer le formulaire)
-  const handleResetToOriginal = (resetData) => {
-    // Mettre à jour les valeurs initiales avec les données restaurées
-    setBienPhoto(resetData.photo_url);
-    setPhotosSupplementaires(resetData.photos_supplementaires || []);
-    setInitialAdjustedPrice(resetData.prix_ajuste);
-    setInitialCommission(resetData.commission || 0);
-    setInitialHiddenComparables(resetData.hidden_comparables || []);
-    setInitialEditedComparables(resetData.edited_comparables || {});
-    setInitialSectionVisibility(resetData.section_visibility);
-    setInitialNomClient(resetData.nom_client || '');
-    setInitialTexteAnalyseMarche(resetData.texte_analyse_marche || '');
-    setInitialTexteEtudeComparative(resetData.texte_etude_comparative || '');
-    setInitialTexteSynthese(resetData.texte_synthese || '');
-  };
-
   // Obtenir les types de bien selon la catégorie
   const getTypesForCategory = () => {
     switch (formData.categorie) {
@@ -430,7 +414,6 @@ export default function EstimationForm({ initialState }) {
           result={result}
           formData={formData}
           onReset={handleReset}
-          onResetToOriginal={handleResetToOriginal}
           estimationId={currentEstimationId.current}
           bienPhoto={bienPhoto}
           photosSupplementaires={photosSupplementaires}
