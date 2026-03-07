@@ -26,6 +26,27 @@
     display: flex;
     flex-direction: column;
   }
+
+  /* Cursor pointer pour tous les éléments interactifs */
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="checkbox"],
+  input[type="radio"],
+  select,
+  label[for],
+  .clickable {
+    cursor: pointer;
+  }
+
+  /* Boutons désactivés */
+  button:disabled,
+  [role="button"][aria-disabled="true"],
+  input:disabled {
+    cursor: not-allowed;
+  }
 }
 
 /* Animations */
