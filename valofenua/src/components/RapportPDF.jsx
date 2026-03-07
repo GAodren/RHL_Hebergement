@@ -259,11 +259,24 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     fontFamily: 'Helvetica-Bold',
   },
+  atoutsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 8,
+  },
+  atoutsLabel: {
+    fontSize: 9,
+    color: '#64748B',
+    textTransform: 'uppercase',
+    marginRight: 4,
+  },
   badgesList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    marginTop: 5,
+    flex: 1,
   },
   badge: {
     backgroundColor: '#E0F4FF',
@@ -1279,16 +1292,14 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-            <View style={styles.caracteristiquesRow}>
-              <View style={styles.caracteristiquesColumn}>
-                <Text style={styles.caracLabel}>Atouts</Text>
-                <View style={styles.badgesList}>
-                  {formData.caracteristiques.map((carac, index) => (
-                    <View key={index} style={styles.badge}>
-                      <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
-                    </View>
-                  ))}
-                </View>
+            <View style={styles.atoutsRow}>
+              <Text style={styles.atoutsLabel}>Atouts :</Text>
+              <View style={styles.badgesList}>
+                {formData.caracteristiques.map((carac, index) => (
+                  <View key={index} style={styles.badge}>
+                    <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
+                  </View>
+                ))}
               </View>
             </View>
           )}
