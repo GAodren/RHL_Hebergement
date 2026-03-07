@@ -70,16 +70,12 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
     closeEditModal();
   };
 
-  // Réinitialiser aux valeurs originales
+  // Réinitialiser aux valeurs originales et supprimer les modifications
   const resetEdit = () => {
-    if (editingIndex !== null) {
-      const originalOffer = offersToShow[editingIndex];
-      setEditForm({
-        prix: originalOffer.prix,
-        surface: originalOffer.surface,
-        photo_url: originalOffer.photo_url || ''
-      });
-      setPreviewImage(cleanPhotoUrl(originalOffer.photo_url));
+    if (editingIndex !== null && onEditComparable) {
+      // Supprimer les modifications du parent (passer null pour indiquer une suppression)
+      onEditComparable(editingIndex, null);
+      closeEditModal();
     }
   };
 
@@ -360,10 +356,10 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
               <button
                 onClick={resetEdit}
                 className="px-4 py-3 border border-orange-300 text-orange-600 rounded-xl font-medium hover:bg-orange-50 transition-colors flex items-center justify-center gap-2"
-                title="Réinitialiser aux valeurs originales"
+                title="Remettre les valeurs par défaut"
               >
                 <RotateCcw className="w-4 h-4" />
-                Reset
+                Par défaut
               </button>
               <button
                 onClick={saveEdit}
