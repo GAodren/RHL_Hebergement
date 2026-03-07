@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
-    marginBottom: 25,
+    marginBottom: 6,
   },
   photoItem: {
     width: '48%',
@@ -238,12 +238,12 @@ const styles = StyleSheet.create({
   caracteristiquesBox: {
     backgroundColor: '#F8FAFC',
     borderRadius: 8,
-    padding: 20,
+    padding: 15,
     border: '1px solid #E2E8F0',
   },
   caracteristiquesRow: {
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 8,
   },
   caracteristiquesColumn: {
     flex: 1,
@@ -259,11 +259,24 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     fontFamily: 'Helvetica-Bold',
   },
+  atoutsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 8,
+  },
+  atoutsLabel: {
+    fontSize: 9,
+    color: '#64748B',
+    textTransform: 'uppercase',
+    marginRight: 4,
+  },
   badgesList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    marginTop: 5,
+    flex: 1,
   },
   badge: {
     backgroundColor: '#E0F4FF',
@@ -1227,7 +1240,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
         {/* Photos supplémentaires */}
         {photosSupplementaires && photosSupplementaires.length > 0 && (
-          <View style={{ marginBottom: 25 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={styles.sectionTitle}>Galerie Photos</Text>
             <View style={styles.photosGrid}>
               {photosSupplementaires.slice(0, 6).map((photo, index) => {
@@ -1279,8 +1292,8 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-            <View>
-              <Text style={styles.caracLabel}>Atouts</Text>
+            <View style={styles.atoutsRow}>
+              <Text style={styles.atoutsLabel}>Atouts :</Text>
               <View style={styles.badgesList}>
                 {formData.caracteristiques.map((carac, index) => (
                   <View key={index} style={styles.badge}>
