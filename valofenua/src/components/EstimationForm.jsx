@@ -53,6 +53,7 @@ export default function EstimationForm({ initialState }) {
   const [initialAdjustedPrice, setInitialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
   const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
   const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
+  const [initialEditedComparables, setInitialEditedComparables] = useState(initialState?.editedComparables || null);
   const [initialNomClient, setInitialNomClient] = useState(initialState?.nomClient || '');
   const [initialTexteAnalyseMarche, setInitialTexteAnalyseMarche] = useState(initialState?.texteAnalyseMarche || '');
   const [initialTexteEtudeComparative, setInitialTexteEtudeComparative] = useState(initialState?.texteEtudeComparative || '');
@@ -75,6 +76,7 @@ export default function EstimationForm({ initialState }) {
           setInitialAdjustedPrice(estimation.prix_ajuste);
           setInitialSectionVisibility(estimation.section_visibility);
           setInitialHiddenComparables(estimation.hidden_comparables || []);
+          setInitialEditedComparables(estimation.edited_comparables || {});
           setBienPhoto(estimation.photo_url);
           setPhotosSupplementaires(estimation.photos_supplementaires || []);
           setInitialNomClient(estimation.nom_client || '');
@@ -395,6 +397,7 @@ export default function EstimationForm({ initialState }) {
           initialAdjustedPrice={initialAdjustedPrice}
           initialSectionVisibility={initialSectionVisibility}
           initialHiddenComparables={initialHiddenComparables}
+          initialEditedComparables={initialEditedComparables}
           initialNomClient={initialNomClient}
           initialTexteAnalyseMarche={initialTexteAnalyseMarche}
           initialTexteEtudeComparative={initialTexteEtudeComparative}

@@ -206,3 +206,60 @@ export async function deleteEstimation(id) {
 
   return { error };
 }
+
+/**
+ * Upload une photo de bien comparable vers Supabase Storage
+ * Retourne l'URL publique de l'image
+ */
+export async function uploadComparablePhoto(userId, estimationId, comparableIndex, photoBase64) {
+  if (!photoBase64) return { url: null, error: null };
+
+  // Si c'est déjà une URL (pas base64), on la retourne telle quelle
+  if (typeof photoBase64 === 'string' && photoBase64.startsWith('http')) {
+    return { url: photoBase64, error: null };
+  }
+
+  try {
+    // Extraire le type et les données du base64
+    const matches = photoBase64.match(/^data:image\/(\w+);base64,(.+)$/);
+    if (!matches) {
+      return { url: null, error: 'Format image invalide' };
+    }
+
+    const extension = matches[1];
+    const base64Data = matches[2];
+    const fileName = `${userId}/${estimationId}/comparable_${comparableIndex}.${extension}`;
+
+    // Convertir base64 en Blob
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: `image/${extension}` });
+
+    // Upload vers Supabase Storage
+    const { error: uploadError } = await supabase.storage
+      .from('estimation-photos')
+      .upload(fileName, blob, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error('Erreur upload photo comparable:', uploadError);
+      return { url: null, error: uploadError };
+    }
+
+    // Récupérer l'URL publique
+    const { data: urlData } = supabase.storage
+      .from('estimation-photos')
+      .getPublicUrl(fileName);
+
+    return { url: urlData.publicUrl, error: null };
+  } catch (err) {
+    console.error('Erreur upload photo comparable:', err);
+    return { url: null, error: err };
+  }
+}
