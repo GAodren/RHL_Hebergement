@@ -88,7 +88,6 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
   // Composant pour une seule carte d'offre avec gestion d'état pour l'image
   const OfferCard = ({ offer, index }) => {
     const [imageError, setImageError] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
 
     // Appliquer les modifications éditées si elles existent
     const edited = editedComparables[index] || {};
@@ -112,8 +111,6 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
       <div
         key={index}
         className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border ${hasEdits ? 'border-emerald-300' : 'border-slate-200'} hover:border-[#0077B6]/40 group ${isHidden ? 'opacity-40' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Badge "Modifié" si des modifications ont été faites */}
         {hasEdits && (
@@ -124,19 +121,19 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
           </div>
         )}
 
-        {/* Boutons d'action en haut à droite */}
+        {/* Boutons d'action en haut à droite - toujours visibles */}
         <div className="absolute top-3 right-3 z-20 flex gap-2">
-          {/* Bouton Modifier - visible au survol */}
-          {onEditComparable && isHovered && (
+          {/* Bouton Modifier */}
+          {onEditComparable && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 openEditModal(offer, index);
               }}
-              className="p-1.5 rounded-full shadow-md border bg-white border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-[#0077B6] transition-all"
+              className="p-2 rounded-full shadow-md border bg-white border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-[#0077B6] transition-all"
               title="Modifier ce bien"
             >
-              <Pencil className="w-4 h-4" />
+              <Pencil className="w-5 h-5" />
             </button>
           )}
 
@@ -147,14 +144,14 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
                 e.stopPropagation();
                 onToggleComparable(index);
               }}
-              className={`p-1.5 rounded-full shadow-md border transition-all ${
+              className={`p-2 rounded-full shadow-md border transition-all ${
                 !isHidden
                   ? 'bg-white/90 backdrop-blur-sm border-slate-200 text-slate-500 hover:text-[#0077B6] hover:border-[#0077B6]'
                   : 'bg-slate-200/90 backdrop-blur-sm border-slate-300 text-slate-400 hover:bg-slate-300'
               }`}
               title={!isHidden ? 'Masquer du PDF' : 'Afficher dans le PDF'}
             >
-              {!isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+              {!isHidden ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
             </button>
           )}
         </div>
