@@ -6,7 +6,8 @@ import PriceAdjuster from './PriceAdjuster';
 import SimilarOffers from './SimilarOffers';
 import MarketTrends from './MarketTrends';
 import { formatPriceXPF, formatPriceMF } from '../utils/formatPrice';
-import { updateEstimation } from '../utils/estimations';
+import { updateEstimation, uploadComparablePhoto } from '../utils/estimations';
+import { useAuth } from '../context/AuthContext';
 
 // Estimation du nombre de lignes visuelles dans le PDF (~80 caractères par ligne)
 const CHARS_PER_LINE = 80;
@@ -66,8 +67,9 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialEditedComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   const [adjustedPrice, setAdjustedPrice] = useState(initialAdjustedPrice || prix_moyen);
@@ -89,6 +91,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
   // État pour masquer des biens similaires individuellement (indices des biens masqués)
   const [hiddenComparables, setHiddenComparables] = useState(initialHiddenComparables || []);
+
+  // État pour les modifications des biens comparables (photo, prix, surface)
+  const [editedComparables, setEditedComparables] = useState(initialEditedComparables || {});
 
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
 
@@ -118,6 +123,57 @@ export default function EstimationResult({ result, formData, onReset, estimation
     );
   }, []);
 
+  // Modifier un comparable et sauvegarder automatiquement en BDD
+  const handleEditComparable = useCallback(async (index, edits) => {
+    let newEditedComparables;
+
+    // Si edits est null, on supprime les modifications pour cet index
+    if (edits === null) {
+      newEditedComparables = { ...editedComparables };
+      delete newEditedComparables[index];
+    } else {
+      newEditedComparables = {
+        ...editedComparables,
+        [index]: edits
+      };
+    }
+    setEditedComparables(newEditedComparables);
+
+    // Sauvegarder automatiquement en BDD si estimation existante
+    if (estimationId && user) {
+      // Si c'est une suppression (reset)
+      if (edits === null) {
+        await updateEstimation(estimationId, {
+          edited_comparables: Object.keys(newEditedComparables).length > 0 ? newEditedComparables : null
+        });
+        return;
+      }
+
+      // Si la photo est en base64, l'uploader d'abord
+      let editsToSave = { ...edits };
+      if (edits.photo_url && edits.photo_url.startsWith('data:')) {
+        const { url } = await uploadComparablePhoto(user.id, estimationId, index, edits.photo_url);
+        if (url) {
+          editsToSave.photo_url = url;
+          // Mettre à jour l'état avec l'URL
+          setEditedComparables(prev => ({
+            ...prev,
+            [index]: { ...prev[index], photo_url: url }
+          }));
+        }
+      }
+
+      const editedComparablesForDb = {
+        ...editedComparables,
+        [index]: editsToSave
+      };
+
+      await updateEstimation(estimationId, {
+        edited_comparables: Object.keys(editedComparablesForDb).length > 0 ? editedComparablesForDb : null
+      });
+    }
+  }, [editedComparables, estimationId, user]);
+
   const getBienLabel = () => {
     const parts = [];
     if (formData.categorie) parts.push(formData.categorie);
@@ -139,11 +195,32 @@ export default function EstimationResult({ result, formData, onReset, estimation
   const handleExportPDF = async () => {
     const hasAdjusted = adjustedPrice !== prix_moyen;
 
+    // Uploader les photos des comparables modifiés et obtenir les URLs
+    let editedComparablesWithUrls = { ...editedComparables };
+    if (estimationId && user && Object.keys(editedComparables).length > 0) {
+      for (const indexStr of Object.keys(editedComparables)) {
+        const edits = editedComparables[indexStr];
+        // Si c'est une image base64 (pas une URL), on l'upload
+        if (edits.photo_url && edits.photo_url.startsWith('data:')) {
+          const { url } = await uploadComparablePhoto(user.id, estimationId, indexStr, edits.photo_url);
+          if (url) {
+            editedComparablesWithUrls[indexStr] = {
+              ...edits,
+              photo_url: url
+            };
+          }
+        }
+      }
+      // Mettre à jour l'état local avec les URLs
+      setEditedComparables(editedComparablesWithUrls);
+    }
+
     // Sauvegarder toutes les préférences d'affichage + nom du client + textes personnalisés
     if (estimationId) {
       const updates = {
         section_visibility: sectionVisibility,
         hidden_comparables: hiddenComparables,
+        edited_comparables: Object.keys(editedComparablesWithUrls).length > 0 ? editedComparablesWithUrls : null,
         nom_client: nomClient || null,
         texte_analyse_marche: texteAnalyseMarche || null,
         texte_etude_comparative: texteEtudeComparative || null,
@@ -169,7 +246,8 @@ export default function EstimationResult({ result, formData, onReset, estimation
         texteSynthese,
         estimationId,
         sectionVisibility,
-        hiddenComparables
+        hiddenComparables,
+        editedComparables: editedComparablesWithUrls
       }
     });
   };
@@ -369,6 +447,8 @@ export default function EstimationResult({ result, formData, onReset, estimation
           comparables={result.comparables}
           hiddenComparables={hiddenComparables}
           onToggleComparable={toggleComparable}
+          editedComparables={editedComparables}
+          onEditComparable={handleEditComparable}
         />
       </ToggleableSection>
 
@@ -452,8 +532,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
         </button>
       </div>
 
-      {/* Nouvelle estimation */}
+      {/* Boutons d'action */}
       <div className="flex justify-center">
+        {/* Nouvelle estimation */}
         <button
           onClick={onReset}
           className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"

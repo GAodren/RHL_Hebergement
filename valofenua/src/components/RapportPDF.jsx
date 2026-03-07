@@ -1028,7 +1028,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [] }) {
+export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [], editedComparables = {} }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Calcul des prix au m² bas et haut à partir des prix totaux
@@ -1048,9 +1048,24 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   // Vérifier si on a des détails du bien à afficher
   const hasBienDetails = formData.etat_bien || formData.nb_chambres || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
-  // Filtrer les biens similaires en excluant les masqués
+  // Filtrer les biens similaires en excluant les masqués et appliquer les modifications
   const visibleComparables = result.comparables
-    ? result.comparables.filter((_, index) => !hiddenComparables.includes(index)).slice(0, 4)
+    ? result.comparables
+        .map((offer, index) => {
+          const edited = editedComparables[index] || {};
+          const hasEditedPrice = edited.prix !== undefined;
+          const newPrix = hasEditedPrice ? edited.prix : offer.prix;
+          return {
+            ...offer,
+            prix: newPrix,
+            // Recalculer prix_formatte si le prix a été modifié
+            prix_formatte: hasEditedPrice ? `${(newPrix / 1000000).toFixed(1)} MF` : offer.prix_formatte,
+            surface: edited.surface !== undefined ? edited.surface : offer.surface,
+            photo_url: edited.photo_url || offer.photo_url
+          };
+        })
+        .filter((_, index) => !hiddenComparables.includes(index))
+        .slice(0, 4)
     : [];
 
   // Informations de l'agent et de l'agence

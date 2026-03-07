@@ -122,8 +122,29 @@ export async function uploadPhotosSupplementaires(userId, estimationId, photos) 
 
 /**
  * Sauvegarde une estimation dans la base de données
+ * Stocke également les valeurs originales dans original_data pour permettre le reset
  */
 export async function saveEstimation(userId, formData, result, adjustedPrice = null, photoUrl = null) {
+  // Valeurs originales par défaut (état initial du dossier)
+  const originalData = {
+    photo_url: photoUrl,
+    photos_supplementaires: [],
+    prix_ajuste: null,
+    commission: 0,
+    hidden_comparables: [],
+    edited_comparables: {},
+    section_visibility: {
+      marketTrends: true,
+      statsGrid: true,
+      similarOffers: true,
+      bienDetails: true,
+    },
+    nom_client: '',
+    texte_analyse_marche: '',
+    texte_etude_comparative: '',
+    texte_synthese: '',
+  };
+
   const { data, error } = await supabase
     .from('estimations')
     .insert({
@@ -142,8 +163,10 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
       prix_m2_moyen: result.prix_m2_moyen,
       prix_ajuste: adjustedPrice,
       photo_url: photoUrl,
+      photo_url_original: photoUrl,
       comparables: result.comparables || [],
       photos_supplementaires: [],
+      original_data: originalData,
     })
     .select()
     .single();
@@ -205,4 +228,109 @@ export async function deleteEstimation(id) {
     .eq('id', id);
 
   return { error };
+}
+
+/**
+ * Réinitialise une estimation à ses valeurs originales
+ * Restaure la photo, les textes, le prix ajusté, etc. à leur état initial
+ */
+export async function resetEstimation(id) {
+  // Récupérer l'estimation avec ses données originales
+  const { data: estimation, error: fetchError } = await supabase
+    .from('estimations')
+    .select('original_data, photo_url_original')
+    .eq('id', id)
+    .single();
+
+  if (fetchError) {
+    console.error('Erreur récupération estimation:', fetchError);
+    return { data: null, error: fetchError };
+  }
+
+  // Construire les valeurs à restaurer
+  const originalData = estimation.original_data || {};
+  const resetValues = {
+    photo_url: estimation.photo_url_original || originalData.photo_url || null,
+    photos_supplementaires: originalData.photos_supplementaires || [],
+    prix_ajuste: originalData.prix_ajuste || null,
+    commission: originalData.commission || null,
+    hidden_comparables: originalData.hidden_comparables || [],
+    edited_comparables: originalData.edited_comparables || null,
+    section_visibility: originalData.section_visibility || null,
+    nom_client: originalData.nom_client || null,
+    texte_analyse_marche: originalData.texte_analyse_marche || null,
+    texte_etude_comparative: originalData.texte_etude_comparative || null,
+    texte_synthese: originalData.texte_synthese || null,
+  };
+
+  // Appliquer le reset
+  const { data, error } = await supabase
+    .from('estimations')
+    .update(resetValues)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Erreur reset estimation:', error);
+  }
+
+  return { data, error };
+}
+
+/**
+ * Upload une photo de bien comparable vers Supabase Storage
+ * Retourne l'URL publique de l'image
+ */
+export async function uploadComparablePhoto(userId, estimationId, comparableIndex, photoBase64) {
+  if (!photoBase64) return { url: null, error: null };
+
+  // Si c'est déjà une URL (pas base64), on la retourne telle quelle
+  if (typeof photoBase64 === 'string' && photoBase64.startsWith('http')) {
+    return { url: photoBase64, error: null };
+  }
+
+  try {
+    // Extraire le type et les données du base64
+    const matches = photoBase64.match(/^data:image\/(\w+);base64,(.+)$/);
+    if (!matches) {
+      return { url: null, error: 'Format image invalide' };
+    }
+
+    const extension = matches[1];
+    const base64Data = matches[2];
+    const fileName = `${userId}/${estimationId}/comparable_${comparableIndex}.${extension}`;
+
+    // Convertir base64 en Blob
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: `image/${extension}` });
+
+    // Upload vers Supabase Storage
+    const { error: uploadError } = await supabase.storage
+      .from('estimation-photos')
+      .upload(fileName, blob, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error('Erreur upload photo comparable:', uploadError);
+      return { url: null, error: uploadError };
+    }
+
+    // Récupérer l'URL publique
+    const { data: urlData } = supabase.storage
+      .from('estimation-photos')
+      .getPublicUrl(fileName);
+
+    return { url: urlData.publicUrl, error: null };
+  } catch (err) {
+    console.error('Erreur upload photo comparable:', err);
+    return { url: null, error: err };
+  }
 }

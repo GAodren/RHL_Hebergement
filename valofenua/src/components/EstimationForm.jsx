@@ -53,6 +53,7 @@ export default function EstimationForm({ initialState }) {
   const [initialAdjustedPrice, setInitialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
   const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
   const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
+  const [initialEditedComparables, setInitialEditedComparables] = useState(initialState?.editedComparables || null);
   const [initialNomClient, setInitialNomClient] = useState(initialState?.nomClient || '');
   const [initialTexteAnalyseMarche, setInitialTexteAnalyseMarche] = useState(initialState?.texteAnalyseMarche || '');
   const [initialTexteEtudeComparative, setInitialTexteEtudeComparative] = useState(initialState?.texteEtudeComparative || '');
@@ -75,6 +76,7 @@ export default function EstimationForm({ initialState }) {
           setInitialAdjustedPrice(estimation.prix_ajuste);
           setInitialSectionVisibility(estimation.section_visibility);
           setInitialHiddenComparables(estimation.hidden_comparables || []);
+          setInitialEditedComparables(estimation.edited_comparables || {});
           setBienPhoto(estimation.photo_url);
           setPhotosSupplementaires(estimation.photos_supplementaires || []);
           setInitialNomClient(estimation.nom_client || '');
@@ -314,7 +316,30 @@ export default function EstimationForm({ initialState }) {
           }
 
           // Sauvegarder toutes les URLs en une seule requête
+          // Et mettre à jour original_data avec les URLs des photos uploadées
           if (Object.keys(updates).length > 0) {
+            // Construire aussi les valeurs originales avec les URLs
+            const originalData = {
+              photo_url: updates.photo_url || null,
+              photos_supplementaires: updates.photos_supplementaires || [],
+              prix_ajuste: null,
+              commission: 0,
+              hidden_comparables: [],
+              edited_comparables: {},
+              section_visibility: {
+                marketTrends: true,
+                statsGrid: true,
+                similarOffers: true,
+                bienDetails: true,
+              },
+              nom_client: '',
+              texte_analyse_marche: '',
+              texte_etude_comparative: '',
+              texte_synthese: '',
+            };
+            updates.original_data = originalData;
+            updates.photo_url_original = updates.photo_url || null;
+
             const { error: updateError } = await updateEstimation(savedEstimation.id, updates);
             if (updateError) {
               console.error('Erreur mise à jour estimation:', updateError);
@@ -385,7 +410,7 @@ export default function EstimationForm({ initialState }) {
     return (
       <div className="w-full max-w-7xl mx-auto">
         <EstimationResult
-          key={`${currentEstimationId.current}-${JSON.stringify(initialSectionVisibility)}`}
+          key={`${currentEstimationId.current}-${JSON.stringify(initialSectionVisibility)}-${bienPhoto}`}
           result={result}
           formData={formData}
           onReset={handleReset}
@@ -395,6 +420,7 @@ export default function EstimationForm({ initialState }) {
           initialAdjustedPrice={initialAdjustedPrice}
           initialSectionVisibility={initialSectionVisibility}
           initialHiddenComparables={initialHiddenComparables}
+          initialEditedComparables={initialEditedComparables}
           initialNomClient={initialNomClient}
           initialTexteAnalyseMarche={initialTexteAnalyseMarche}
           initialTexteEtudeComparative={initialTexteEtudeComparative}
