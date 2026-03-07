@@ -1,5 +1,5 @@
 import { Home, MapPin, Ruler, Banknote, Eye, EyeOff, Pencil, X, Upload, Save, RotateCcw } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function SimilarOffers({ comparables, hiddenComparables = [], onToggleComparable, editedComparables = {}, onEditComparable }) {
   // Ne rien afficher si pas de comparables
@@ -106,6 +106,11 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
     const cleanedPhotoUrl = cleanPhotoUrl(displayOffer.photo_url);
     const isHidden = hiddenComparables.includes(index);
     const hasEdits = Object.keys(edited).length > 0;
+
+    // Réinitialiser l'erreur d'image quand la photo change
+    useEffect(() => {
+      setImageError(false);
+    }, [cleanedPhotoUrl]);
 
     return (
       <div
