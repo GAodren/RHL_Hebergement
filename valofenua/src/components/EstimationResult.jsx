@@ -125,14 +125,30 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
   // Modifier un comparable et sauvegarder automatiquement en BDD
   const handleEditComparable = useCallback(async (index, edits) => {
-    const newEditedComparables = {
-      ...editedComparables,
-      [index]: edits
-    };
+    let newEditedComparables;
+
+    // Si edits est null, on supprime les modifications pour cet index
+    if (edits === null) {
+      newEditedComparables = { ...editedComparables };
+      delete newEditedComparables[index];
+    } else {
+      newEditedComparables = {
+        ...editedComparables,
+        [index]: edits
+      };
+    }
     setEditedComparables(newEditedComparables);
 
     // Sauvegarder automatiquement en BDD si estimation existante
     if (estimationId && user) {
+      // Si c'est une suppression (reset)
+      if (edits === null) {
+        await updateEstimation(estimationId, {
+          edited_comparables: Object.keys(newEditedComparables).length > 0 ? newEditedComparables : null
+        });
+        return;
+      }
+
       // Si la photo est en base64, l'uploader d'abord
       let editsToSave = { ...edits };
       if (edits.photo_url && edits.photo_url.startsWith('data:')) {
