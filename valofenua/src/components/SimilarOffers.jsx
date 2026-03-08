@@ -56,6 +56,8 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
       };
       reader.readAsDataURL(file);
     }
+    // Réinitialiser l'input pour permettre de re-sélectionner un fichier
+    e.target.value = '';
   };
 
   // Sauvegarder les modifications

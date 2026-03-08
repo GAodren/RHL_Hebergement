@@ -328,7 +328,7 @@ export async function uploadComparablePhoto(userId, estimationId, comparableInde
       .from('estimation-photos')
       .getPublicUrl(fileName);
 
-    return { url: urlData.publicUrl, error: null };
+    return { url: `${urlData.publicUrl}?t=${Date.now()}`, error: null };
   } catch (err) {
     console.error('Erreur upload photo comparable:', err);
     return { url: null, error: err };
