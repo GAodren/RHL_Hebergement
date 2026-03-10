@@ -61,29 +61,24 @@ export default function Profil({ embedded = false }) {
     }
   }, [profile]);
 
-  // Limites pour la description
-  const MAX_DESCRIPTION_LINES = 40;
-  const MAX_CHARS_PER_LINE = 130;
+  // Limites pour la description (en lignes visuelles PDF, ~80 caractères par ligne)
+  const MAX_VISUAL_LINES = 40;
+  const CHARS_PER_PDF_LINE = 80;
 
-  const countLines = (text) => {
+  const countVisualLines = (text) => {
     if (!text) return 0;
-    return (text.match(/\n/g) || []).length + 1;
-  };
-
-  const hasLineTooLong = (text) => {
-    if (!text) return false;
-    const lines = text.split('\n');
-    return lines.some(line => line.length > MAX_CHARS_PER_LINE);
+    return text.split('\n').reduce((total, line) => {
+      return total + (line.length === 0 ? 1 : Math.ceil(line.length / CHARS_PER_PDF_LINE));
+    }, 0);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Limiter la description à 20 lignes ET 130 caractères par ligne
+    // Limiter la description au nombre max de lignes visuelles PDF
     if (name === 'description_agence') {
-      const lines = countLines(value);
-      if (lines > MAX_DESCRIPTION_LINES || hasLineTooLong(value)) {
-        return; // Ne pas mettre à jour si dépassement
+      if (countVisualLines(value) > MAX_VISUAL_LINES) {
+        return;
       }
     }
 
@@ -374,12 +369,9 @@ export default function Profil({ embedded = false }) {
                   placeholder="Présentez votre agence en quelques lignes..."
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0077B6] focus:border-[#0077B6] transition-colors resize-none"
                 />
-                <div className="flex justify-end gap-4 mt-1 text-xs">
-                  <span className={countLines(formData.description_agence) >= MAX_DESCRIPTION_LINES ? 'text-amber-500 font-medium' : 'text-slate-400'}>
-                    {countLines(formData.description_agence)}/{MAX_DESCRIPTION_LINES} lignes
-                  </span>
-                  <span className="text-slate-400">
-                    (max {MAX_CHARS_PER_LINE} car./ligne)
+                <div className="flex justify-end mt-1 text-xs">
+                  <span className={countVisualLines(formData.description_agence) >= MAX_VISUAL_LINES ? 'text-amber-500 font-medium' : 'text-slate-400'}>
+                    {countVisualLines(formData.description_agence)}/{MAX_VISUAL_LINES} lignes PDF
                   </span>
                 </div>
               </div>
