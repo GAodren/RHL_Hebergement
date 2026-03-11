@@ -27,6 +27,8 @@ const CARACTERISTIQUES_LABELS = {
   vue_montagne: 'Vue montagne',
   bord_mer: 'Bord de mer / Accès plage',
   piscine: 'Piscine',
+  garage: 'Garage',
+  parking: 'Parking',
   terrasse: 'Terrasse',
 };
 
@@ -1046,7 +1048,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   };
 
   // Vérifier si on a des détails du bien à afficher
-  const hasBienDetails = formData.etat_bien || formData.nb_chambres || (formData.caracteristiques && formData.caracteristiques.length > 0);
+  const hasBienDetails = formData.etat_bien || formData.nb_chambres || formData.nb_sdb || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
   // Filtrer les biens similaires en excluant les masqués et appliquer les modifications
   const visibleComparables = result.comparables
@@ -1297,6 +1299,14 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
                 <Text style={styles.caracValue}>{formData.nb_chambres} {Number(formData.nb_chambres) === 1 ? 'chambre' : 'chambres'}</Text>
               </View>
             )}
+            {formData.nb_sdb && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>Salles d'eau</Text>
+                <Text style={styles.caracValue}>{formData.nb_sdb} {Number(formData.nb_sdb) === 1 ? "salle d'eau" : "salles d'eau"}</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.caracteristiquesRow}>
             {formData.etat_bien && (
               <View style={styles.caracteristiquesColumn}>
                 <Text style={styles.caracLabel}>État du bien</Text>
