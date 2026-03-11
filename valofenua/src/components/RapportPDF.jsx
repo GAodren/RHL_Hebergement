@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   },
   atoutsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexWrap: 'wrap',
     gap: 6,
     marginTop: 4,
