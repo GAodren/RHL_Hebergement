@@ -16,7 +16,7 @@ export default function Estimation() {
             Remplissez le formulaire ci-dessous pour obtenir une estimation précise
           </p>
         </div>
-        <EstimationForm initialState={initialState} />
+        <EstimationForm key={location.key} initialState={initialState} />
       </div>
     </main>
   );

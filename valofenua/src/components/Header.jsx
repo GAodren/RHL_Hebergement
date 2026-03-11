@@ -77,12 +77,12 @@ export default function Header() {
                 <div className="w-px h-6 bg-slate-200 mx-1"></div>
               </>
             )}
-            <Link
-              to="/estimation"
-              className="bg-[#0077B6] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#005f8a] transition-all duration-200 shadow-sm hover:shadow-md text-sm"
+            <button
+              onClick={() => navigate('/estimation', { state: null })}
+              className="bg-[#0077B6] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#005f8a] transition-all duration-200 shadow-sm hover:shadow-md text-sm cursor-pointer"
             >
               Estimer mon bien
-            </Link>
+            </button>
           </div>
 
           {/* Menu burger mobile/tablet */}
@@ -143,13 +143,12 @@ export default function Header() {
                 </>
               )}
 
-              <Link
-                to="/estimation"
-                onClick={() => setIsMenuOpen(false)}
-                className="mt-2 bg-[#0077B6] text-white px-4 py-3 rounded-lg font-semibold text-center hover:bg-[#005f8a] transition-colors"
+              <button
+                onClick={() => { setIsMenuOpen(false); navigate('/estimation', { state: null }); }}
+                className="mt-2 bg-[#0077B6] text-white px-4 py-3 rounded-lg font-semibold text-center hover:bg-[#005f8a] transition-colors cursor-pointer"
               >
                 Estimer mon bien
-              </Link>
+              </button>
             </div>
           </nav>
         )}
