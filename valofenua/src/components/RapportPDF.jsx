@@ -1282,59 +1282,47 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         {/* Caractéristiques */}
         <Text style={styles.sectionTitle}>Caractéristiques</Text>
         <View style={styles.caracteristiquesBox}>
-          <View style={{ flexDirection: 'row' }}>
-            {/* Colonne gauche : données chiffrées */}
-            <View style={{ flex: 1 }}>
-              <View style={styles.caracteristiquesRow}>
-                <View style={styles.caracteristiquesColumn}>
-                  <Text style={styles.caracLabel}>Surface habitable</Text>
-                  <Text style={styles.caracValue}>{formData.surface || '-'} m²</Text>
-                </View>
-                <View style={styles.caracteristiquesColumn}>
-                  <Text style={styles.caracLabel}>Surface terrain</Text>
-                  <Text style={styles.caracValue}>{formData.surface_terrain || '-'} m²</Text>
-                </View>
-                <View style={styles.caracteristiquesColumn}>
-                  {formData.nb_sdb && (
-                    <>
-                      <Text style={styles.caracLabel}>Salles d'eau</Text>
-                      <Text style={styles.caracValue}>{formData.nb_sdb}</Text>
-                    </>
-                  )}
-                </View>
-              </View>
-
-              <View style={styles.caracteristiquesRow}>
-                {formData.nb_chambres && (
-                  <View style={styles.caracteristiquesColumn}>
-                    <Text style={styles.caracLabel}>Chambres</Text>
-                    <Text style={styles.caracValue}>{formData.nb_chambres}</Text>
-                  </View>
-                )}
-                {formData.etat_bien && (
-                  <View style={styles.caracteristiquesColumn}>
-                    <Text style={styles.caracLabel}>État du bien</Text>
-                    <Text style={styles.caracValue}>{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</Text>
-                  </View>
-                )}
-                <View style={styles.caracteristiquesColumn} />
-              </View>
+          <View style={styles.caracteristiquesRow}>
+            <View style={styles.caracteristiquesColumn}>
+              <Text style={styles.caracLabel}>Surface habitable</Text>
+              <Text style={styles.caracValue}>{formData.surface || '-'} m²</Text>
             </View>
+            <View style={styles.caracteristiquesColumn}>
+              <Text style={styles.caracLabel}>Surface terrain</Text>
+              <Text style={styles.caracValue}>{formData.surface_terrain || '-'} m²</Text>
+            </View>
+            <View style={styles.caracteristiquesColumn}>
+              {formData.nb_sdb && (
+                <>
+                  <Text style={styles.caracLabel}>Salles d'eau</Text>
+                  <Text style={styles.caracValue}>{formData.nb_sdb}</Text>
+                </>
+              )}
+            </View>
+          </View>
 
-            {/* Colonne droite : atouts */}
-            {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-              <View style={{ width: 160, paddingLeft: 10, borderLeft: '1px solid #E2E8F0' }}>
-                <Text style={styles.atoutsLabel}>Atouts :</Text>
-                <View style={{ ...styles.badgesList, marginTop: 4 }}>
-                  {formData.caracteristiques.map((carac, index) => (
-                    <View key={index} style={styles.badge}>
-                      <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
-                    </View>
-                  ))}
-                </View>
+          <View style={styles.caracteristiquesRow}>
+            {formData.nb_chambres && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>Chambres</Text>
+                <Text style={styles.caracValue}>{formData.nb_chambres}</Text>
               </View>
             )}
+            {formData.etat_bien && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>État du bien</Text>
+                <Text style={styles.caracValue}>{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</Text>
+              </View>
+            )}
+            <View style={styles.caracteristiquesColumn} />
           </View>
+
+          {formData.caracteristiques && formData.caracteristiques.length > 0 && (
+            <Text style={{ fontSize: 9, color: '#475569', marginTop: 2 }}>
+              <Text style={{ color: '#64748B', textTransform: 'uppercase' }}>Atouts : </Text>
+              {formData.caracteristiques.map(c => CARACTERISTIQUES_LABELS[c] || c).join(', ')}
+            </Text>
+          )}
         </View>
 
         <Text style={styles.pageNumber}>3 / 9</Text>
