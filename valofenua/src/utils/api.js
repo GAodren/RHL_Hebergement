@@ -69,7 +69,7 @@ export const COMMUNES = [
 export const CATEGORIES = ['Maison', 'Appartement', 'Terrain'];
 
 // Types de biens par catégorie
-export const TYPES_BIEN_MAISON = ['F2', 'F3', 'F4', 'F5', '>F5'];
+export const TYPES_BIEN_MAISON = ['Studio', 'F1', 'F2', 'F3', 'F4', 'F5', '>F5'];
 export const TYPES_BIEN_APPARTEMENT = ['Studio', 'F1', 'F2', 'F3', 'F4', 'F5'];
 
 // Types de biens (legacy, pour compatibilité)
