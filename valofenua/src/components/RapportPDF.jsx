@@ -1318,10 +1318,16 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
-            <Text style={{ fontSize: 9, color: '#475569', marginTop: 2 }}>
-              <Text style={{ color: '#64748B', textTransform: 'uppercase' }}>Atouts : </Text>
-              {formData.caracteristiques.map(c => CARACTERISTIQUES_LABELS[c] || c).join(', ')}
-            </Text>
+            <View style={styles.atoutsRow}>
+              <Text style={styles.atoutsLabel}>Atouts :</Text>
+              <View style={styles.badgesList}>
+                {formData.caracteristiques.map((carac, index) => (
+                  <View key={index} style={styles.badge}>
+                    <Text style={styles.badgeText}>{CARACTERISTIQUES_LABELS[carac] || carac}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
           )}
         </View>
 
