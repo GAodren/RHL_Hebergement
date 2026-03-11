@@ -1290,29 +1290,30 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
               <Text style={styles.caracLabel}>Surface terrain</Text>
               <Text style={styles.caracValue}>{formData.surface_terrain || '-'} m²</Text>
             </View>
+            <View style={styles.caracteristiquesColumn}>
+              {formData.nb_chambres && (
+                <>
+                  <Text style={styles.caracLabel}>Chambres</Text>
+                  <Text style={styles.caracValue}>{formData.nb_chambres}</Text>
+                </>
+              )}
+            </View>
           </View>
 
           <View style={styles.caracteristiquesRow}>
-            {formData.nb_chambres && (
-              <View style={styles.caracteristiquesColumn}>
-                <Text style={styles.caracLabel}>Nombre de chambres</Text>
-                <Text style={styles.caracValue}>{formData.nb_chambres} {Number(formData.nb_chambres) === 1 ? 'chambre' : 'chambres'}</Text>
-              </View>
-            )}
             {formData.nb_sdb && (
               <View style={styles.caracteristiquesColumn}>
                 <Text style={styles.caracLabel}>Salles d'eau</Text>
-                <Text style={styles.caracValue}>{formData.nb_sdb} {Number(formData.nb_sdb) === 1 ? "salle d'eau" : "salles d'eau"}</Text>
+                <Text style={styles.caracValue}>{formData.nb_sdb}</Text>
               </View>
             )}
-          </View>
-          <View style={styles.caracteristiquesRow}>
             {formData.etat_bien && (
               <View style={styles.caracteristiquesColumn}>
                 <Text style={styles.caracLabel}>État du bien</Text>
                 <Text style={styles.caracValue}>{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</Text>
               </View>
             )}
+            <View style={styles.caracteristiquesColumn} />
           </View>
 
 
