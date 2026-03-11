@@ -155,6 +155,7 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
       surface: formData.surface || null,
       surface_terrain: formData.surface_terrain || null,
       nb_chambres: formData.nb_chambres || null,
+      nb_sdb: formData.nb_sdb || null,
       etat_bien: formData.etat_bien || null,
       caracteristiques: formData.caracteristiques || [],
       prix_bas: result.prix_bas,
