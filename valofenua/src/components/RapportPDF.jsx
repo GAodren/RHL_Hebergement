@@ -198,30 +198,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
-    marginBottom: 20,
-    paddingBottom: 10,
+    marginBottom: 15,
+    paddingBottom: 8,
     borderBottom: '2px solid #0077B6',
     alignSelf: 'flex-start',
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
-    marginBottom: 12,
+    marginBottom: 8,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   photosGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 6,
+    gap: 8,
+    marginBottom: 4,
   },
   photoItem: {
     width: '48%',
   },
   photoContainer: {
-    height: 140,
+    height: 120,
     borderRadius: 8,
     overflow: 'hidden',
     border: '1px solid #E2E8F0',
@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
     color: '#64748B',
     textTransform: 'uppercase',
     marginRight: 4,
+    paddingTop: 5,
   },
   badgesList: {
     flexDirection: 'row',
@@ -1301,7 +1302,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             </View>
           </View>
 
-          <View style={styles.caracteristiquesRow}>
+          <View style={[styles.caracteristiquesRow, { marginBottom: 0 }]}>
             {formData.nb_chambres && (
               <View style={styles.caracteristiquesColumn}>
                 <Text style={styles.caracLabel}>Chambres</Text>
