@@ -121,8 +121,7 @@ export default function EstimationForm({ initialState }) {
         const { data, error } = await supabase
           .from('communes_disponibles')
           .select('*')
-          .order('ile')
-          .order('commune');
+          .order('nb_annonces', { ascending: false });
 
         if (error) {
           console.error('Erreur chargement communes:', error);
@@ -138,10 +137,14 @@ export default function EstimationForm({ initialState }) {
     loadCommunes();
   }, []);
 
-  // Extraire les îles distinctes
-  const iles = [...new Set(communesData.map((c) => c.ile))].sort();
+  // Extraire les îles triées par nombre total d'annonces (décroissant)
+  const iles = [...new Set(communesData.map((c) => c.ile))].sort((a, b) => {
+    const totalA = communesData.filter((c) => c.ile === a).reduce((sum, c) => sum + (c.nb_annonces || 0), 0);
+    const totalB = communesData.filter((c) => c.ile === b).reduce((sum, c) => sum + (c.nb_annonces || 0), 0);
+    return totalB - totalA;
+  });
 
-  // Filtrer les communes par île sélectionnée
+  // Filtrer les communes par île sélectionnée (déjà triées par nb_annonces via la requête)
   const communesFiltrees = communesData.filter((c) => c.ile === formData.ile);
 
   // Récupérer les infos de la commune sélectionnée
