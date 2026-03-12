@@ -15,15 +15,36 @@ const ETATS_BIEN = [
   { value: 'renover', label: 'À rénover' },
 ];
 
-// Caractéristiques extérieures
-const CARACTERISTIQUES = [
-  { id: 'villa', label: 'Villa' },
+// Caractéristiques communes
+const CARACTERISTIQUES_COMMUNES = [
   { id: 'vue_mer', label: 'Vue mer' },
   { id: 'vue_montagne', label: 'Vue montagne' },
   { id: 'bord_mer', label: 'Bord de mer / Accès plage' },
   { id: 'piscine', label: 'Piscine' },
   { id: 'terrasse', label: 'Terrasse' },
 ];
+
+// Caractéristiques spécifiques par catégorie
+const CARACTERISTIQUES_MAISON = [
+  { id: 'villa', label: 'Villa' },
+  { id: 'garage', label: 'Garage' },
+];
+
+const CARACTERISTIQUES_APPARTEMENT = [
+  { id: 'parking', label: 'Parking' },
+];
+
+// Obtenir les caractéristiques selon la catégorie
+const getCaracteristiques = (categorie) => {
+  switch (categorie) {
+    case 'Maison':
+      return [...CARACTERISTIQUES_MAISON, ...CARACTERISTIQUES_COMMUNES];
+    case 'Appartement':
+      return [...CARACTERISTIQUES_APPARTEMENT, ...CARACTERISTIQUES_COMMUNES];
+    default:
+      return CARACTERISTIQUES_COMMUNES;
+  }
+};
 
 export default function EstimationForm({ initialState }) {
   const { user } = useAuth();
@@ -36,6 +57,7 @@ export default function EstimationForm({ initialState }) {
       surface: '',
       surface_terrain: '',
       nb_chambres: '',
+      nb_sdb: '',
       etat_bien: '',
       caracteristiques: [],
     }
@@ -99,8 +121,7 @@ export default function EstimationForm({ initialState }) {
         const { data, error } = await supabase
           .from('communes_disponibles')
           .select('*')
-          .order('ile')
-          .order('commune');
+          .order('nb_annonces', { ascending: false });
 
         if (error) {
           console.error('Erreur chargement communes:', error);
@@ -116,10 +137,14 @@ export default function EstimationForm({ initialState }) {
     loadCommunes();
   }, []);
 
-  // Extraire les îles distinctes
-  const iles = [...new Set(communesData.map((c) => c.ile))].sort();
+  // Extraire les îles triées par nombre total d'annonces (décroissant)
+  const iles = [...new Set(communesData.map((c) => c.ile))].sort((a, b) => {
+    const totalA = communesData.filter((c) => c.ile === a).reduce((sum, c) => sum + (c.nb_annonces || 0), 0);
+    const totalB = communesData.filter((c) => c.ile === b).reduce((sum, c) => sum + (c.nb_annonces || 0), 0);
+    return totalB - totalA;
+  });
 
-  // Filtrer les communes par île sélectionnée
+  // Filtrer les communes par île sélectionnée (déjà triées par nb_annonces via la requête)
   const communesFiltrees = communesData.filter((c) => c.ile === formData.ile);
 
   // Récupérer les infos de la commune sélectionnée
@@ -217,6 +242,7 @@ export default function EstimationForm({ initialState }) {
         surface: '',
         surface_terrain: '',
         nb_chambres: '',
+        nb_sdb: '',
         etat_bien: '',
         caracteristiques: [],
       }));
@@ -368,6 +394,9 @@ export default function EstimationForm({ initialState }) {
       surface: '',
       surface_terrain: '',
       nb_chambres: '',
+      nb_sdb: '',
+      parking: '',
+      garage: '',
       etat_bien: '',
       caracteristiques: [],
     });
@@ -502,7 +531,7 @@ export default function EstimationForm({ initialState }) {
         {/* Champs conditionnels avec animation */}
         <div
           className={`space-y-6 overflow-hidden transition-all duration-300 ease-in-out ${
-            formData.categorie ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
+            formData.categorie ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           {/* Type de bien - Maison ou Appartement */}
@@ -597,6 +626,26 @@ export default function EstimationForm({ initialState }) {
             </div>
           )}
 
+          {/* Nombre de salles d'eau - Maison ou Appartement */}
+          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement') && (
+            <div className="animate-fadeIn">
+              <label htmlFor="nb_sdb" className="block text-sm font-medium text-slate-700 mb-2">
+                Nombre de salles d'eau <span className="text-slate-400 font-normal">(optionnel)</span>
+              </label>
+              <input
+                type="number"
+                id="nb_sdb"
+                name="nb_sdb"
+                value={formData.nb_sdb}
+                onChange={handleChange}
+                min="1"
+                max="10"
+                placeholder="Ex: 2"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0077B6] focus:ring-2 focus:ring-[#0077B6]/20 outline-none transition-all bg-white"
+              />
+            </div>
+          )}
+
           {/* État du bien - Maison ou Appartement */}
           {(formData.categorie === 'Maison' || formData.categorie === 'Appartement') && (
             <div className="animate-fadeIn">
@@ -627,7 +676,7 @@ export default function EstimationForm({ initialState }) {
                 Caractéristiques <span className="text-slate-400 font-normal">(optionnel)</span>
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {CARACTERISTIQUES.map((carac) => {
+                {getCaracteristiques(formData.categorie).map((carac) => {
                   const isSelected = formData.caracteristiques.includes(carac.id);
                   return (
                     <button

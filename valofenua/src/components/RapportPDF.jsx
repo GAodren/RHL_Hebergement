@@ -27,6 +27,8 @@ const CARACTERISTIQUES_LABELS = {
   vue_montagne: 'Vue montagne',
   bord_mer: 'Bord de mer / Accès plage',
   piscine: 'Piscine',
+  garage: 'Garage',
+  parking: 'Parking',
   terrasse: 'Terrasse',
 };
 
@@ -196,30 +198,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Helvetica-Bold',
     color: '#0077B6',
-    marginBottom: 20,
-    paddingBottom: 10,
+    marginBottom: 15,
+    paddingBottom: 8,
     borderBottom: '2px solid #0077B6',
     alignSelf: 'flex-start',
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
-    marginBottom: 12,
+    marginBottom: 8,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   photosGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 6,
+    gap: 8,
+    marginBottom: 4,
   },
   photoItem: {
     width: '48%',
   },
   photoContainer: {
-    height: 140,
+    height: 120,
     borderRadius: 8,
     overflow: 'hidden',
     border: '1px solid #E2E8F0',
@@ -238,12 +240,13 @@ const styles = StyleSheet.create({
   caracteristiquesBox: {
     backgroundColor: '#F8FAFC',
     borderRadius: 8,
-    padding: 15,
+    padding: 10,
+    paddingBottom: 6,
     border: '1px solid #E2E8F0',
   },
   caracteristiquesRow: {
     flexDirection: 'row',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   caracteristiquesColumn: {
     flex: 1,
@@ -261,7 +264,7 @@ const styles = StyleSheet.create({
   },
   atoutsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexWrap: 'wrap',
     gap: 6,
     marginTop: 8,
@@ -271,6 +274,7 @@ const styles = StyleSheet.create({
     color: '#64748B',
     textTransform: 'uppercase',
     marginRight: 4,
+    paddingTop: 5,
   },
   badgesList: {
     flexDirection: 'row',
@@ -1046,7 +1050,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   };
 
   // Vérifier si on a des détails du bien à afficher
-  const hasBienDetails = formData.etat_bien || formData.nb_chambres || (formData.caracteristiques && formData.caracteristiques.length > 0);
+  const hasBienDetails = formData.etat_bien || formData.nb_chambres || formData.nb_sdb || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
   // Filtrer les biens similaires en excluant les masqués et appliquer les modifications
   const visibleComparables = result.comparables
@@ -1288,13 +1292,21 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
               <Text style={styles.caracLabel}>Surface terrain</Text>
               <Text style={styles.caracValue}>{formData.surface_terrain || '-'} m²</Text>
             </View>
+            <View style={styles.caracteristiquesColumn}>
+              {formData.nb_sdb && (
+                <>
+                  <Text style={styles.caracLabel}>Salles d'eau</Text>
+                  <Text style={styles.caracValue}>{formData.nb_sdb}</Text>
+                </>
+              )}
+            </View>
           </View>
 
-          <View style={styles.caracteristiquesRow}>
+          <View style={[styles.caracteristiquesRow, { marginBottom: 0 }]}>
             {formData.nb_chambres && (
               <View style={styles.caracteristiquesColumn}>
-                <Text style={styles.caracLabel}>Nombre de chambres</Text>
-                <Text style={styles.caracValue}>{formData.nb_chambres} {Number(formData.nb_chambres) === 1 ? 'chambre' : 'chambres'}</Text>
+                <Text style={styles.caracLabel}>Chambres</Text>
+                <Text style={styles.caracValue}>{formData.nb_chambres}</Text>
               </View>
             )}
             {formData.etat_bien && (
@@ -1303,8 +1315,8 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
                 <Text style={styles.caracValue}>{ETATS_BIEN_LABELS[formData.etat_bien] || formData.etat_bien}</Text>
               </View>
             )}
+            <View style={styles.caracteristiquesColumn} />
           </View>
-
 
           {formData.caracteristiques && formData.caracteristiques.length > 0 && (
             <View style={styles.atoutsRow}>
