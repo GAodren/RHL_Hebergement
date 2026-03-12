@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flexWrap: 'wrap',
     gap: 6,
-    marginTop: 4,
+    marginTop: 8,
   },
   atoutsLabel: {
     fontSize: 9,
