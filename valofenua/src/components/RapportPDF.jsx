@@ -1032,7 +1032,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, hiddenComparables = [], editedComparables = {} }) {
+export default function RapportPDF({ result, formData, adjustedPrice, commission, agentProfile, bienPhoto, photosSupplementaires = [], nomClient = '', texteAnalyseMarche = '', texteEtudeComparative = '', texteSynthese = '', sectionVisibility, selectedComparables = [], editedComparables = {} }) {
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
 
   // Calcul des prix au m² bas et haut à partir des prix totaux
@@ -1052,7 +1052,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   // Vérifier si on a des détails du bien à afficher
   const hasBienDetails = formData.etat_bien || formData.nb_chambres || formData.nb_sdb || (formData.caracteristiques && formData.caracteristiques.length > 0);
 
-  // Filtrer les biens similaires en excluant les masqués et appliquer les modifications
+  // Filtrer les biens similaires sélectionnés et appliquer les modifications
   const visibleComparables = result.comparables
     ? result.comparables
         .map((offer, index) => {
@@ -1061,14 +1061,14 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           const newPrix = hasEditedPrice ? edited.prix : offer.prix;
           return {
             ...offer,
+            originalIndex: index,
             prix: newPrix,
-            // Recalculer prix_formatte si le prix a été modifié
             prix_formatte: hasEditedPrice ? `${(newPrix / 1000000).toFixed(1)} MF` : offer.prix_formatte,
             surface: edited.surface !== undefined ? edited.surface : offer.surface,
             photo_url: edited.photo_url || offer.photo_url
           };
         })
-        .filter((_, index) => !hiddenComparables.includes(index))
+        .filter((_, index) => selectedComparables.includes(index))
         .slice(0, 4)
     : [];
 

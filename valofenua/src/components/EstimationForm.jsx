@@ -74,7 +74,7 @@ export default function EstimationForm({ initialState }) {
   const [photosSupplementaires, setPhotosSupplementaires] = useState(initialState?.photosSupplementaires || []);
   const [initialAdjustedPrice, setInitialAdjustedPrice] = useState(initialState?.adjustedPrice || null);
   const [initialSectionVisibility, setInitialSectionVisibility] = useState(initialState?.sectionVisibility || null);
-  const [initialHiddenComparables, setInitialHiddenComparables] = useState(initialState?.hiddenComparables || null);
+  const [initialSelectedComparables, setInitialSelectedComparables] = useState(initialState?.selectedComparables || null);
   const [initialEditedComparables, setInitialEditedComparables] = useState(initialState?.editedComparables || null);
   const [initialNomClient, setInitialNomClient] = useState(initialState?.nomClient || '');
   const [initialTexteAnalyseMarche, setInitialTexteAnalyseMarche] = useState(initialState?.texteAnalyseMarche || '');
@@ -97,7 +97,7 @@ export default function EstimationForm({ initialState }) {
           // Mettre à jour avec les dernières valeurs sauvegardées
           setInitialAdjustedPrice(estimation.prix_ajuste);
           setInitialSectionVisibility(estimation.section_visibility);
-          setInitialHiddenComparables(estimation.hidden_comparables || []);
+          setInitialSelectedComparables(estimation.selected_comparables || []);
           setInitialEditedComparables(estimation.edited_comparables || {});
           setBienPhoto(estimation.photo_url);
           setPhotosSupplementaires(estimation.photos_supplementaires || []);
@@ -350,7 +350,7 @@ export default function EstimationForm({ initialState }) {
               photos_supplementaires: updates.photos_supplementaires || [],
               prix_ajuste: null,
               commission: 0,
-              hidden_comparables: [],
+              selected_comparables: [],
               edited_comparables: {},
               section_visibility: {
                 marketTrends: true,
@@ -448,7 +448,7 @@ export default function EstimationForm({ initialState }) {
           photosSupplementaires={photosSupplementaires}
           initialAdjustedPrice={initialAdjustedPrice}
           initialSectionVisibility={initialSectionVisibility}
-          initialHiddenComparables={initialHiddenComparables}
+          initialSelectedComparables={initialSelectedComparables}
           initialEditedComparables={initialEditedComparables}
           initialNomClient={initialNomClient}
           initialTexteAnalyseMarche={initialTexteAnalyseMarche}

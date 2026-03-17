@@ -13,6 +13,7 @@ import {
   AlertCircle,
   Plus,
   Eye,
+  Pencil,
   StickyNote,
   X,
   Save,
@@ -107,13 +108,55 @@ export default function MesEstimations() {
         photosSupplementaires: estimation.photos_supplementaires || [],
         estimationId: estimation.id,
         sectionVisibility: estimation.section_visibility,
-        hiddenComparables: estimation.hidden_comparables || [],
+        selectedComparables: estimation.selected_comparables || [],
         editedComparables: estimation.edited_comparables || {},
         nomClient: estimation.nom_client || '',
         texteAnalyseMarche: estimation.texte_analyse_marche || '',
         texteEtudeComparative: estimation.texte_etude_comparative || '',
         texteSynthese: estimation.texte_synthese || '',
         commission: estimation.commission || 0,
+      }
+    });
+  };
+
+  const handleViewPDF = (estimation) => {
+    const formData = {
+      commune: estimation.commune,
+      categorie: estimation.categorie,
+      type_bien: estimation.type_bien,
+      surface: estimation.surface,
+      surface_terrain: estimation.surface_terrain,
+      nb_chambres: estimation.nb_chambres || '',
+      nb_sdb: estimation.nb_sdb || '',
+      etat_bien: estimation.etat_bien,
+      caracteristiques: estimation.caracteristiques || [],
+    };
+
+    const result = {
+      prix_bas: estimation.prix_bas,
+      prix_moyen: estimation.prix_moyen,
+      prix_haut: estimation.prix_haut,
+      prix_m2_moyen: estimation.prix_m2_moyen,
+      comparables: estimation.comparables || [],
+    };
+
+    navigate('/rapport', {
+      state: {
+        result,
+        formData,
+        adjustedPrice: estimation.prix_ajuste,
+        commission: estimation.commission || 0,
+        bienPhoto: estimation.photo_url,
+        photosSupplementaires: estimation.photos_supplementaires || [],
+        nomClient: estimation.nom_client || '',
+        texteAnalyseMarche: estimation.texte_analyse_marche || '',
+        texteEtudeComparative: estimation.texte_etude_comparative || '',
+        texteSynthese: estimation.texte_synthese || '',
+        sectionVisibility: estimation.section_visibility,
+        selectedComparables: estimation.selected_comparables || [],
+        editedComparables: estimation.edited_comparables || {},
+        estimationId: estimation.id,
+        fromDashboard: true,
       }
     });
   };
@@ -209,7 +252,7 @@ export default function MesEstimations() {
     commission: estimation.commission,
     photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
-    hiddenComparables: estimation.hidden_comparables || [],
+    selectedComparables: estimation.selected_comparables || [],
     editedComparables: estimation.edited_comparables || {},
     texteAnalyseMarche: estimation.texte_analyse_marche || '',
     texteEtudeComparative: estimation.texte_etude_comparative || '',
@@ -370,13 +413,22 @@ export default function MesEstimations() {
                           <StickyNote className="w-5 h-5" />
                         </button>
 
-                        {/* Bouton Voir/Modifier */}
+                        {/* Bouton Voir le PDF */}
+                        <button
+                          onClick={() => handleViewPDF(estimation)}
+                          className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-[#E0F4FF] rounded-lg transition-colors"
+                          title="Voir le PDF"
+                        >
+                          <Eye className="w-5 h-5" />
+                        </button>
+
+                        {/* Bouton Modifier */}
                         <button
                           onClick={() => handleViewEstimation(estimation)}
                           className="p-2 text-slate-400 hover:text-[#0077B6] hover:bg-[#E0F4FF] rounded-lg transition-colors"
-                          title="Voir et modifier l'estimation"
+                          title="Modifier l'estimation"
                         >
-                          <Eye className="w-5 h-5" />
+                          <Pencil className="w-5 h-5" />
                         </button>
 
                         {/* Bouton Télécharger */}
@@ -395,7 +447,7 @@ export default function MesEstimations() {
                               texteEtudeComparative={pdfData.texteEtudeComparative}
                               texteSynthese={pdfData.texteSynthese}
                               sectionVisibility={pdfData.sectionVisibility}
-                              hiddenComparables={pdfData.hiddenComparables}
+                              selectedComparables={pdfData.selectedComparables}
                               editedComparables={pdfData.editedComparables}
                             />
                           }

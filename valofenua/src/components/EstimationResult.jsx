@@ -62,7 +62,7 @@ function ToggleableSection({ id, visible, onToggle, children, className = '' }) 
   );
 }
 
-export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialHiddenComparables, initialEditedComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
+export default function EstimationResult({ result, formData, onReset, estimationId, bienPhoto, photosSupplementaires = [], initialAdjustedPrice, initialSectionVisibility, initialSelectedComparables, initialEditedComparables, initialNomClient, initialTexteAnalyseMarche, initialTexteEtudeComparative, initialTexteSynthese, initialCommission }) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { prix_bas, prix_moyen, prix_haut, prix_m2_moyen } = result;
@@ -84,8 +84,8 @@ export default function EstimationResult({ result, formData, onReset, estimation
     }
   );
 
-  // État pour masquer des biens similaires individuellement (indices des biens masqués)
-  const [hiddenComparables, setHiddenComparables] = useState(initialHiddenComparables || []);
+  // État pour les biens similaires sélectionnés pour le PDF (indices des biens choisis, max 4)
+  const [selectedComparables, setSelectedComparables] = useState(initialSelectedComparables || []);
 
   // État pour les modifications des biens comparables (photo, prix, surface)
   const [editedComparables, setEditedComparables] = useState(initialEditedComparables || {});
@@ -111,11 +111,13 @@ export default function EstimationResult({ result, formData, onReset, estimation
   }, []);
 
   const toggleComparable = useCallback((index) => {
-    setHiddenComparables(prev =>
-      prev.includes(index)
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
+    setSelectedComparables(prev => {
+      if (prev.includes(index)) {
+        return prev.filter(i => i !== index);
+      }
+      if (prev.length >= 4) return prev;
+      return [...prev, index];
+    });
   }, []);
 
   // Modifier un comparable et sauvegarder automatiquement en BDD
@@ -214,7 +216,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
     if (estimationId) {
       const updates = {
         section_visibility: sectionVisibility,
-        hidden_comparables: hiddenComparables,
+        selected_comparables: selectedComparables,
         edited_comparables: Object.keys(editedComparablesWithUrls).length > 0 ? editedComparablesWithUrls : null,
         nom_client: nomClient || null,
         texte_analyse_marche: texteAnalyseMarche || null,
@@ -241,7 +243,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
         texteSynthese,
         estimationId,
         sectionVisibility,
-        hiddenComparables,
+        selectedComparables,
         editedComparables: editedComparablesWithUrls
       }
     });
@@ -450,7 +452,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
       >
         <SimilarOffers
           comparables={result.comparables}
-          hiddenComparables={hiddenComparables}
+          selectedComparables={selectedComparables}
           onToggleComparable={toggleComparable}
           editedComparables={editedComparables}
           onEditComparable={handleEditComparable}
