@@ -9,7 +9,7 @@ export default function RapportEstimation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const { result, formData, adjustedPrice, commission, bienPhoto, photosSupplementaires, nomClient, texteAnalyseMarche, texteEtudeComparative, texteSynthese, fromDashboard, estimationId, sectionVisibility, hiddenComparables, editedComparables } = location.state || {};
+  const { result, formData, adjustedPrice, commission, bienPhoto, photosSupplementaires, nomClient, texteAnalyseMarche, texteEtudeComparative, texteSynthese, fromDashboard, estimationId, sectionVisibility, selectedComparables, editedComparables } = location.state || {};
 
   // Visibilité par défaut si non fournie
   const visibility = sectionVisibility || {
@@ -107,7 +107,7 @@ export default function RapportEstimation() {
               </p>
             </div>
             <PDFDownloadLink
-              document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} commission={commission} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} hiddenComparables={hiddenComparables || []} editedComparables={editedComparables || {}} />}
+              document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} commission={commission} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} selectedComparables={selectedComparables || []} editedComparables={editedComparables || {}} />}
               fileName={getFileName()}
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg hover:shadow-xl"
             >
@@ -152,7 +152,7 @@ export default function RapportEstimation() {
               }}
               showToolbar={false}
             >
-              <RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} commission={commission} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} hiddenComparables={hiddenComparables || []} editedComparables={editedComparables || {}} />
+              <RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} commission={commission} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} selectedComparables={selectedComparables || []} editedComparables={editedComparables || {}} />
             </PDFViewer>
           </div>
 
@@ -169,7 +169,7 @@ export default function RapportEstimation() {
 
               {/* Bouton télécharger mobile */}
               <PDFDownloadLink
-                document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} commission={commission} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} hiddenComparables={hiddenComparables || []} editedComparables={editedComparables || {}} />}
+                document={<RapportPDF result={result} formData={formData} adjustedPrice={adjustedPrice} commission={commission} agentProfile={profile} bienPhoto={bienPhoto} photosSupplementaires={photosSupplementaires || []} nomClient={nomClient} texteAnalyseMarche={texteAnalyseMarche} texteEtudeComparative={texteEtudeComparative} texteSynthese={texteSynthese} sectionVisibility={visibility} selectedComparables={selectedComparables || []} editedComparables={editedComparables || {}} />}
                 fileName={getFileName()}
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0077B6] to-[#005f8a] text-white px-6 py-4 rounded-xl font-medium hover:from-[#005f8a] hover:to-[#004a6d] transition-all shadow-lg"
               >

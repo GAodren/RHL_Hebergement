@@ -1,14 +1,19 @@
-import { Home, MapPin, Ruler, Banknote, Eye, EyeOff, Pencil, X, Upload, Save, RotateCcw } from 'lucide-react';
+import { Home, MapPin, Ruler, Banknote, Pencil, X, Upload, Save, RotateCcw, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
-export default function SimilarOffers({ comparables, hiddenComparables = [], onToggleComparable, editedComparables = {}, onEditComparable }) {
+const MAX_SELECTED = 4;
+
+export default function SimilarOffers({ comparables, selectedComparables = [], onToggleComparable, editedComparables = {}, onEditComparable }) {
   // Ne rien afficher si pas de comparables
   if (!comparables || !Array.isArray(comparables) || comparables.length === 0) {
     return null;
   }
 
-  // Limiter à 5 offres maximum
-  const offersToShow = comparables.slice(0, 5);
+  // Afficher tous les comparables (jusqu'à 12)
+  const offersToShow = comparables.slice(0, 12);
+
+  // État pour la section dépliable
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // État pour la modale d'édition
   const [editingIndex, setEditingIndex] = useState(null);
@@ -16,10 +21,11 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
   const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
 
+  const selectedCount = selectedComparables.length;
+
   // Nettoyer l'URL de la photo si elle commence par "photo_url:"
   const cleanPhotoUrl = (photoUrl) => {
     if (!photoUrl) return null;
-    // Si l'URL commence par "photo_url:", extraire seulement l'URL
     if (photoUrl.startsWith('photo_url:')) {
       return photoUrl.substring('photo_url:'.length).trim();
     }
@@ -56,7 +62,6 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
       };
       reader.readAsDataURL(file);
     }
-    // Réinitialiser l'input pour permettre de re-sélectionner un fichier
     e.target.value = '';
   };
 
@@ -72,10 +77,9 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
     closeEditModal();
   };
 
-  // Réinitialiser aux valeurs originales et supprimer les modifications
+  // Réinitialiser aux valeurs originales
   const resetEdit = () => {
     if (editingIndex !== null && onEditComparable) {
-      // Supprimer les modifications du parent (passer null pour indiquer une suppression)
       onEditComparable(editingIndex, null);
       closeEditModal();
     }
@@ -87,11 +91,10 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
     return `${(prix / 1000000).toFixed(1)} MF`;
   };
 
-  // Composant pour une seule carte d'offre avec gestion d'état pour l'image
+  // Composant pour une seule carte d'offre
   const OfferCard = ({ offer, index }) => {
     const [imageError, setImageError] = useState(false);
 
-    // Appliquer les modifications éditées si elles existent
     const edited = editedComparables[index] || {};
     const displayOffer = {
       ...offer,
@@ -101,32 +104,52 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
     };
 
     const cleanedPhotoUrl = cleanPhotoUrl(displayOffer.photo_url);
-    const isHidden = hiddenComparables.includes(index);
+    const isSelected = selectedComparables.includes(index);
     const hasEdits = Object.keys(edited).length > 0;
+    const canSelect = isSelected || selectedCount < MAX_SELECTED;
 
-    // Réinitialiser l'erreur d'image quand la photo change
     useEffect(() => {
       setImageError(false);
     }, [cleanedPhotoUrl]);
 
     return (
       <div
-        key={index}
-        className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border ${hasEdits ? 'border-emerald-300' : 'border-slate-200'} hover:border-[#0077B6]/40 group ${isHidden ? 'opacity-40' : ''}`}
+        onClick={() => {
+          if (canSelect && onToggleComparable) {
+            onToggleComparable(index);
+          }
+        }}
+        className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 group ${
+          isSelected
+            ? 'border-[#0077B6] ring-2 ring-[#0077B6]/20'
+            : canSelect
+              ? 'border-slate-200 hover:border-slate-300 cursor-pointer'
+              : 'border-slate-200 opacity-50 cursor-not-allowed'
+        } ${isSelected ? 'cursor-pointer' : ''}`}
       >
-        {/* Badge "Modifié" si des modifications ont été faites */}
+        {/* Badge de sélection */}
+        <div className="absolute top-3 left-3 z-20">
+          <div className={`w-7 h-7 rounded-full flex items-center justify-center shadow-md transition-all ${
+            isSelected
+              ? 'bg-[#0077B6] text-white'
+              : 'bg-white/90 border-2 border-slate-300 text-transparent'
+          }`}>
+            <Check className="w-4 h-4" />
+          </div>
+        </div>
+
+        {/* Badge "Modifié" */}
         {hasEdits && (
-          <div className="absolute top-3 left-3 z-20">
+          <div className="absolute top-3 left-12 z-20">
             <span className="bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-md">
               Modifié
             </span>
           </div>
         )}
 
-        {/* Boutons d'action en haut à droite - toujours visibles */}
-        <div className="absolute top-3 right-3 z-20 flex gap-2">
-          {/* Bouton Modifier */}
-          {onEditComparable && (
+        {/* Bouton Modifier */}
+        {onEditComparable && (
+          <div className="absolute top-3 right-3 z-20">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -137,29 +160,11 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
             >
               <Pencil className="w-5 h-5" />
             </button>
-          )}
-
-          {/* Bouton toggle pour masquer/afficher dans le PDF */}
-          {onToggleComparable && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleComparable(index);
-              }}
-              className={`p-2 rounded-full shadow-md border transition-all ${
-                !isHidden
-                  ? 'bg-white/90 backdrop-blur-sm border-slate-200 text-slate-500 hover:text-[#0077B6] hover:border-[#0077B6]'
-                  : 'bg-slate-200/90 backdrop-blur-sm border-slate-300 text-slate-400 hover:bg-slate-300'
-              }`}
-              title={!isHidden ? 'Masquer du PDF' : 'Afficher dans le PDF'}
-            >
-              {!isHidden ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-            </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Image du bien */}
-        <div className="h-64 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
+        <div className="h-48 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
           {cleanedPhotoUrl && !imageError ? (
             <img
               src={cleanedPhotoUrl}
@@ -169,48 +174,45 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mb-3 shadow-md">
-                <Home className="w-10 h-10 text-slate-300" />
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-2 shadow-md">
+                <Home className="w-8 h-8 text-slate-300" />
               </div>
-              <p className="text-sm font-medium text-slate-400">Photo non disponible</p>
+              <p className="text-xs font-medium text-slate-400">Photo non disponible</p>
             </div>
           )}
-          {/* Badge du type de bien en overlay */}
-          <div className={`absolute top-4 ${hasEdits ? 'left-20' : 'left-4'}`}>
-            <span className="bg-white/95 backdrop-blur-sm text-slate-700 px-3 py-1.5 rounded-lg text-sm font-semibold shadow-lg">
+          {/* Badge du type de bien */}
+          <div className={`absolute top-4 ${hasEdits ? 'left-24' : 'left-12'}`}>
+            <span className="bg-white/95 backdrop-blur-sm text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold shadow-lg">
               {displayOffer.type_bien}
             </span>
           </div>
         </div>
 
         {/* Contenu de la carte */}
-        <div className="p-6">
-          {/* Prix - Très prominent */}
-          <div className="mb-4">
+        <div className="p-4">
+          <div className="mb-3">
             <div className="flex items-center gap-2">
-              <Banknote className="w-5 h-5 text-[#0077B6]" />
-              <p className="text-3xl font-bold text-[#0077B6]">
+              <Banknote className="w-4 h-4 text-[#0077B6]" />
+              <p className="text-2xl font-bold text-[#0077B6]">
                 {formatPrice(displayOffer.prix)}
               </p>
             </div>
           </div>
 
-          {/* Surface et Commune côte à côte */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-2 text-slate-700 bg-slate-50 rounded-lg px-3 py-2">
-              <Ruler className="w-4 h-4 text-slate-500" />
-              <p className="font-semibold text-sm">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5">
+              <Ruler className="w-3.5 h-3.5 text-slate-500" />
+              <p className="font-semibold text-xs">
                 {displayOffer.surface} m²
               </p>
             </div>
-            <div className="flex items-center gap-2 text-slate-700 bg-slate-50 rounded-lg px-3 py-2">
-              <MapPin className="w-4 h-4 text-slate-500" />
-              <p className="font-semibold text-sm truncate">
+            <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5">
+              <MapPin className="w-3.5 h-3.5 text-slate-500" />
+              <p className="font-semibold text-xs truncate">
                 {displayOffer.commune}
               </p>
             </div>
           </div>
-
         </div>
       </div>
     );
@@ -218,31 +220,57 @@ export default function SimilarOffers({ comparables, hiddenComparables = [], onT
 
   return (
     <div className="mt-12">
-      {/* Titre de la section */}
-      <div className="mb-8">
-        <h3 className="text-3xl font-bold text-slate-800 mb-3 flex items-center gap-3">
-          <Home className="w-7 h-7 text-[#0077B6]" />
-          Biens similaires sur le marché
-        </h3>
-        <p className="text-slate-600 text-lg">
-          Ces offres comparables vous donnent une idée du marché actuel dans votre secteur
-        </p>
-      </div>
+      {/* Titre de la section - cliquable pour déplier */}
+      <button
+        onClick={() => setIsExpanded(prev => !prev)}
+        className="w-full mb-6"
+      >
+        <div className="flex items-center justify-between bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow border border-slate-200">
+          <div className="flex items-center gap-3">
+            <Home className="w-6 h-6 text-[#0077B6]" />
+            <div className="text-left">
+              <h3 className="text-xl font-bold text-slate-800">
+                Biens similaires sur le marché
+              </h3>
+              <p className="text-sm text-slate-500 mt-0.5">
+                {offersToShow.length} bien{offersToShow.length > 1 ? 's' : ''} disponible{offersToShow.length > 1 ? 's' : ''}
+              </p>
+            </div>
+          </div>
 
-      {/* Grille des offres - 2 colonnes max pour plus de largeur */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-        {offersToShow.map((offer, index) => (
-          <OfferCard key={index} offer={offer} index={index} />
-        ))}
-      </div>
+          <div className="flex items-center gap-3">
+            {/* Compteur de sélection */}
+            <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${
+              selectedCount === MAX_SELECTED
+                ? 'bg-[#0077B6] text-white'
+                : selectedCount > 0
+                  ? 'bg-[#E0F4FF] text-[#0077B6]'
+                  : 'bg-slate-100 text-slate-500'
+            }`}>
+              {selectedCount}/{MAX_SELECTED} sélectionné{selectedCount > 1 ? 's' : ''}
+            </span>
+            {isExpanded
+              ? <ChevronUp className="w-5 h-5 text-slate-400" />
+              : <ChevronDown className="w-5 h-5 text-slate-400" />
+            }
+          </div>
+        </div>
+      </button>
 
-      {/* Note en bas */}
-      {comparables.length > 5 && (
-        <div className="mt-6 text-center">
-          <p className="text-sm text-slate-500 bg-slate-50 inline-block px-4 py-2 rounded-full">
-            + {comparables.length - 5} autre{comparables.length - 5 > 1 ? 's' : ''} bien
-            {comparables.length - 5 > 1 ? 's' : ''} comparable{comparables.length - 5 > 1 ? 's' : ''}
+      {/* Grille des offres - dépliable */}
+      {isExpanded && (
+        <div className="animate-fadeIn">
+          {/* Instruction */}
+          <p className="text-sm text-slate-500 mb-4">
+            Cliquez sur les biens à inclure dans le PDF (4 maximum). Utilisez le bouton <Pencil className="w-3.5 h-3.5 inline" /> pour modifier les détails.
           </p>
+
+          {/* Grille 3 colonnes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {offersToShow.map((offer, index) => (
+              <OfferCard key={index} offer={offer} index={index} />
+            ))}
+          </div>
         </div>
       )}
 
