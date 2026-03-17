@@ -131,7 +131,7 @@ export async function saveEstimation(userId, formData, result, adjustedPrice = n
     photos_supplementaires: [],
     prix_ajuste: null,
     commission: 0,
-    hidden_comparables: [],
+    selected_comparables: [],
     edited_comparables: {},
     section_visibility: {
       marketTrends: true,
@@ -255,7 +255,7 @@ export async function resetEstimation(id) {
     photos_supplementaires: originalData.photos_supplementaires || [],
     prix_ajuste: originalData.prix_ajuste || null,
     commission: originalData.commission || null,
-    hidden_comparables: originalData.hidden_comparables || [],
+    selected_comparables: originalData.selected_comparables || [],
     edited_comparables: originalData.edited_comparables || null,
     section_visibility: originalData.section_visibility || null,
     nom_client: originalData.nom_client || null,

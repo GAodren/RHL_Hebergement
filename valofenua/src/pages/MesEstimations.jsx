@@ -107,7 +107,7 @@ export default function MesEstimations() {
         photosSupplementaires: estimation.photos_supplementaires || [],
         estimationId: estimation.id,
         sectionVisibility: estimation.section_visibility,
-        hiddenComparables: estimation.hidden_comparables || [],
+        selectedComparables: estimation.selected_comparables || [],
         editedComparables: estimation.edited_comparables || {},
         nomClient: estimation.nom_client || '',
         texteAnalyseMarche: estimation.texte_analyse_marche || '',
@@ -209,7 +209,7 @@ export default function MesEstimations() {
     commission: estimation.commission,
     photosSupplementaires: estimation.photos_supplementaires || [],
     sectionVisibility: estimation.section_visibility,
-    hiddenComparables: estimation.hidden_comparables || [],
+    selectedComparables: estimation.selected_comparables || [],
     editedComparables: estimation.edited_comparables || {},
     texteAnalyseMarche: estimation.texte_analyse_marche || '',
     texteEtudeComparative: estimation.texte_etude_comparative || '',
@@ -395,7 +395,7 @@ export default function MesEstimations() {
                               texteEtudeComparative={pdfData.texteEtudeComparative}
                               texteSynthese={pdfData.texteSynthese}
                               sectionVisibility={pdfData.sectionVisibility}
-                              hiddenComparables={pdfData.hiddenComparables}
+                              selectedComparables={pdfData.selectedComparables}
                               editedComparables={pdfData.editedComparables}
                             />
                           }
