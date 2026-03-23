@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 const MAX_SELECTED = 4;
 
 export default function SimilarOffers({ comparables = [], selectedComparables = [], onToggleComparable, editedComparables = {}, onEditComparable, onAddComparable }) {
-  // Afficher tous les comparables (jusqu'à 12)
-  const offersToShow = comparables.slice(0, 12);
+  // Afficher tous les comparables
+  const offersToShow = comparables;
 
   // État pour la section dépliable
   const [isExpanded, setIsExpanded] = useState(false);
