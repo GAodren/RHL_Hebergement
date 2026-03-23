@@ -90,6 +90,9 @@ export default function EstimationResult({ result, formData, onReset, estimation
   // État pour les modifications des biens comparables (photo, prix, surface)
   const [editedComparables, setEditedComparables] = useState(initialEditedComparables || {});
 
+  // Liste complète des comparables (API + manuels)
+  const [allComparables, setAllComparables] = useState(result.comparables || []);
+
   const surfacePrincipale = formData.categorie === 'Terrain' ? formData.surface_terrain : formData.surface;
 
   const prixM2Bas = surfacePrincipale ? Math.round(prix_bas / surfacePrincipale) : 0;
@@ -171,6 +174,27 @@ export default function EstimationResult({ result, formData, onReset, estimation
     }
   }, [editedComparables, estimationId, user]);
 
+  // Ajouter un comparable manuellement
+  const handleAddComparable = useCallback(async (newComparable) => {
+    // Upload de la photo si base64
+    let comparableToAdd = { ...newComparable };
+    if (estimationId && user && newComparable.photo_url && newComparable.photo_url.startsWith('data:')) {
+      const newIndex = allComparables.length;
+      const { url } = await uploadComparablePhoto(user.id, estimationId, newIndex, newComparable.photo_url);
+      if (url) {
+        comparableToAdd = { ...comparableToAdd, photo_url: url };
+      }
+    }
+
+    const updatedComparables = [...allComparables, comparableToAdd];
+    setAllComparables(updatedComparables);
+
+    // Persister en BDD
+    if (estimationId) {
+      await updateEstimation(estimationId, { comparables: updatedComparables });
+    }
+  }, [allComparables, estimationId, user]);
+
   const getBienLabel = () => {
     const parts = [];
     if (formData.categorie) parts.push(formData.categorie);
@@ -215,6 +239,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
     // Sauvegarder toutes les préférences d'affichage + nom du client + textes personnalisés
     if (estimationId) {
       const updates = {
+        comparables: allComparables,
         section_visibility: sectionVisibility,
         selected_comparables: selectedComparables,
         edited_comparables: Object.keys(editedComparablesWithUrls).length > 0 ? editedComparablesWithUrls : null,
@@ -231,7 +256,7 @@ export default function EstimationResult({ result, formData, onReset, estimation
 
     navigate('/rapport', {
       state: {
-        result,
+        result: { ...result, comparables: allComparables },
         formData,
         adjustedPrice: hasAdjusted ? adjustedPrice : null,
         commission: commission > 0 ? commission : null,
@@ -451,11 +476,12 @@ export default function EstimationResult({ result, formData, onReset, estimation
         onToggle={toggleSection}
       >
         <SimilarOffers
-          comparables={result.comparables}
+          comparables={allComparables}
           selectedComparables={selectedComparables}
           onToggleComparable={toggleComparable}
           editedComparables={editedComparables}
           onEditComparable={handleEditComparable}
+          onAddComparable={handleAddComparable}
         />
       </ToggleableSection>
 
