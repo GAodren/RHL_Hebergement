@@ -4,9 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 const MAX_SELECTED = 4;
 
 export default function SimilarOffers({ comparables = [], selectedComparables = [], onToggleComparable, editedComparables = {}, onEditComparable, onAddComparable }) {
-  // Afficher tous les comparables
-  const offersToShow = comparables;
-
   // État pour la section dépliable
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -18,6 +15,23 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
   const fileInputRef = useRef(null);
 
   const selectedCount = selectedComparables.length;
+
+  // Séparer les comparables par section
+  const proches = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => c.section === 'proche');
+  const similaires = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => c.section === 'similaire');
+  const manuels = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => c.manual === true);
+  // Biens sans section (anciennes estimations, backward compat)
+  const sansSection = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => !c.section && !c.manual);
+
+  const totalCount = comparables.length;
 
   // Nettoyer l'URL de la photo si elle commence par "photo_url:"
   const cleanPhotoUrl = (photoUrl) => {
@@ -246,6 +260,48 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
     );
   };
 
+  // Carte "Ajouter un bien"
+  const AddCard = () => (
+    <button
+      onClick={openCreateModal}
+      className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-all duration-300 min-h-[280px] group"
+    >
+      <div className="w-14 h-14 rounded-full bg-white border-2 border-slate-300 group-hover:border-[#0077B6] group-hover:bg-[#E0F4FF] flex items-center justify-center transition-all shadow-md">
+        <Plus className="w-7 h-7 text-slate-400 group-hover:text-[#0077B6] transition-colors" />
+      </div>
+      <span className="text-sm font-semibold text-slate-500 group-hover:text-[#0077B6] transition-colors">
+        Ajouter un bien
+      </span>
+    </button>
+  );
+
+  // Sous-section avec titre et grille
+  const SubSection = ({ title, subtitle, items, showAddButton = false }) => {
+    if (items.length === 0 && !showAddButton) return null;
+
+    return (
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-3">
+          <h4 className="text-base font-semibold text-slate-700">{title}</h4>
+          {subtitle && (
+            <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+              {items.length} bien{items.length > 1 ? 's' : ''}
+            </span>
+          )}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((offer) => (
+            <OfferCard key={offer.globalIndex} offer={offer} index={offer.globalIndex} />
+          ))}
+          {showAddButton && onAddComparable && <AddCard />}
+        </div>
+      </div>
+    );
+  };
+
+  // Déterminer si on a des sections ou pas (backward compat)
+  const hasSections = proches.length > 0 || similaires.length > 0;
+
   return (
     <div className="mt-12">
       {/* Titre de la section - cliquable pour déplier */}
@@ -261,8 +317,8 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
                 Biens similaires sur le marché
               </h3>
               <p className="text-sm text-slate-500 mt-0.5">
-                {offersToShow.length > 0
-                  ? `${offersToShow.length} bien${offersToShow.length > 1 ? 's' : ''} disponible${offersToShow.length > 1 ? 's' : ''}`
+                {totalCount > 0
+                  ? `${totalCount} bien${totalCount > 1 ? 's' : ''} disponible${totalCount > 1 ? 's' : ''}`
                   : 'Aucun bien — ajoutez-en manuellement'
                 }
               </p>
@@ -270,7 +326,6 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Compteur de sélection */}
             <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${
               selectedCount === MAX_SELECTED
                 ? 'bg-[#0077B6] text-white'
@@ -288,35 +343,54 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
         </div>
       </button>
 
-      {/* Grille des offres - dépliable */}
+      {/* Contenu dépliable */}
       {isExpanded && (
         <div className="animate-fadeIn">
-          {/* Instruction */}
           <p className="text-sm text-slate-500 mb-4">
             Cliquez sur les biens à inclure dans le PDF (4 maximum). Utilisez le bouton <Pencil className="w-3.5 h-3.5 inline" /> pour modifier les détails.
           </p>
 
-          {/* Grille 3 colonnes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {offersToShow.map((offer, index) => (
-              <OfferCard key={index} offer={offer} index={index} />
-            ))}
+          {hasSections ? (
+            <>
+              {/* Bloc 1: Biens proches */}
+              <SubSection
+                title="Biens proches"
+                subtitle={true}
+                items={proches}
+              />
 
-            {/* Carte "Ajouter un bien" */}
-            {onAddComparable && (
-              <button
-                onClick={openCreateModal}
-                className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-all duration-300 min-h-[280px] group"
-              >
-                <div className="w-14 h-14 rounded-full bg-white border-2 border-slate-300 group-hover:border-[#0077B6] group-hover:bg-[#E0F4FF] flex items-center justify-center transition-all shadow-md">
-                  <Plus className="w-7 h-7 text-slate-400 group-hover:text-[#0077B6] transition-colors" />
+              {/* Bloc 2: Biens similaires */}
+              <SubSection
+                title="Biens similaires"
+                subtitle={true}
+                items={similaires}
+              />
+
+              {/* Biens ajoutés manuellement */}
+              {manuels.length > 0 && (
+                <SubSection
+                  title="Ajoutés manuellement"
+                  subtitle={true}
+                  items={manuels}
+                />
+              )}
+
+              {/* Bouton ajouter en bas */}
+              {onAddComparable && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <AddCard />
                 </div>
-                <span className="text-sm font-semibold text-slate-500 group-hover:text-[#0077B6] transition-colors">
-                  Ajouter un bien
-                </span>
-              </button>
-            )}
-          </div>
+              )}
+            </>
+          ) : (
+            /* Anciennes estimations sans sections — affichage flat */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...sansSection, ...manuels].map((offer) => (
+                <OfferCard key={offer.globalIndex} offer={offer} index={offer.globalIndex} />
+              ))}
+              {onAddComparable && <AddCard />}
+            </div>
+          )}
         </div>
       )}
 
@@ -324,7 +398,6 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
       {editingIndex !== null && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            {/* Header de la modale */}
             <div className="flex items-center justify-between p-5 border-b border-slate-200">
               <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                 {isCreating
@@ -340,7 +413,6 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
               </button>
             </div>
 
-            {/* Corps de la modale */}
             <div className="p-5 space-y-5">
               {/* Zone d'import d'image */}
               <div>
@@ -382,7 +454,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
                 />
               </div>
 
-              {/* Champs Commune et Type de bien - visibles en création et édition de bien manuel */}
+              {/* Champs Commune et Type de bien */}
               {(isCreating || (editingIndex !== null && !isCreating && comparables[editingIndex]?.manual)) && (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -456,7 +528,6 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
               </div>
             </div>
 
-            {/* Footer de la modale */}
             <div className="flex gap-3 p-5 border-t border-slate-200 bg-slate-50 rounded-b-2xl">
               <button
                 onClick={closeEditModal}
