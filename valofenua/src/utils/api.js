@@ -50,8 +50,18 @@ export async function getEstimation({ commune, categorie, type_bien, surface, su
   const data = await response.json();
 
   // Le webhook renvoie un tableau [{}] au lieu d'un objet direct
-  // On extrait le premier élément si c'est un tableau
-  return Array.isArray(data) ? data[0] : data;
+  const result = Array.isArray(data) ? data[0] : data;
+
+  // Combiner les deux sections de comparables en un seul tableau tagué
+  if (result.comparables_proches || result.comparables_similaires) {
+    const proches = (result.comparables_proches || []).map(c => ({ ...c, section: 'proche' }));
+    const similaires = (result.comparables_similaires || []).map(c => ({ ...c, section: 'similaire' }));
+    result.comparables = [...proches, ...similaires];
+    delete result.comparables_proches;
+    delete result.comparables_similaires;
+  }
+
+  return result;
 }
 
 // Liste des communes disponibles
