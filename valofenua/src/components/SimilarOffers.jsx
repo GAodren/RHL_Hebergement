@@ -1,27 +1,37 @@
-import { Home, MapPin, Ruler, Banknote, Pencil, X, Upload, Save, RotateCcw, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Home, MapPin, Ruler, Banknote, Pencil, X, Upload, Save, RotateCcw, Check, ChevronDown, ChevronUp, Plus } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 const MAX_SELECTED = 4;
 
-export default function SimilarOffers({ comparables, selectedComparables = [], onToggleComparable, editedComparables = {}, onEditComparable }) {
-  // Ne rien afficher si pas de comparables
-  if (!comparables || !Array.isArray(comparables) || comparables.length === 0) {
-    return null;
-  }
-
-  // Afficher tous les comparables (jusqu'à 12)
-  const offersToShow = comparables.slice(0, 12);
-
+export default function SimilarOffers({ comparables = [], selectedComparables = [], onToggleComparable, editedComparables = {}, onEditComparable, onAddComparable }) {
   // État pour la section dépliable
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // État pour la modale d'édition
+  // État pour la modale d'édition/création
   const [editingIndex, setEditingIndex] = useState(null);
-  const [editForm, setEditForm] = useState({ prix: '', surface: '', photo_url: '' });
+  const [isCreating, setIsCreating] = useState(false);
+  const [editForm, setEditForm] = useState({ prix: '', surface: '', photo_url: '', commune: '', type_bien: '' });
   const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
 
   const selectedCount = selectedComparables.length;
+
+  // Séparer les comparables par section
+  const proches = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => c.section === 'proche');
+  const similaires = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => c.section === 'similaire');
+  const manuels = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => c.manual === true);
+  // Biens sans section (anciennes estimations, backward compat)
+  const sansSection = comparables
+    .map((c, i) => ({ ...c, globalIndex: i }))
+    .filter(c => !c.section && !c.manual);
+
+  const totalCount = comparables.length;
 
   // Nettoyer l'URL de la photo si elle commence par "photo_url:"
   const cleanPhotoUrl = (photoUrl) => {
@@ -38,16 +48,28 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
     setEditForm({
       prix: edited.prix !== undefined ? edited.prix : offer.prix,
       surface: edited.surface !== undefined ? edited.surface : offer.surface,
-      photo_url: edited.photo_url || offer.photo_url || ''
+      photo_url: edited.photo_url || offer.photo_url || '',
+      commune: offer.commune || '',
+      type_bien: offer.type_bien || ''
     });
     setPreviewImage(edited.photo_url || cleanPhotoUrl(offer.photo_url));
     setEditingIndex(index);
+    setIsCreating(false);
+  };
+
+  // Ouvrir la modale de création
+  const openCreateModal = () => {
+    setEditForm({ prix: '', surface: '', photo_url: '', commune: '', type_bien: '' });
+    setPreviewImage(null);
+    setEditingIndex('new');
+    setIsCreating(true);
   };
 
   // Fermer la modale
   const closeEditModal = () => {
     setEditingIndex(null);
-    setEditForm({ prix: '', surface: '', photo_url: '' });
+    setIsCreating(false);
+    setEditForm({ prix: '', surface: '', photo_url: '', commune: '', type_bien: '' });
     setPreviewImage(null);
   };
 
@@ -65,9 +87,22 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
     e.target.value = '';
   };
 
-  // Sauvegarder les modifications
+  // Sauvegarder les modifications ou créer
   const saveEdit = () => {
-    if (onEditComparable && editingIndex !== null) {
+    if (isCreating) {
+      if (onAddComparable && editForm.prix && editForm.surface) {
+        const prix = Number(editForm.prix);
+        onAddComparable({
+          prix,
+          prix_formatte: `${(prix / 1000000).toFixed(1)} MF`,
+          surface: Number(editForm.surface),
+          commune: editForm.commune || '',
+          type_bien: editForm.type_bien || '',
+          photo_url: editForm.photo_url || null,
+          manual: true
+        });
+      }
+    } else if (onEditComparable && editingIndex !== null) {
       onEditComparable(editingIndex, {
         prix: Number(editForm.prix),
         surface: Number(editForm.surface),
@@ -79,7 +114,7 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
 
   // Réinitialiser aux valeurs originales
   const resetEdit = () => {
-    if (editingIndex !== null && onEditComparable) {
+    if (editingIndex !== null && onEditComparable && !isCreating) {
       onEditComparable(editingIndex, null);
       closeEditModal();
     }
@@ -106,6 +141,7 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
     const cleanedPhotoUrl = cleanPhotoUrl(displayOffer.photo_url);
     const isSelected = selectedComparables.includes(index);
     const hasEdits = Object.keys(edited).length > 0;
+    const isManual = offer.manual === true;
     const canSelect = isSelected || selectedCount < MAX_SELECTED;
 
     useEffect(() => {
@@ -138,11 +174,13 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
           </div>
         </div>
 
-        {/* Badge "Modifié" */}
-        {hasEdits && (
+        {/* Badge "Modifié" ou "Ajouté" */}
+        {(hasEdits || isManual) && (
           <div className="absolute top-3 left-12 z-20">
-            <span className="bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-md">
-              Modifié
+            <span className={`px-2 py-1 rounded-full text-xs font-medium shadow-md text-white ${
+              isManual ? 'bg-indigo-500' : 'bg-emerald-500'
+            }`}>
+              {isManual ? 'Ajouté' : 'Modifié'}
             </span>
           </div>
         )}
@@ -181,11 +219,13 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
             </div>
           )}
           {/* Badge du type de bien */}
-          <div className={`absolute top-4 ${hasEdits ? 'left-24' : 'left-12'}`}>
-            <span className="bg-white/95 backdrop-blur-sm text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold shadow-lg">
-              {displayOffer.type_bien}
-            </span>
-          </div>
+          {displayOffer.type_bien && (
+            <div className={`absolute top-4 ${(hasEdits || isManual) ? 'left-24' : 'left-12'}`}>
+              <span className="bg-white/95 backdrop-blur-sm text-slate-700 px-2 py-1 rounded-lg text-xs font-semibold shadow-lg">
+                {displayOffer.type_bien}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Contenu de la carte */}
@@ -206,17 +246,61 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
                 {displayOffer.surface} m²
               </p>
             </div>
-            <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5">
-              <MapPin className="w-3.5 h-3.5 text-slate-500" />
-              <p className="font-semibold text-xs truncate">
-                {displayOffer.commune}
-              </p>
-            </div>
+            {displayOffer.commune && (
+              <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5">
+                <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                <p className="font-semibold text-xs truncate">
+                  {displayOffer.commune}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
     );
   };
+
+  // Carte "Ajouter un bien"
+  const AddCard = () => (
+    <button
+      onClick={openCreateModal}
+      className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 hover:border-[#0077B6] hover:bg-[#E0F4FF]/30 transition-all duration-300 min-h-[280px] group"
+    >
+      <div className="w-14 h-14 rounded-full bg-white border-2 border-slate-300 group-hover:border-[#0077B6] group-hover:bg-[#E0F4FF] flex items-center justify-center transition-all shadow-md">
+        <Plus className="w-7 h-7 text-slate-400 group-hover:text-[#0077B6] transition-colors" />
+      </div>
+      <span className="text-sm font-semibold text-slate-500 group-hover:text-[#0077B6] transition-colors">
+        Ajouter un bien
+      </span>
+    </button>
+  );
+
+  // Sous-section avec titre et grille
+  const SubSection = ({ title, subtitle, items, showAddButton = false }) => {
+    if (items.length === 0 && !showAddButton) return null;
+
+    return (
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-3">
+          <h4 className="text-base font-semibold text-slate-700">{title}</h4>
+          {subtitle && (
+            <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+              {items.length} bien{items.length > 1 ? 's' : ''}
+            </span>
+          )}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((offer) => (
+            <OfferCard key={offer.globalIndex} offer={offer} index={offer.globalIndex} />
+          ))}
+          {showAddButton && onAddComparable && <AddCard />}
+        </div>
+      </div>
+    );
+  };
+
+  // Déterminer si on a des sections ou pas (backward compat)
+  const hasSections = proches.length > 0 || similaires.length > 0;
 
   return (
     <div className="mt-12">
@@ -233,13 +317,15 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
                 Biens similaires sur le marché
               </h3>
               <p className="text-sm text-slate-500 mt-0.5">
-                {offersToShow.length} bien{offersToShow.length > 1 ? 's' : ''} disponible{offersToShow.length > 1 ? 's' : ''}
+                {totalCount > 0
+                  ? `${totalCount} bien${totalCount > 1 ? 's' : ''} disponible${totalCount > 1 ? 's' : ''}`
+                  : 'Aucun bien — ajoutez-en manuellement'
+                }
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Compteur de sélection */}
             <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${
               selectedCount === MAX_SELECTED
                 ? 'bg-[#0077B6] text-white'
@@ -257,32 +343,67 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
         </div>
       </button>
 
-      {/* Grille des offres - dépliable */}
+      {/* Contenu dépliable */}
       {isExpanded && (
         <div className="animate-fadeIn">
-          {/* Instruction */}
           <p className="text-sm text-slate-500 mb-4">
             Cliquez sur les biens à inclure dans le PDF (4 maximum). Utilisez le bouton <Pencil className="w-3.5 h-3.5 inline" /> pour modifier les détails.
           </p>
 
-          {/* Grille 3 colonnes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {offersToShow.map((offer, index) => (
-              <OfferCard key={index} offer={offer} index={index} />
-            ))}
-          </div>
+          {hasSections ? (
+            <>
+              {/* Bloc 1: Biens proches */}
+              <SubSection
+                title="Biens proches"
+                subtitle={true}
+                items={proches}
+              />
+
+              {/* Bloc 2: Biens similaires */}
+              <SubSection
+                title="Biens similaires"
+                subtitle={true}
+                items={similaires}
+              />
+
+              {/* Biens ajoutés manuellement */}
+              {manuels.length > 0 && (
+                <SubSection
+                  title="Ajoutés manuellement"
+                  subtitle={true}
+                  items={manuels}
+                />
+              )}
+
+              {/* Bouton ajouter en bas */}
+              {onAddComparable && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <AddCard />
+                </div>
+              )}
+            </>
+          ) : (
+            /* Anciennes estimations sans sections — affichage flat */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...sansSection, ...manuels].map((offer) => (
+                <OfferCard key={offer.globalIndex} offer={offer} index={offer.globalIndex} />
+              ))}
+              {onAddComparable && <AddCard />}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Modale d'édition */}
+      {/* Modale d'édition / création */}
       {editingIndex !== null && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            {/* Header de la modale */}
             <div className="flex items-center justify-between p-5 border-b border-slate-200">
               <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <Pencil className="w-5 h-5 text-[#0077B6]" />
-                Modifier le bien comparable
+                {isCreating
+                  ? <><Plus className="w-5 h-5 text-[#0077B6]" /> Ajouter un bien comparable</>
+                  : <><Pencil className="w-5 h-5 text-[#0077B6]" /> Modifier le bien comparable</>
+                }
               </h3>
               <button
                 onClick={closeEditModal}
@@ -292,7 +413,6 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
               </button>
             </div>
 
-            {/* Corps de la modale */}
             <div className="p-5 space-y-5">
               {/* Zone d'import d'image */}
               <div>
@@ -334,6 +454,42 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
                 />
               </div>
 
+              {/* Champs Commune et Type de bien */}
+              {(isCreating || (editingIndex !== null && !isCreating && comparables[editingIndex]?.manual)) && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Commune
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <input
+                        type="text"
+                        value={editForm.commune}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, commune: e.target.value }))}
+                        placeholder="Ex: Papeete"
+                        className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Type de bien
+                    </label>
+                    <div className="relative">
+                      <Home className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <input
+                        type="text"
+                        value={editForm.type_bien}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, type_bien: e.target.value }))}
+                        placeholder="Ex: F3, Villa"
+                        className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Champ Prix */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -372,7 +528,6 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
               </div>
             </div>
 
-            {/* Footer de la modale */}
             <div className="flex gap-3 p-5 border-t border-slate-200 bg-slate-50 rounded-b-2xl">
               <button
                 onClick={closeEditModal}
@@ -380,20 +535,23 @@ export default function SimilarOffers({ comparables, selectedComparables = [], o
               >
                 Annuler
               </button>
-              <button
-                onClick={resetEdit}
-                className="px-4 py-3 border border-orange-300 text-orange-600 rounded-xl font-medium hover:bg-orange-50 transition-colors flex items-center justify-center gap-2"
-                title="Remettre les valeurs par défaut"
-              >
-                <RotateCcw className="w-4 h-4" />
-                Par défaut
-              </button>
+              {!isCreating && (
+                <button
+                  onClick={resetEdit}
+                  className="px-4 py-3 border border-orange-300 text-orange-600 rounded-xl font-medium hover:bg-orange-50 transition-colors flex items-center justify-center gap-2"
+                  title="Remettre les valeurs par défaut"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Par défaut
+                </button>
+              )}
               <button
                 onClick={saveEdit}
-                className="flex-1 px-4 py-3 bg-[#0077B6] text-white rounded-xl font-medium hover:bg-[#005f8a] transition-colors flex items-center justify-center gap-2"
+                disabled={isCreating && (!editForm.prix || !editForm.surface)}
+                className="flex-1 px-4 py-3 bg-[#0077B6] text-white rounded-xl font-medium hover:bg-[#005f8a] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Save className="w-4 h-4" />
-                Enregistrer
+                {isCreating ? 'Ajouter' : 'Enregistrer'}
               </button>
             </div>
           </div>
