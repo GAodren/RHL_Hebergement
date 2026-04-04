@@ -1125,7 +1125,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
         <View style={styles.coverContent}>
           {/* Titre */}
-          <Text style={styles.coverTitle}>Dossier d'Estimation Immobilière</Text>
+          <Text style={styles.coverTitle}>Avis de Valeur Immobilier</Text>
           <Text style={styles.coverSubtitle}>{formData.commune} • {formatDate()}</Text>
 
           {/* Nom du client */}
@@ -1241,7 +1241,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         {/* Conclusion */}
         <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 15, border: '1px solid #E2E8F0', marginTop: 10 }}>
           <Text style={{ fontSize: 10, color: '#334155', lineHeight: 1.6, textAlign: 'center', fontStyle: 'italic' }}>
-            Cette méthodologie rigoureuse nous permet de vous proposer une estimation fiable et argumentée, reflétant la réalité du marché immobilier local.
+            Cette méthodologie rigoureuse nous permet de vous proposer un avis de valeur fiable et argumenté, reflétant la réalité du marché immobilier local.
           </Text>
         </View>
 
@@ -1544,7 +1544,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         {/* Section : Comment nous calculons le prix */}
         <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 18, border: '1px solid #E2E8F0', marginBottom: 15 }}>
           <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginBottom: 12 }}>
-            Notre méthode d'estimation
+            Notre méthode d'évaluation
           </Text>
 
           <View style={{ marginBottom: 10 }}>
@@ -1595,11 +1595,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
+        <Text style={styles.pageTitle}>Synthèse et Avis de Valeur</Text>
 
         <View style={{ alignItems: 'center', alignSelf: 'center', marginBottom: 20, maxWidth: 400 }}>
           <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
-            Cette estimation de prix est basée sur l'analyse approfondie du bien immobilier,
+            Cet avis de valeur est basé sur l'analyse approfondie du bien immobilier,
           </Text>
           <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
             de ses spécificités ainsi que des prix des biens similaires sur le marché.
@@ -1656,7 +1656,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           <Text style={styles.disclaimerTitle}>Information importante</Text>
           <Text style={styles.disclaimerText}>
             Ce document a été réalisé par l'agence à partir des données du marché immobilier de votre secteur publiées sur le web. Ces données sont mises à jour en temps réel afin de suivre au plus près les évolutions du marché.
-            Les indicateurs et estimations de cette étude sont communiqués sous l'entière responsabilité du professionnel.
+            Les indicateurs et avis de valeur de cette étude sont communiqués sous l'entière responsabilité du professionnel.
           </Text>
         </View>
 
