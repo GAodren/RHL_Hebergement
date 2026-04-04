@@ -1217,7 +1217,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <View style={styles.ecmSectionTextBlock}>
               <Text style={styles.ecmSectionTitle}>Caractéristiques et spécificités</Text>
               <Text style={styles.ecmSectionContent}>
-                La surface, le nombre de pièces, l'agencement, la date de construction, la qualité des matériaux, les équipements, le diagnostic de performance énergétique, les prestations, les charges et taxes, ainsi que la rareté du bien. Tous ces éléments sont essentiels pour réaliser une analyse cohérente et objective de la valeur du bien immobilier.
+                La surface, le nombre de pièces, l'agencement, la date de construction, la qualité des matériaux, les équipements, les prestations, les charges et taxes, ainsi que la rareté du bien. Tous ces éléments sont essentiels pour réaliser une analyse cohérente et objective de la valeur du bien immobilier.
               </Text>
             </View>
           </View>
@@ -1700,7 +1700,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
         {/* Bloc Agent - pleine largeur */}
         <View style={{ ...styles.contactBlockFull, padding: 15, marginBottom: 10 }}>
-          <Text style={{ ...styles.contactBlockTitle, marginBottom: 8, fontSize: 10 }}>Votre Agent</Text>
+          <Text style={{ ...styles.contactBlockTitle, marginBottom: 8, fontSize: 10 }}>Votre Conseiller</Text>
           <View style={{ ...styles.contactBlockContentHorizontal, gap: 15 }}>
             {agentPhoto && (
               <Image style={{ ...styles.agentPhotoLarge, width: 72, height: 72, borderRadius: 36 }} src={agentPhoto} />
