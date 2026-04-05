@@ -1792,14 +1792,14 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <Text style={styles.justificatifsText}>Les plans du logement.</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', marginLeft: 20, marginBottom: 6, gap: 16 }}>
-            <View style={styles.justificatifsItem}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 14, gap: 20 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={styles.checkbox} />
-              <Text style={styles.justificatifsText}>Permis de Construire</Text>
+              <Text style={{ fontSize: 10, color: '#334155' }}>Permis de Construire</Text>
             </View>
-            <View style={styles.justificatifsItem}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={styles.checkbox} />
-              <Text style={styles.justificatifsText}>Conformité</Text>
+              <Text style={{ fontSize: 10, color: '#334155' }}>Conformité</Text>
             </View>
           </View>
 
@@ -1810,7 +1810,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text>.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic termites.</Text>
           </View>
 
           <View style={styles.justificatifsItem}>
@@ -1830,7 +1830,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si en Copro</Text> : Règlement Copro, dernier PV AG, le dernier de compte.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si en Copro</Text> : Règlement Copro, dernier PV AG, le dernier décompte.</Text>
           </View>
         </View>
 
