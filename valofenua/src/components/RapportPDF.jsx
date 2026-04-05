@@ -1726,43 +1726,43 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         )}
 
         <Text style={styles.pageTitle}>Pièces justificatives</Text>
-        <Text style={{ fontSize: 12, color: '#64748B', marginBottom: 25, marginTop: -10 }}>Pour la rédaction du mandat</Text>
+        <Text style={{ fontSize: 12, color: '#64748B', marginBottom: 12, marginTop: -10 }}>Pour la rédaction du mandat</Text>
 
         {/* Section 1: Pour le contact */}
-        <View style={styles.justificatifsSection}>
+        <View style={[styles.justificatifsSection, { marginBottom: 8 }]}>
           <Text style={styles.justificatifsSectionTitle}>1. POUR LE CONTACT</Text>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Une pièce justificative d'identité telle que la carte d'identité ou passeport.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Une copie du livret de famille.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si pacsé</Text> : certificat de PACS.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si divorcé</Text> : le jugement de divorce.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si marié</Text> : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si SCI</Text> : Statuts + dernier PV AG.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 0 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si STI</Text> : Statuts + dernier PV AG.</Text>
           </View>
@@ -1772,63 +1772,62 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         <View style={styles.justificatifsSection}>
           <Text style={styles.justificatifsSectionTitle}>2. POUR LE BIEN</Text>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>L'acte de propriété.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>La Taxe Foncière.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les documents relatifs aux divers travaux effectués.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les plans du logement.</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 16, gap: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={styles.checkbox} />
+                <Text style={{ fontSize: 10, color: '#334155', marginLeft: 4 }}>Permis de Construire</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={styles.checkbox} />
+                <Text style={{ fontSize: 10, color: '#334155', marginLeft: 4 }}>Conformité</Text>
+              </View>
+            </View>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 14, gap: 20 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={styles.checkbox} />
-              <Text style={{ fontSize: 10, color: '#334155' }}>Permis de Construire</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={styles.checkbox} />
-              <Text style={{ fontSize: 10, color: '#334155' }}>Conformité</Text>
-            </View>
-          </View>
-
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les documents relatifs à son prêt immobilier (il doit en outre préciser si celui-ci est hypothécaire).</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic termites.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu loué</Text> : le propriétaire bailleur doit fournir le bail, les trois dernières quittances de loyer et l'état des lieux d'entrée du locataire, Assurance.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu vide mais était loué dernièrement</Text> : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 7 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si Vendu Meublé</Text> : la liste du Mobilier Chiffré.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 0 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si en Copro</Text> : Règlement Copro, dernier PV AG, le dernier décompte.</Text>
           </View>
