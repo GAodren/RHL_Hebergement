@@ -1756,6 +1756,16 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si marié</Text> : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
           </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si SCI</Text> : Statuts + dernier PV AG.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si STI</Text> : Statuts + dernier PV AG.</Text>
+          </View>
         </View>
 
         {/* Section 2: Pour le bien */}
@@ -1782,6 +1792,17 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <Text style={styles.justificatifsText}>Les plans du logement.</Text>
           </View>
 
+          <View style={{ flexDirection: 'row', marginLeft: 20, marginBottom: 6, gap: 16 }}>
+            <View style={styles.justificatifsItem}>
+              <View style={styles.checkbox} />
+              <Text style={styles.justificatifsText}>Permis de Construire</Text>
+            </View>
+            <View style={styles.justificatifsItem}>
+              <View style={styles.checkbox} />
+              <Text style={styles.justificatifsText}>Conformité</Text>
+            </View>
+          </View>
+
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les documents relatifs à son prêt immobilier (il doit en outre préciser si celui-ci est hypothécaire).</Text>
@@ -1789,7 +1810,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic État des nuisances sonores aériennes / diagnostic gaz / diagnostic mérule / diagnostic DPE / diagnostic plomb / diagnostic termites / diagnostic technique de l'immeuble en copropriété / le diagnostic métrage loi Carrez.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text>.</Text>
           </View>
 
           <View style={styles.justificatifsItem}>
@@ -1800,6 +1821,16 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           <View style={styles.justificatifsItem}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu vide mais était loué dernièrement</Text> : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si Vendu Meublé</Text> : la liste du Mobilier Chiffré.</Text>
+          </View>
+
+          <View style={styles.justificatifsItem}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si en Copro</Text> : Règlement Copro, dernier PV AG, le dernier de compte.</Text>
           </View>
         </View>
 
