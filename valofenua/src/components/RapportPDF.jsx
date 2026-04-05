@@ -1790,16 +1790,16 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les plans du logement.</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 16, gap: 12 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={styles.checkbox} />
-                <Text style={{ fontSize: 10, color: '#334155', marginLeft: 4 }}>Permis de Construire</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={styles.checkbox} />
-                <Text style={{ fontSize: 10, color: '#334155', marginLeft: 4 }}>Conformité</Text>
-              </View>
-            </View>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 10, paddingLeft: 20 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Permis de Construire</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 10, paddingLeft: 20 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Conformité</Text>
           </View>
 
           <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
