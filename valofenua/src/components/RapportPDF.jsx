@@ -1125,7 +1125,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
         <View style={styles.coverContent}>
           {/* Titre */}
-          <Text style={styles.coverTitle}>Dossier d'Estimation Immobilière</Text>
+          <Text style={styles.coverTitle}>Avis de Valeur Immobilier</Text>
           <Text style={styles.coverSubtitle}>{formData.commune} • {formatDate()}</Text>
 
           {/* Nom du client */}
@@ -1217,7 +1217,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <View style={styles.ecmSectionTextBlock}>
               <Text style={styles.ecmSectionTitle}>Caractéristiques et spécificités</Text>
               <Text style={styles.ecmSectionContent}>
-                La surface, le nombre de pièces, l'agencement, la date de construction, la qualité des matériaux, les équipements, le diagnostic de performance énergétique, les prestations, les charges et taxes, ainsi que la rareté du bien. Tous ces éléments sont essentiels pour réaliser une analyse cohérente et objective de la valeur du bien immobilier.
+                La surface, le nombre de pièces, l'agencement, la date de construction, la qualité des matériaux, les équipements, les prestations, les charges et taxes, ainsi que la rareté du bien. Tous ces éléments sont essentiels pour réaliser une analyse cohérente et objective de la valeur du bien immobilier.
               </Text>
             </View>
           </View>
@@ -1241,7 +1241,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         {/* Conclusion */}
         <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 15, border: '1px solid #E2E8F0', marginTop: 10 }}>
           <Text style={{ fontSize: 10, color: '#334155', lineHeight: 1.6, textAlign: 'center', fontStyle: 'italic' }}>
-            Cette méthodologie rigoureuse nous permet de vous proposer une estimation fiable et argumentée, reflétant la réalité du marché immobilier local.
+            Cette méthodologie rigoureuse nous permet de vous proposer un avis de valeur fiable et argumenté, reflétant la réalité du marché immobilier local.
           </Text>
         </View>
 
@@ -1544,7 +1544,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         {/* Section : Comment nous calculons le prix */}
         <View style={{ backgroundColor: '#F8FAFC', borderRadius: 8, padding: 18, border: '1px solid #E2E8F0', marginBottom: 15 }}>
           <Text style={{ fontSize: 12, fontFamily: 'Helvetica-Bold', color: '#0077B6', marginBottom: 12 }}>
-            Notre méthode d'estimation
+            Notre méthode d'évaluation
           </Text>
 
           <View style={{ marginBottom: 10 }}>
@@ -1595,11 +1595,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             <Image style={styles.pageLogoImage} src={agentLogo} />
           </View>
         )}
-        <Text style={styles.pageTitle}>Synthèse et Estimation</Text>
+        <Text style={styles.pageTitle}>Synthèse et Avis de Valeur</Text>
 
         <View style={{ alignItems: 'center', alignSelf: 'center', marginBottom: 20, maxWidth: 400 }}>
           <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
-            Cette estimation de prix est basée sur l'analyse approfondie du bien immobilier,
+            Cet avis de valeur est basé sur l'analyse approfondie du bien immobilier,
           </Text>
           <Text style={{ fontSize: 11, color: '#64748B', textAlign: 'center', lineHeight: 1.5 }}>
             de ses spécificités ainsi que des prix des biens similaires sur le marché.
@@ -1656,7 +1656,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           <Text style={styles.disclaimerTitle}>Information importante</Text>
           <Text style={styles.disclaimerText}>
             Ce document a été réalisé par l'agence à partir des données du marché immobilier de votre secteur publiées sur le web. Ces données sont mises à jour en temps réel afin de suivre au plus près les évolutions du marché.
-            Les indicateurs et estimations de cette étude sont communiqués sous l'entière responsabilité du professionnel.
+            Les indicateurs et avis de valeur de cette étude sont communiqués sous l'entière responsabilité du professionnel.
           </Text>
         </View>
 
@@ -1700,7 +1700,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
 
         {/* Bloc Agent - pleine largeur */}
         <View style={{ ...styles.contactBlockFull, padding: 15, marginBottom: 10 }}>
-          <Text style={{ ...styles.contactBlockTitle, marginBottom: 8, fontSize: 10 }}>Votre Agent</Text>
+          <Text style={{ ...styles.contactBlockTitle, marginBottom: 8, fontSize: 10 }}>Votre Conseiller</Text>
           <View style={{ ...styles.contactBlockContentHorizontal, gap: 15 }}>
             {agentPhoto && (
               <Image style={{ ...styles.agentPhotoLarge, width: 72, height: 72, borderRadius: 36 }} src={agentPhoto} />
@@ -1726,35 +1726,45 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         )}
 
         <Text style={styles.pageTitle}>Pièces justificatives</Text>
-        <Text style={{ fontSize: 12, color: '#64748B', marginBottom: 25, marginTop: -10 }}>Pour la rédaction du mandat</Text>
+        <Text style={{ fontSize: 12, color: '#64748B', marginBottom: 12, marginTop: -10 }}>Pour la rédaction du mandat</Text>
 
         {/* Section 1: Pour le contact */}
-        <View style={styles.justificatifsSection}>
+        <View style={[styles.justificatifsSection, { marginBottom: 10 }]}>
           <Text style={styles.justificatifsSectionTitle}>1. POUR LE CONTACT</Text>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Une pièce justificative d'identité telle que la carte d'identité ou passeport.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Une copie du livret de famille.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si pacsé</Text> : certificat de PACS.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si divorcé</Text> : le jugement de divorce.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si marié</Text> : la copie du contrat de mariage afin de savoir le régime choisi et donc l'impact que la vente va avoir sur son patrimoine.</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si SCI</Text> : Statuts + dernier PV AG.</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 0 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si STI</Text> : Statuts + dernier PV AG.</Text>
           </View>
         </View>
 
@@ -1762,44 +1772,64 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         <View style={styles.justificatifsSection}>
           <Text style={styles.justificatifsSectionTitle}>2. POUR LE BIEN</Text>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>L'acte de propriété.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>La Taxe Foncière.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les documents relatifs aux divers travaux effectués.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les plans du logement.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10, paddingLeft: 20 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Permis de Construire</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 10, paddingLeft: 20 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}>Conformité</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}>Les documents relatifs à son prêt immobilier (il doit en outre préciser si celui-ci est hypothécaire).</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
-            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic État des nuisances sonores aériennes / diagnostic gaz / diagnostic mérule / diagnostic DPE / diagnostic plomb / diagnostic termites / diagnostic technique de l'immeuble en copropriété / le diagnostic métrage loi Carrez.</Text>
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Dossier de Diagnostic Technique</Text> : diagnostic amiante / diagnostic électricité / diagnostic ERP / diagnostic termites.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu loué</Text> : le propriétaire bailleur doit fournir le bail, les trois dernières quittances de loyer et l'état des lieux d'entrée du locataire, Assurance.</Text>
           </View>
 
-          <View style={styles.justificatifsItem}>
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
             <View style={styles.checkbox} />
             <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si le bien est vendu vide mais était loué dernièrement</Text> : Préavis du locataire / Lettre du congé pour vente avec refus du locataire.</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 10 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si Vendu Meublé</Text> : la liste du Mobilier Chiffré.</Text>
+          </View>
+
+          <View style={[styles.justificatifsItem, { marginBottom: 0 }]}>
+            <View style={styles.checkbox} />
+            <Text style={styles.justificatifsText}><Text style={styles.textBold}>Si en Copro</Text> : Règlement Copro, dernier PV AG, le dernier décompte.</Text>
           </View>
         </View>
 
