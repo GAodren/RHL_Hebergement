@@ -1472,7 +1472,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
                     </Text>
                     <View style={styles.comparableDetails}>
                       <Text style={styles.comparableDetail}>{offer.surface} m²</Text>
-                      {offer.surface_terrain ? (
+                      {offer.surface_terrain && offer.type_bien !== 'Terrain' ? (
                         <Text style={styles.comparableDetail}>{offer.surface_terrain} m² terrain</Text>
                       ) : null}
                       <Text style={styles.comparableDetail}>{offer.commune}</Text>
