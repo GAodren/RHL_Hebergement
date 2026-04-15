@@ -1065,6 +1065,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
             prix: newPrix,
             prix_formatte: hasEditedPrice ? `${(newPrix / 1000000).toFixed(1)} MF` : offer.prix_formatte,
             surface: edited.surface !== undefined ? edited.surface : offer.surface,
+            surface_terrain: edited.surface_terrain !== undefined ? edited.surface_terrain : offer.surface_terrain,
             photo_url: edited.photo_url || offer.photo_url
           };
         })
@@ -1470,6 +1471,9 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
                     </Text>
                     <View style={styles.comparableDetails}>
                       <Text style={styles.comparableDetail}>{offer.surface} m²</Text>
+                      {offer.surface_terrain ? (
+                        <Text style={styles.comparableDetail}>{offer.surface_terrain} m² terrain</Text>
+                      ) : null}
                       <Text style={styles.comparableDetail}>{offer.commune}</Text>
                     </View>
                   </View>

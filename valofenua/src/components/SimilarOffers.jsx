@@ -10,7 +10,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
   // État pour la modale d'édition/création
   const [editingIndex, setEditingIndex] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [editForm, setEditForm] = useState({ prix: '', surface: '', photo_url: '', commune: '', type_bien: '' });
+  const [editForm, setEditForm] = useState({ prix: '', surface: '', surface_terrain: '', photo_url: '', commune: '', type_bien: '' });
   const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -48,6 +48,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
     setEditForm({
       prix: edited.prix !== undefined ? edited.prix : offer.prix,
       surface: edited.surface !== undefined ? edited.surface : offer.surface,
+      surface_terrain: edited.surface_terrain !== undefined ? edited.surface_terrain : (offer.surface_terrain || ''),
       photo_url: edited.photo_url || offer.photo_url || '',
       commune: offer.commune || '',
       type_bien: offer.type_bien || ''
@@ -59,7 +60,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
 
   // Ouvrir la modale de création
   const openCreateModal = () => {
-    setEditForm({ prix: '', surface: '', photo_url: '', commune: '', type_bien: '' });
+    setEditForm({ prix: '', surface: '', surface_terrain: '', photo_url: '', commune: '', type_bien: '' });
     setPreviewImage(null);
     setEditingIndex('new');
     setIsCreating(true);
@@ -69,7 +70,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
   const closeEditModal = () => {
     setEditingIndex(null);
     setIsCreating(false);
-    setEditForm({ prix: '', surface: '', photo_url: '', commune: '', type_bien: '' });
+    setEditForm({ prix: '', surface: '', surface_terrain: '', photo_url: '', commune: '', type_bien: '' });
     setPreviewImage(null);
   };
 
@@ -96,6 +97,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
           prix,
           prix_formatte: `${(prix / 1000000).toFixed(1)} MF`,
           surface: Number(editForm.surface),
+          surface_terrain: editForm.surface_terrain ? Number(editForm.surface_terrain) : null,
           commune: editForm.commune || '',
           type_bien: editForm.type_bien || '',
           photo_url: editForm.photo_url || null,
@@ -106,6 +108,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
       onEditComparable(editingIndex, {
         prix: Number(editForm.prix),
         surface: Number(editForm.surface),
+        surface_terrain: editForm.surface_terrain ? Number(editForm.surface_terrain) : null,
         photo_url: editForm.photo_url
       });
     }
@@ -135,6 +138,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
       ...offer,
       prix: edited.prix !== undefined ? edited.prix : offer.prix,
       surface: edited.surface !== undefined ? edited.surface : offer.surface,
+      surface_terrain: edited.surface_terrain !== undefined ? edited.surface_terrain : offer.surface_terrain,
       photo_url: edited.photo_url || offer.photo_url
     };
 
@@ -240,12 +244,20 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5">
+            <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5" title="Surface habitable">
               <Ruler className="w-3.5 h-3.5 text-slate-500" />
               <p className="font-semibold text-xs">
                 {displayOffer.surface} m²
               </p>
             </div>
+            {displayOffer.surface_terrain && (
+              <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5" title="Surface terrain">
+                <Ruler className="w-3.5 h-3.5 text-emerald-600" />
+                <p className="font-semibold text-xs">
+                  {displayOffer.surface_terrain} m² <span className="text-slate-400 font-normal">terrain</span>
+                </p>
+              </div>
+            )}
             {displayOffer.commune && (
               <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5">
                 <MapPin className="w-3.5 h-3.5 text-slate-500" />
@@ -510,20 +522,37 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
                 </p>
               </div>
 
-              {/* Champ Surface */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Surface (en m²)
-                </label>
-                <div className="relative">
-                  <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="number"
-                    value={editForm.surface}
-                    onChange={(e) => setEditForm(prev => ({ ...prev, surface: e.target.value }))}
-                    placeholder="Ex: 120"
-                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
-                  />
+              {/* Champs Surface habitable et Surface terrain */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Surface habitable (m²)
+                  </label>
+                  <div className="relative">
+                    <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <input
+                      type="number"
+                      value={editForm.surface}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, surface: e.target.value }))}
+                      placeholder="Ex: 120"
+                      className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Surface terrain (m²)
+                  </label>
+                  <div className="relative">
+                    <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <input
+                      type="number"
+                      value={editForm.surface_terrain}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, surface_terrain: e.target.value }))}
+                      placeholder="Ex: 500"
+                      className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#0077B6]/20 focus:border-[#0077B6] transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
