@@ -25,7 +25,8 @@ const CARACTERISTIQUES_LABELS = {
   villa: 'Villa',
   vue_mer: 'Vue mer',
   vue_montagne: 'Vue montagne',
-  bord_mer: 'Bord de mer / Accès plage',
+  bord_mer: 'Bord de mer',
+  acces_plage: 'Accès plage',
   piscine: 'Piscine',
   garage: 'Garage',
   parking: 'Parking',
@@ -1143,10 +1144,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
               <Text style={styles.coverBienLabel}>Type</Text>
               <Text style={styles.coverBienValue}>{formData.categorie} {formData.type_bien || ''}</Text>
             </View>
-            <View style={styles.coverBienItem}>
-              <Text style={styles.coverBienLabel}>Surface habitable</Text>
-              <Text style={styles.coverBienValue}>{formData.surface || '-'} m²</Text>
-            </View>
+            {formData.categorie !== 'Terrain' && (
+              <View style={styles.coverBienItem}>
+                <Text style={styles.coverBienLabel}>Surface habitable</Text>
+                <Text style={styles.coverBienValue}>{formData.surface || '-'} m²</Text>
+              </View>
+            )}
             <View style={styles.coverBienItem}>
               <Text style={styles.coverBienLabel}>Surface terrain</Text>
               <Text style={styles.coverBienValue}>{formData.surface_terrain || '-'} m²</Text>
@@ -1285,10 +1288,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         <Text style={styles.sectionTitle}>Caractéristiques</Text>
         <View style={styles.caracteristiquesBox}>
           <View style={styles.caracteristiquesRow}>
-            <View style={styles.caracteristiquesColumn}>
-              <Text style={styles.caracLabel}>Surface habitable</Text>
-              <Text style={styles.caracValue}>{formData.surface || '-'} m²</Text>
-            </View>
+            {formData.categorie !== 'Terrain' && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>Surface habitable</Text>
+                <Text style={styles.caracValue}>{formData.surface || '-'} m²</Text>
+              </View>
+            )}
             <View style={styles.caracteristiquesColumn}>
               <Text style={styles.caracLabel}>Surface terrain</Text>
               <Text style={styles.caracValue}>{formData.surface_terrain || '-'} m²</Text>
@@ -1471,7 +1476,7 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
                     </Text>
                     <View style={styles.comparableDetails}>
                       <Text style={styles.comparableDetail}>{offer.surface} m²</Text>
-                      {offer.surface_terrain ? (
+                      {offer.surface_terrain && offer.type_bien !== 'Terrain' ? (
                         <Text style={styles.comparableDetail}>{offer.surface_terrain} m² terrain</Text>
                       ) : null}
                       <Text style={styles.comparableDetail}>{offer.commune}</Text>

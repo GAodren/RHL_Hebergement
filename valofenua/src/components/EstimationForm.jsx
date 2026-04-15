@@ -19,7 +19,8 @@ const ETATS_BIEN = [
 const CARACTERISTIQUES_COMMUNES = [
   { id: 'vue_mer', label: 'Vue mer' },
   { id: 'vue_montagne', label: 'Vue montagne' },
-  { id: 'bord_mer', label: 'Bord de mer / Accès plage' },
+  { id: 'bord_mer', label: 'Bord de mer' },
+  { id: 'acces_plage', label: 'Accès plage' },
   { id: 'piscine', label: 'Piscine' },
   { id: 'terrasse', label: 'Terrasse' },
 ];
@@ -34,6 +35,11 @@ const CARACTERISTIQUES_APPARTEMENT = [
   { id: 'parking', label: 'Parking' },
 ];
 
+const CARACTERISTIQUES_TERRAIN = [
+  { id: 'bord_mer', label: 'Bord de mer' },
+  { id: 'vue_mer', label: 'Vue mer' },
+];
+
 // Obtenir les caractéristiques selon la catégorie
 const getCaracteristiques = (categorie) => {
   switch (categorie) {
@@ -41,6 +47,8 @@ const getCaracteristiques = (categorie) => {
       return [...CARACTERISTIQUES_MAISON, ...CARACTERISTIQUES_COMMUNES];
     case 'Appartement':
       return [...CARACTERISTIQUES_APPARTEMENT, ...CARACTERISTIQUES_COMMUNES];
+    case 'Terrain':
+      return CARACTERISTIQUES_TERRAIN;
     default:
       return CARACTERISTIQUES_COMMUNES;
   }
@@ -669,8 +677,8 @@ export default function EstimationForm({ initialState }) {
             </div>
           )}
 
-          {/* Caractéristiques - Maison ou Appartement */}
-          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement') && (
+          {/* Caractéristiques - Maison, Appartement ou Terrain */}
+          {(formData.categorie === 'Maison' || formData.categorie === 'Appartement' || formData.categorie === 'Terrain') && (
             <div className="animate-fadeIn">
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Caractéristiques <span className="text-slate-400 font-normal">(optionnel)</span>
