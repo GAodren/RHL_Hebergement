@@ -1144,10 +1144,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
               <Text style={styles.coverBienLabel}>Type</Text>
               <Text style={styles.coverBienValue}>{formData.categorie} {formData.type_bien || ''}</Text>
             </View>
-            <View style={styles.coverBienItem}>
-              <Text style={styles.coverBienLabel}>Surface habitable</Text>
-              <Text style={styles.coverBienValue}>{formData.surface || '-'} m²</Text>
-            </View>
+            {formData.categorie !== 'Terrain' && (
+              <View style={styles.coverBienItem}>
+                <Text style={styles.coverBienLabel}>Surface habitable</Text>
+                <Text style={styles.coverBienValue}>{formData.surface || '-'} m²</Text>
+              </View>
+            )}
             <View style={styles.coverBienItem}>
               <Text style={styles.coverBienLabel}>Surface terrain</Text>
               <Text style={styles.coverBienValue}>{formData.surface_terrain || '-'} m²</Text>
@@ -1286,10 +1288,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
         <Text style={styles.sectionTitle}>Caractéristiques</Text>
         <View style={styles.caracteristiquesBox}>
           <View style={styles.caracteristiquesRow}>
-            <View style={styles.caracteristiquesColumn}>
-              <Text style={styles.caracLabel}>Surface habitable</Text>
-              <Text style={styles.caracValue}>{formData.surface || '-'} m²</Text>
-            </View>
+            {formData.categorie !== 'Terrain' && (
+              <View style={styles.caracteristiquesColumn}>
+                <Text style={styles.caracLabel}>Surface habitable</Text>
+                <Text style={styles.caracValue}>{formData.surface || '-'} m²</Text>
+              </View>
+            )}
             <View style={styles.caracteristiquesColumn}>
               <Text style={styles.caracLabel}>Surface terrain</Text>
               <Text style={styles.caracValue}>{formData.surface_terrain || '-'} m²</Text>
