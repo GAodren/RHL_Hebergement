@@ -250,7 +250,7 @@ export default function SimilarOffers({ comparables = [], selectedComparables = 
                 {displayOffer.surface} m²
               </p>
             </div>
-            {displayOffer.surface_terrain && (
+            {displayOffer.surface_terrain && displayOffer.type_bien !== 'Terrain' && (
               <div className="flex items-center gap-1.5 text-slate-700 bg-slate-50 rounded-lg px-2 py-1.5" title="Surface terrain">
                 <Ruler className="w-3.5 h-3.5 text-emerald-600" />
                 <p className="font-semibold text-xs">
