@@ -1110,6 +1110,23 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
   const historique = getHistoriqueCommune(formData.commune);
   const variation = getVariation(formData.commune);
 
+  // Template PDF de l'utilisateur (page masking + numérotation dynamique)
+  const hiddenPages = agentProfile?.pdf_templates?.config?.hidden_pages || [];
+  const ALL_PAGES = [
+    'couverture',
+    'ecm',
+    'ficheTechnique',
+    'analyseMarche',
+    'biensSimilaires',
+    'prixVente',
+    'synthese',
+    'contact',
+    'justificatifs',
+  ];
+  const visiblePages = ALL_PAGES.filter((key) => !hiddenPages.includes(key));
+  const totalPages = visiblePages.length;
+  const getPageNumber = (key) => visiblePages.indexOf(key) + 1;
+
   return (
     <Document>
       {/* === PAGE 1: COUVERTURE === */}
@@ -1176,10 +1193,11 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>1 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('couverture')} / {totalPages}</Text>
       </Page>
 
       {/* === PAGE 2: ÉTUDE COMPARATIVE DE MARCHÉ === */}
+      {!hiddenPages.includes('ecm') && (
       <Page size="A4" style={styles.ecmPage}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1249,10 +1267,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>2 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('ecm')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 3: FICHE TECHNIQUE === */}
+      {!hiddenPages.includes('ficheTechnique') && (
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1338,10 +1358,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           )}
         </View>
 
-        <Text style={styles.pageNumber}>3 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('ficheTechnique')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 4: ANALYSE DU MARCHÉ === */}
+      {!hiddenPages.includes('analyseMarche') && (
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1441,10 +1463,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>4 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('analyseMarche')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 5: BIENS SIMILAIRES === */}
+      {!hiddenPages.includes('biensSimilaires') && (
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1501,10 +1525,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         )}
 
-        <Text style={styles.pageNumber}>5 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('biensSimilaires')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 6: COMMENT DÉTERMINER LE PRIX DE VENTE === */}
+      {!hiddenPages.includes('prixVente') && (
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1594,10 +1620,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>6 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('prixVente')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 7: SYNTHÈSE ET ESTIMATION === */}
+      {!hiddenPages.includes('synthese') && (
       <Page size="A4" style={styles.page}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1669,10 +1697,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </Text>
         </View>
 
-        <Text style={styles.pageNumber}>7 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('synthese')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 8: CONTACT === */}
+      {!hiddenPages.includes('contact') && (
       <Page size="A4" style={styles.contactPage}>
         {agentLogo && (
           <View style={{ ...styles.pageLogoContainer, width: 50, height: 50, top: 15, right: 15 }}>
@@ -1723,10 +1753,12 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>8 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('contact')} / {totalPages}</Text>
       </Page>
+      )}
 
       {/* === PAGE 9: PIÈCES JUSTIFICATIVES === */}
+      {!hiddenPages.includes('justificatifs') && (
       <Page size="A4" style={styles.justificatifsPage}>
         {agentLogo && (
           <View style={styles.pageLogoContainer}>
@@ -1842,8 +1874,9 @@ export default function RapportPDF({ result, formData, adjustedPrice, commission
           </View>
         </View>
 
-        <Text style={styles.pageNumber}>9 / 9</Text>
+        <Text style={styles.pageNumber}>{getPageNumber('justificatifs')} / {totalPages}</Text>
       </Page>
+      )}
     </Document>
   );
 }
