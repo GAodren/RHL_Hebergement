@@ -26,7 +26,7 @@ const CARACTERISTIQUES_LABELS = {
   vue_mer: 'Vue mer',
   vue_montagne: 'Vue montagne',
   bord_mer: 'Bord de mer',
-  acces_plage: 'Accès plage',
+  acces_plage: 'Accès mer',
   piscine: 'Piscine',
   garage: 'Garage',
   parking: 'Parking',

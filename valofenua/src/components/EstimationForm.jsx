@@ -20,7 +20,7 @@ const CARACTERISTIQUES_COMMUNES = [
   { id: 'vue_mer', label: 'Vue mer' },
   { id: 'vue_montagne', label: 'Vue montagne' },
   { id: 'bord_mer', label: 'Bord de mer' },
-  { id: 'acces_plage', label: 'Accès plage' },
+  { id: 'acces_plage', label: 'Accès mer' },
   { id: 'piscine', label: 'Piscine' },
   { id: 'terrasse', label: 'Terrasse' },
 ];
@@ -38,6 +38,8 @@ const CARACTERISTIQUES_APPARTEMENT = [
 const CARACTERISTIQUES_TERRAIN = [
   { id: 'bord_mer', label: 'Bord de mer' },
   { id: 'vue_mer', label: 'Vue mer' },
+  { id: 'vue_montagne', label: 'Vue montagne' },
+  { id: 'acces_plage', label: 'Accès mer' },
 ];
 
 // Obtenir les caractéristiques selon la catégorie
