@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
     try {
       const { data, error } = await supabase
         .from('users_profiles')
-        .select('*')
+        .select('*, pdf_templates(nom, config)')
         .eq('id', userId)
         .single();
 
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
         const { data: newProfile } = await supabase
           .from('users_profiles')
           .insert([{ id: userId, email: userEmail }])
-          .select()
+          .select('*, pdf_templates(nom, config)')
           .single();
 
         if (newProfile) {
