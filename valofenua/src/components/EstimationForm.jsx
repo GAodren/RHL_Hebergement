@@ -94,8 +94,17 @@ export default function EstimationForm({ initialState }) {
   const currentEstimationId = useRef(initialState?.estimationId || null);
   const fileInputRef = useRef(null);
   const extraPhotosInputRef = useRef(null);
+  const prevResultRef = useRef(null);
 
   const MAX_EXTRA_PHOTOS = 6;
+
+  // Scroll vers le haut quand le résultat apparaît (soumission ou chargement depuis BDD)
+  useEffect(() => {
+    if (result && !prevResultRef.current) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    prevResultRef.current = result;
+  }, [result]);
 
   // Recharger les données depuis la BDD si on a un estimationId (pour récupérer les dernières modifications)
   useEffect(() => {
